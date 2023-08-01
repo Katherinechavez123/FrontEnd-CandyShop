@@ -23,7 +23,7 @@ const Register = () => {
             experiencia de compra sea excepcional.
           </p>
 
-          <form className="main__form" action="/login" method="post">
+          <form className="main__form" action="/register" method="post">
             <input
               name="correo_cliente"
               type="email"
@@ -39,14 +39,14 @@ const Register = () => {
               placeholder="Ingresa tu contraseña"
             />
             <button type="submit" className="main__input--send">
-              Ingresar
+              Registrarme
             </button>
           </form>
 
           <br />
 
           <p className="link_registro">
-            ¿No tienes una cuenta? <a href="#">Registrate aquí</a>
+            ¿Tienes una cuenta? <a href="/login">Inicia sesión aquí</a>
           </p>
           <p className="main__paragraph">Continuar con</p>
 

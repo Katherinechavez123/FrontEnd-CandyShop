@@ -1,6 +1,6 @@
 import React from "react";
 
-const Register = () => {
+const Login = () => {
   return (
     <div>
         <br />
@@ -19,8 +19,7 @@ const Register = () => {
         <div className="main__contact">
           <h2 className="main__title">¡Bienvenidos!</h2>
           <p className="main__paragraph">
-            Estamos encantados de tenerte aquí y queremos asegurarnos de que tu
-            experiencia de compra sea excepcional.
+          ¡Bienvenido/a de vuelta! Por favor, ingresa tus credenciales para iniciar sesión en nuestra página.
           </p>
 
           <form className="main__form" action="/login" method="post">
@@ -46,7 +45,7 @@ const Register = () => {
           <br />
 
           <p className="link_registro">
-            ¿No tienes una cuenta? <a href="#">Registrate aquí</a>
+            ¿No tienes una cuenta? <a href="/register">Registrate aquí</a>
           </p>
           <p className="main__paragraph">Continuar con</p>
 
@@ -79,4 +78,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
