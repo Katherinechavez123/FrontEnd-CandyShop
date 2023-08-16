@@ -13,7 +13,7 @@
   ```
 */
 import { useState } from 'react'
-import { ChevronDownIcon } from '@eroicons/react/20/solidh'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Switch } from '@headlessui/react'
 
 function classNames(...classes) {
