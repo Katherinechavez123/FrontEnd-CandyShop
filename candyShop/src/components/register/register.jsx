@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./register.css"
 const Register = () => {
   return (
     <div>
@@ -38,7 +38,7 @@ const Register = () => {
               id="exampleInputPassword1"
               placeholder="Ingresa tu contraseña"
             />
-            <button type="submit" className="main__input--send">
+            <button type="submit" className="main--input--send">
               Registrarme
             </button>
           </form>

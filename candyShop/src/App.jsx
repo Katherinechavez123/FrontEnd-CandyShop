@@ -4,12 +4,9 @@ import Login from "./components/login/login";
 import Contacto from "./components/contacto/contacto";
 import Menu from "./components/menu/menu";
 
-import "./App.css";
 
 function App() {
   return (
-    <>
-    <Menu/>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/register" />} />
@@ -17,6 +14,7 @@ function App() {
           path="/register"
           element={
             <>
+                <Menu/>
               <Register />
             </>
           }
@@ -26,22 +24,23 @@ function App() {
           path="/login"
           element={
             <>
+                <Menu/>
               <Login />
             </>
           }
           />
-          <Route path="/" element={<Navigate to="/contacto" />} />
-          <Route
-            path="/contacto"
-            element={
-              <>
-                <Login />
-              </>
-            }
+            <Route path="/" element={<Navigate to="/contacto" />} />
+            <Route
+              path="/contacto"
+              element={
+                <>
+                    <Menu/>
+                  <Contacto />
+                </>
+              }
         />
       </Routes>
     </BrowserRouter>
-    </>
   );
 }
 

@@ -1,24 +1,20 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
 
 header{
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
-    height: 30%;
+    height: 20vh;
     color: #1f1e1e;
     padding: 10px 0;
+    width: 100vw;
 }
 
-.logo {
+.logomenu {
     margin: 5px;
     width: 140px;
     height: 100px;
-    margin-right: 400px;
-    margin-left: 100px;
+    margin-right: 200px;
+
 }
 
 nav {
@@ -46,14 +42,13 @@ nav ul li a:hover {
     color: #c20492;
     text-decoration: none;
 }
-.iconos img {
-display:flexbox;
+.iconos{
+display:flex;
+flex-direction: row;
+
 margin: 5px;
 width: 70px;
 height: 50px;
 }
 
-.divv{
-background-color: #bee9ed;
-height: 500px;
-}
+

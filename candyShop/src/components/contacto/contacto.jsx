@@ -38,9 +38,13 @@ export default function Contacto() {
         />
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact sales</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contáctanos</h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
-          Aute magna irure deserunt veniam aliqua magna enim voluptate.
+        ¿Tienes alguna pregunta sobre nuestros productos?
+         Estamos aquí para brindarte toda la información que necesitas.
+          Ya sea que estés planeando una celebración de cumpleaños, un aniversario, 
+          un baby shower o simplemente quieras alegrar el día de alguien, 
+          nosotros te respaldamos con una amplia selección de opciones encantadoras.
         </p>
       </div>
       <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
@@ -89,7 +93,7 @@ export default function Contacto() {
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
-              Email
+              Correo
             </label>
             <div className="mt-2.5">
               <input
@@ -103,21 +107,20 @@ export default function Contacto() {
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
-              Phone number
+              Teléfono
             </label>
             <div className="relative mt-2.5">
               <div className="absolute inset-y-0 left-0 flex items-center">
                 <label htmlFor="country" className="sr-only">
-                  Country
+                  País
                 </label>
                 <select
                   id="country"
                   name="country"
                   className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
                 >
-                  <option>US</option>
-                  <option>CA</option>
-                  <option>EU</option>
+                  <option>CO</option>
+
                 </select>
                 <ChevronDownIcon
                   className="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400"
@@ -135,7 +138,7 @@ export default function Contacto() {
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="message" className="block text-sm font-semibold leading-6 text-gray-900">
-              Message
+              Mensaje
             </label>
             <div className="mt-2.5">
               <textarea
