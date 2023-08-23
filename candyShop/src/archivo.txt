@@ -1,0 +1,65 @@
+ <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/inicio" />} />
+        <Route
+          path="/inicio"
+          element={
+            <>
+              <Menu />
+              <Home />
+
+            </>
+          }
+        />
+        <Route path="/" element={<Navigate to="/register" />} />
+        <Route
+          path="/register"
+          element={
+            <>
+              <Menu />
+              <Register />
+            </>
+          }
+        />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route
+          path="/login"
+          element={
+            <>
+              <Menu />
+              <Login />
+            </>
+          }
+        />
+        <Route path="/" element={<Navigate to="/contacto" />} />
+        <Route
+          path="/contacto"
+          element={
+            <>
+              <Menu />
+              <Contacto />
+            </>
+          }
+        />
+        <Route path="/" element={<Navigate to="/Catalogo" />} />
+        <Route
+          path="/Catalogo"
+          element={
+            <>
+              <Menu />
+              <Productos />
+            </>
+          }
+        />
+        <Route path="/" element={<Navigate to="/Perfil" />} />
+        <Route
+          path="/Perfil"
+          element={
+            <>
+              <Menu />
+              <LlenarDatos />
+            </>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
