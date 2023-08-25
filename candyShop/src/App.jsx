@@ -1,90 +1,24 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Register from "./components/register/register";
-import Login from "./components/login/login";
-import Contacto from "./components/contacto/contacto";
-import Menu from "./components/menu/menu";
+import { Routes, Route} from "react-router-dom";
 import Home from "./components/home/home";
+import Personalizar from './components/Personalizar/Personalizar'
 import Productos from "./components/productos/Productos";
-import LlenarDatos from "./components/LlenarDatos/LlenarDatos";
-import VerDetalle from "./components/verDetalle/VerDetalle";
+import Nosotros from './components/nosotros/Nosotros'
+import Navbar from "./components/navbar/Navbar";
+import Contacto from './components/contacto/Contacto'
+
 
 function App() {
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Navigate to="/inicio" />} />
-      <Route
-        path="/inicio"
-        element={
-          <>
-            <Menu />
-            <Home />
-
-          </>
-        }
-      />
-      <Route path="/" element={<Navigate to="/register" />} />
-      <Route
-        path="/register"
-        element={
-          <>
-            <Menu />
-            <Register />
-          </>
-        }
-      />
-      <Route path="/" element={<Navigate to="/login" />} />
-      <Route
-        path="/login"
-        element={
-          <>
-            <Menu />
-            <Login />
-          </>
-        }
-      />
-      <Route path="/" element={<Navigate to="/contacto" />} />
-      <Route
-        path="/contacto"
-        element={
-          <>
-            <Menu />
-            <Contacto />
-          </>
-        }
-      />
-      <Route path="/" element={<Navigate to="/Catalogo" />} />
-      <Route
-        path="/Catalogo"
-        element={
-          <>
-            <Menu />
-            <Productos />
-          </>
-        }
-      />
-      <Route path="/" element={<Navigate to="/Perfil" />} />
-      <Route
-        path="/Perfil"
-        element={
-          <>
-            <Menu />
-            <LlenarDatos />
-          </>
-        }
-      />
-      <Route path="/" element={<Navigate to="/Detalle" />} />
-      <Route
-        path="/Detalle"
-        element={
-          <>
-            <Menu />
-            <VerDetalle />
-          </>
-        }
-      />
-    </Routes>
-  </BrowserRouter>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={Home} />
+        <Route path="/personalizar" element={Personalizar} />
+        {/* <Route path="/productos" component={Productos} />
+        <Route path="/nosotros" component={Nosotros} />
+        <Route path="/contacto" component={Contacto} /> */}
+      </Routes>    
+    </>
   );
 }
 

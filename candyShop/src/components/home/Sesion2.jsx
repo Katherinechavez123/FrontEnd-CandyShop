@@ -25,6 +25,18 @@ const features = [
       'Sumérgete en un mundo de sabores exquisitos con nuestras anchetas gourmet. Combina los ingredientes más selectos, desde quesos artesanales hasta chocolates de alta calidad, para regalar una experiencia culinaria sofisticada.',
     icon: <img src="/candyShop/src/assets/svg/Icono_personalizar-03.svg" alt="icono_personalizar" />,
   },
+  {
+    name: 'Anchetas Gourmet: ',
+    description:
+      'Sumérgete en un mundo de sabores exquisitos con nuestras anchetas gourmet. Combina los ingredientes más selectos, desde quesos artesanales hasta chocolates de alta calidad, para regalar una experiencia culinaria sofisticada.',
+    icon: <img src="/candyShop/src/assets/svg/Icono_personalizar-03.svg" alt="icono_personalizar" />,
+  },
+  {
+    name: 'Anchetas Gourmet: ',
+    description:
+      'Sumérgete en un mundo de sabores exquisitos con nuestras anchetas gourmet. Combina los ingredientes más selectos, desde quesos artesanales hasta chocolates de alta calidad, para regalar una experiencia culinaria sofisticada.',
+    icon: <img src="/candyShop/src/assets/svg/Icono_personalizar-03.svg" alt="icono_personalizar" />,
+  },
 ]
 
 export default function Sesion2() {
