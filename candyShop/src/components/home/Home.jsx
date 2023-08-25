@@ -10,17 +10,19 @@ import Sesion5 from "./Sesion5";
 import Testimonios from "./testimonios";
 
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <>
-<Sesion1/>
-<Sesion2/>
-<Sesion3/>
-<Sesion4/>
-<Testimonios/>
-<Sesion5/>
-</>
+    <h3>Hooooooooooooooolaaaaaaaaaaaaaa</h3>
+      {/* <Sesion1/>
+      <Sesion2/>
+      <Sesion3/>
+      <Sesion4/>
+      <Testimonios/>
+      <Sesion5/>   */}
+  </>
   );
 }
 
