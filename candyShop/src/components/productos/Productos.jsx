@@ -45,6 +45,102 @@ const products = [
       imageAlt: "Front of men's Basic Tee in black.",
       price: '$150.000'
     },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/desayuno.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Candy Birhtday',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2019/07/desayuno-cumpleanos-e1686646302636.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$200.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/desayuno_cumpleanos_hombre-removebg-preview.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2019/04/ancheta-sorpresa-de-aniversario-con-flores-removebg-preview.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/desayuno.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Candy Birhtday',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2019/07/desayuno-cumpleanos-e1686646302636.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$200.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/desayuno_cumpleanos_hombre-removebg-preview.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2019/04/ancheta-sorpresa-de-aniversario-con-flores-removebg-preview.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/desayuno.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Candy Birhtday',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2019/07/desayuno-cumpleanos-e1686646302636.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$200.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/desayuno_cumpleanos_hombre-removebg-preview.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
+    {
+      id: 1,
+      name: 'Ancheta primavera',
+      href: '#',
+      imageSrc: 'https://candyshop.publitin.net/redetron/wp-content/uploads/2019/04/ancheta-sorpresa-de-aniversario-con-flores-removebg-preview.png',
+      imageAlt: "Front of men's Basic Tee in black.",
+      price: '$150.000'
+    },
   ]
   
   export default function Productos() {
