@@ -30,7 +30,7 @@ useEffect(() => {
       setAnchetas(response.data);
     }
     try {
-      getPacientes();
+      getAnchetas();
     } catch (error) {
       console.log(error);
     }
