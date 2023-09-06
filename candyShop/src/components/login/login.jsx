@@ -1,5 +1,7 @@
 import React from "react";
 import "./login.css"
+import Button from "../Atoms/Button/Button";
+
 const Login = () => {
   return (
     <div>
@@ -37,9 +39,9 @@ const Login = () => {
               id="exampleInputPassword1"
               placeholder="Ingresa tu contraseña"
             />
-            <button type="submit" className="main__input--send">
-              Ingresar
-            </button>
+            <Link to="/inicio">
+            <Button text="Ver productos" />
+            </Link>
           </form>
 
           <br />

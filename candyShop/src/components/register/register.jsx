@@ -1,5 +1,8 @@
 import React from "react";
 import "./register.css"
+import Button from "../Atoms/Button/Button";
+import { Link } from "react-router-dom";
+
 const Register = () => {
   return (
     <div>
@@ -27,20 +30,20 @@ const Register = () => {
             <input
               name="correo_cliente"
               type="email"
-              className="main__input"
+              className="rounded-full main__input"
               id="exampleInputEmail1"
               placeholder="Ingresa tu correo"
             />
             <input
               name="contrasenia"
               type="password"
-              className="main__input"
+              className="rounded-full main__input"
               id="exampleInputPassword1"
               placeholder="Ingresa tu contraseña"
             />
-            <button type="submit" className="main--input--send">
-              Registrarme
-            </button>
+            <Link to="/Inicio">
+            <Button text="Ver productos" />
+            </Link>
           </form>
 
           <br />

@@ -15,6 +15,9 @@
 import { useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Switch } from '@headlessui/react'
+import { Link } from 'react-router-dom'
+import Button from '../Atoms/Button/Button'
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -25,6 +28,7 @@ export default function Contacto() {
 
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/CONTACTANOS-1536x432.png" alt="" />
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -38,8 +42,8 @@ export default function Contacto() {
         />
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contáctanos</h2>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        <h2 className="text-4xl text-fuchsia-950 font-light tracking-tight sm:text-4xl">Contáctanos</h2>
+        <p className="mt-2 text-lg leading-8 text-gray-900 text-justify">
         ¿Tienes alguna pregunta sobre nuestros productos?
          Estamos aquí para brindarte toda la información que necesitas.
           Ya sea que estés planeando una celebración de cumpleaños, un aniversario, 
@@ -172,7 +176,7 @@ export default function Contacto() {
             </div>
             <Switch.Label className="text-sm leading-6 text-gray-600">
               By selecting this, you agree to our{' '}
-              <a href="#" className="font-semibold text-indigo-600">
+              <a href="#" className="font-semibold text-pink-600">
                 privacy&nbsp;policy
               </a>
               .
@@ -180,12 +184,9 @@ export default function Contacto() {
           </Switch.Group>
         </div>
         <div className="mt-10">
-          <button
-            type="submit"
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Let's talk
-          </button>
+        <Link to="/inicio">
+            <Button text="Enviar" />
+            </Link>
         </div>
       </form>
     </div>
