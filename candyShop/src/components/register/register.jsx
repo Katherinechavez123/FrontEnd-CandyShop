@@ -13,7 +13,7 @@ const Register = () => {
           <div className="logo">
             <img
               src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/logo-v1-01.png"
-              className="main__img"
+              className="main-img "
               alt="Logo_candy_shop"
             />
           </div>
@@ -27,6 +27,48 @@ const Register = () => {
           </p>
 
           <form className="main__form" action="/register" method="post">
+          <input
+              name="id_cliente"
+              type="text"
+              className="rounded-full main__input"
+              id="exampleInputText"
+              placeholder="Ingresa tu documento"
+            />
+              <input
+              name="nombre_cliente"
+              type="text"
+              className="rounded-full main__input"
+              id="exampleInputText"
+              placeholder="Ingresa tu nombre"
+            />
+              <input
+              name="apellido_cliente"
+              type="text"
+              className="rounded-full main__input"
+              id="exampleInputText"
+              placeholder="Ingresa tu apellido"
+            />
+              <input
+              name="direccion_cliente"
+              type="text"
+              className="rounded-full main__input"
+              id="exampleInputText"
+              placeholder="Ingresa tu dirección"
+            />
+              <input
+              name="ciudad_cliente"
+              type="text"
+              className="rounded-full main__input"
+              id="exampleInputEmail1"
+              placeholder="Ingresa tu ciudad"
+            />
+              <input
+              name="telefono_cliente"
+              type="text"
+              className="rounded-full main__input"
+              id="exampleInputEmail1"
+              placeholder="Ingresa tu telefono"
+            />
             <input
               name="correo_cliente"
               type="email"
@@ -41,15 +83,15 @@ const Register = () => {
               id="exampleInputPassword1"
               placeholder="Ingresa tu contraseña"
             />
-            <Link to="/Inicio">
-            <Button text="Ver productos" />
+            <Link to="/login">
+            <Button text="Registrarse" />
             </Link>
           </form>
 
           <br />
 
           <p className="link_registro">
-            ¿Tienes una cuenta? <a href="/login">Inicia sesión aquí</a>
+            ¿Tienes una cuenta? <a href="/login" className="text-fuchsia-950">Inicia sesión aquí</a>
           </p>
           <p className="main__paragraph">Continuar con</p>
 

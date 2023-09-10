@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import Button from "../Atoms/Button/Button"
+
 export default function Sesion3() {
     return (
       <div className="bg-white">
@@ -25,12 +28,9 @@ export default function Sesion3() {
               Desde delicias gourmet hasta dulces tentaciones, puedes seleccionar cuidadosamente cada artículo para asegurarte de que refleje su estilo y personalidad.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-                <a
-                  href="#"
-                  className="rounded-md bg-pink-100 px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                >
-                  Personalizar
-                </a>
+              <Link to="/catalogo">
+            <Button text="Personalizar" />
+            </Link>
               </div>
             </div>
             <div className="relative mt-16 h-80 lg:mt-8 ">

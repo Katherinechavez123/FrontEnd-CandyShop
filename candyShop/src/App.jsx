@@ -1,12 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate, Link} from "react-router-dom";
-import Register from "./components/register/register";
-import Login from "./components/login/login";
-import Contacto from "./components/contacto/contacto";
+import Register from "./components/register/Register";
+import Login from "./components/login/Login";
+import Contacto from "./components/contacto/Contacto";
 import Header from "./layouts/Header/Header";
 import Home from "./pages/Home/Home";
 import Productos from "./components/productos/Productos";
 import LlenarDatos from "./components/LlenarDatos/LlenarDatos";
 import VerDetalle from "./components/verDetalle/VerDetalle";
+import Footer from "./layouts/Footer/Footer";
+import Nosotros from "./components/nosotros/Nosotros";
 
 function App() {
   return (
@@ -38,6 +40,15 @@ function App() {
             element={
               <>
                 <Login />
+              </>
+            }
+          />
+          <Route path="/" element={<Navigate to="/nosotros" />} />
+          <Route
+            path="/nosotros"
+            element={
+              <>
+                <Nosotros />
               </>
             }
           />
@@ -78,6 +89,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </>
   );

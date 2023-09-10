@@ -27,8 +27,8 @@ export default function Contacto() {
   const [agreed, setAgreed] = useState(false)
 
   return (
-    <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-      <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/CONTACTANOS-1536x432.png" alt="" />
+<>
+      <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/CONTACTANOS-1536x432.png" alt="" className=' w-30' />
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -55,21 +55,21 @@ export default function Contacto() {
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-              First name
+              Nombre
             </label>
             <div className="mt-2.5">
               <input
                 type="text"
-                name="first-name"
+                name="nombre_ciente"
                 id="first-name"
                 autoComplete="given-name"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-full border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
           <div>
             <label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
-              Last name
+              Apellido
             </label>
             <div className="mt-2.5">
               <input
@@ -77,21 +77,7 @@ export default function Contacto() {
                 name="last-name"
                 id="last-name"
                 autoComplete="family-name"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-          <div className="sm:col-span-2">
-            <label htmlFor="company" className="block text-sm font-semibold leading-6 text-gray-900">
-              Company
-            </label>
-            <div className="mt-2.5">
-              <input
-                type="text"
-                name="company"
-                id="company"
-                autoComplete="organization"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-full border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -105,7 +91,7 @@ export default function Contacto() {
                 name="email"
                 id="email"
                 autoComplete="email"
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-full border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -121,7 +107,7 @@ export default function Contacto() {
                 <select
                   id="country"
                   name="country"
-                  className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                  className="h-full rounded-full border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm"
                 >
                   <option>CO</option>
 
@@ -136,7 +122,7 @@ export default function Contacto() {
                 name="phone-number"
                 id="phone-number"
                 autoComplete="tel"
-                className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-full border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -149,7 +135,7 @@ export default function Contacto() {
                 name="message"
                 id="message"
                 rows={4}
-                className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-full border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
                 defaultValue={''}
               />
             </div>
@@ -160,8 +146,8 @@ export default function Contacto() {
                 checked={agreed}
                 onChange={setAgreed}
                 className={classNames(
-                  agreed ? 'bg-indigo-600' : 'bg-gray-200',
-                  'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                  agreed ? 'bg-pink-600' : 'bg-gray-200',
+                  'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600'
                 )}
               >
                 <span className="sr-only">Agree to policies</span>
@@ -175,20 +161,20 @@ export default function Contacto() {
               </Switch>
             </div>
             <Switch.Label className="text-sm leading-6 text-gray-600">
-              By selecting this, you agree to our{' '}
+            Al seleccionar esto, usted acepta nuestraB{' '}
               <a href="#" className="font-semibold text-pink-600">
-                privacy&nbsp;policy
+                Politica&nbsp;Privacidad
               </a>
-              .
+              
             </Switch.Label>
           </Switch.Group>
         </div>
-        <div className="mt-10">
+        <div className="mt-10 text-center">
         <Link to="/inicio">
             <Button text="Enviar" />
             </Link>
         </div>
       </form>
-    </div>
+      </>
   )
 }

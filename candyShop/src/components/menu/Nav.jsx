@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link}  from "react-router-dom";
 import "./menu.css";
 import { BiCart, BiUser, BiSearchAlt } from "react-icons/bi";
 
@@ -30,6 +30,12 @@ function Nav() {
           className="font-bold px-3 py-2 text-fuchsia-950  hover:text-pink-600"
         >
           Contacto
+        </Link>
+        <Link
+          to="/login"
+          className="font-bold px-3 py-2 text-fuchsia-950  hover:text-pink-600"
+        >
+          Iniciar sesión
         </Link>
 
         <BiSearchAlt className="text-3xl text-pink-600  " />

@@ -1,4 +1,4 @@
-/* import axios from 'axios';
+import axios from 'axios';
 import endPoints from './index';
 
 const getAnchetas = async (body) => {
@@ -13,4 +13,4 @@ const getAnchetas = async (body) => {
 
 };
   
-export { getAnchetas }; */
+export { getAnchetas }; 
