@@ -150,7 +150,7 @@ export default function Contacto() {
                   'flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600'
                 )}
               >
-                <span className="sr-only">Agree to policies</span>
+                <span className="sr-only">Aceptar políticas</span>
                 <span
                   aria-hidden="true"
                   className={classNames(
