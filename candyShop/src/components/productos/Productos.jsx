@@ -52,7 +52,7 @@ export default function Productos() {
                   </p>
                   <br />
                 </div>
-                <Link to={`/detalle/${ancheta.id_ancheta}`} className="hover:underline ">Ver detalle</Link>
+                <Link to={`/detalle/${anchetas.id_ancheta}`} className="hover:underline ">Ver detalle</Link>
                 <br />
                 <br />
                 <div className="text-center">

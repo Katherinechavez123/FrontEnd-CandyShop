@@ -49,13 +49,13 @@ export default function Footer() {
             <div className="container mx-auto flex justify-center items-center text-center">
               <br />
               <br />
-              <a href="#" className="text-pink-600 hover:text-cyan-300 mx-3">
+              <a href="https://www.facebook.com" className="text-pink-600 hover:text-cyan-300 mx-3">
                 <FaFacebook size={30} />
               </a>
-              <a href="#" className="text-pink-600 hover:text-cyan-300 mx-3">
+              <a href="https://www.whatsapp.com/" className="text-pink-600 hover:text-cyan-300 mx-3">
                 <FaWhatsapp size={30} />
               </a>
-              <a href="#" className="text-pink-600 hover:text-cyan-300 mx-3">
+              <a href="https://www.instagram.com" className="text-pink-600 hover:text-cyan-300 mx-3">
                 <FaInstagram size={30} />
               </a>
             </div>

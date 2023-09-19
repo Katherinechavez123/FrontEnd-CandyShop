@@ -1,24 +1,3 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    theme: {
-      extend: {
-        gridTemplateRows: {
-          '[auto,auto,1fr]': 'auto auto 1fr',
-        },
-      },
-    },
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
 
 import { useParams, Link } from "react-router-dom";
 import Button from '../Atoms/Button/Button'
@@ -103,7 +82,7 @@ export default function VerDetalle() {
 
 
 <br />
-<Link to={`/compra/${ancheta.id_ancheta}`}>
+<Link to={`/compra/${id_ancheta}`}>
 <Button text="Comprar"/>
 </Link>
           
