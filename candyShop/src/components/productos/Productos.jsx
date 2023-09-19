@@ -11,12 +11,12 @@ export default function Productos() {
   const [anchetas, setAnchetas] = useState([]);
   
   async function getAnchetas() {
-    const response = await axios.get(endPoints.anchetas.getAnchetas);
-    setAnchetas(response.data);
-  }
-  try {
-  } catch (error) {
-    console.log(error);
+    try {
+      const response = await axios.get(endPoints.anchetas.getAnchetas);
+      setAnchetas(response.data);
+    } catch (error) {
+      console.error("Error al obtener las anchetas:", error);
+    }
   }
 
   useEffect(() => {getAnchetas()}, []);
@@ -52,7 +52,7 @@ export default function Productos() {
                   </p>
                   <br />
                 </div>
-                <Link to={`/detalle/${anchetas.id_ancheta}`} className="hover:underline ">Ver detalle</Link>
+                <Link to={`/detalle/${ancheta.id_ancheta}`} className="hover:underline ">Ver detalle</Link>
                 <br />
                 <br />
                 <div className="text-center">

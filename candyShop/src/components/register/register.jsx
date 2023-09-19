@@ -35,7 +35,7 @@ const Register = () => {
     // Verificar si el registro se completó (esto puede depender de tu lógica específica)
     if (isRegistered) {
       // Redirigir al usuario a la página de inicio o a otra página deseada
-      navigate("/");
+      navigate("/login");
 
       // Mostrar un mensaje de confirmación (puedes personalizarlo según tus necesidades)
       setShowConfirmation(true);
