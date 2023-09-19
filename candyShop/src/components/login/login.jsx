@@ -1,29 +1,43 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./login.css"
 import Button from "../Atoms/Button/Button";
-import { Link } from "react-router-dom";
+import { Link, redirect, Navigate, useNavigate} from "react-router-dom";
+import axios from 'axios';
+import endPoints from "../../services/api";
+import { useForm } from "../../hooks";
 
-
-
-//const baseUrl="http://localhost:10101/auth";
 const Login = () => {
-  
-/*   state={
-      form:{
-          correo_cliente: '',
-          contrasenia: ''
-      }
-  }
+  const { serialize } = useForm();
+  const [correoCliente, setCorreoCliente] = useState('');
+  const [contrasenia, setContrasenia] = useState('');
+  const navigate = useNavigate();
 
-  handleChange=async e=>{
-      await this.setState({
-          form:{
-              ...this.state.form,
-              [e.target.name]: e.target.value
-          }
+  const handleLogin = async (ev) => {
+    ev.preventDefault();
+    const formData = serialize(ev.target); // Utiliza serialize para obtener los datos del formulario
+
+    try {
+      const response = await axios.post(endPoints.cliente.getLogin,formData,{
+        correo_cliente: correoCliente,
+        contrasenia: contrasenia,
       });
-  }
- */
+      console.log(response);
+      const token = response.data.token;
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('correo_cliente', correoCliente);
+
+     if (token) {
+        navigate("/");
+      }
+      return null;
+
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
+  }; 
+
+      
   return (
     <div>
         <br />
@@ -45,13 +59,14 @@ const Login = () => {
           ¡Bienvenido/a de vuelta! Por favor, ingresa tus credenciales para iniciar sesión en nuestra página.
           </p>
 
-          <form className="main__form" action="/login" method="post">
+          <form className="main__form" onSubmit={handleLogin}>
             <input
               name="correo_cliente"
               type="email"
               className="main__input rounded-full"
               id="exampleInputEmail1"
               placeholder="Ingresa tu correo"
+              onChange={(e) => setCorreoCliente(e.target.value)}
 
             />
             <input
@@ -60,11 +75,11 @@ const Login = () => {
               className="main__input rounded-full"
               id="exampleInputPassword1"
               placeholder="Ingresa tu contraseña"
-              //onChange={this.handleChange}
+              onChange={(e) => setContrasenia(e.target.value)}
             />
-            <Link to="/inicio">
-            <Button text="Ingresar" />
-            </Link>
+
+  <Button text="Ingresar" type="submit" />
+
           </form>
 
           <br />

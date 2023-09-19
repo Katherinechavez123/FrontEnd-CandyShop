@@ -1,15 +1,15 @@
 export default function Testimonios() {
   return (
-    <section className="relative isolate overflow-hidden bg-pink-200 px-6 py-24 sm:py-32 lg:px-8 ">
+    <section className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:px-8 ">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.indigo.100),white)] opacity-20" />
-      <div className="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-cyan-100 shadow-xl shadow-indigo-600/10 ring-1 ring-indigo-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center" />
+      <br /><br />
       <div className="mx-auto max-w-2xl lg:max-w-4xl ">
         <h2 className="text-3xl font-bold tracking-tight text-pink-600 sm:text-5xl text-center">
           Comentarios
           <br />
         </h2>
-        <figure className="mt-10 bg-pink-600 p-20 rounded-full">
-          <blockquote className="text-center text-xl font-normal leading-8 text-white sm:text-xl sm:leading-9 ">
+        <figure className="mt-10 bg-pink-200 p-20 rounded-md">
+          <blockquote className="text-center text-xl font-normal leading-8 text-fuchsia-950 sm:text-xl sm:leading-9 ">
             <p >
               “Recientemente tuve la oportunidad de comprar una ancheta en la
               tienda virtual 'Candy Shop'. Debo decir que quedé muy impresionado
@@ -24,7 +24,7 @@ export default function Testimonios() {
               alt=""
             />
             <div className="mt-4 flex items-center justify-center space-x-3 text-base">
-              <div className="font-semibold text-white">Diana Lorena</div>
+              <div className="font-semibold text-fuchsia-950">Diana Lorena</div>
               <svg
                 viewBox="0 0 2 2"
                 width={3}
@@ -34,11 +34,12 @@ export default function Testimonios() {
               >
                 <circle cx={1} cy={1} r={1} />
               </svg>
-              <div className="text-white">Programadora</div>
+              <div className="text-fuchsia-950">Programadora</div>
             </div>
           </figcaption>
         </figure>
       </div>
     </section>
+    
   );
 }

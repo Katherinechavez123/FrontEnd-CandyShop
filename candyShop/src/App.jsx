@@ -9,6 +9,7 @@ import LlenarDatos from "./components/LlenarDatos/LlenarDatos";
 import VerDetalle from "./components/verDetalle/VerDetalle";
 import Footer from "./layouts/Footer/Footer";
 import Nosotros from "./components/nosotros/Nosotros";
+import Compra from "./components/Compra/Compra";
 
 function App() {
   return (
@@ -16,16 +17,16 @@ function App() {
       <BrowserRouter>
       <Header />
         <Routes>
-          <Route path="/" element={<Navigate to="/inicio" />} />
+
           <Route
-            path="/inicio"
+            path="/"
             element={
               <>
                 <Home />
               </>
             }
           />
-          <Route path="/" element={<Navigate to="/register" />} />
+
           <Route
             path="/register"
             element={
@@ -34,7 +35,7 @@ function App() {
               </>
             }
           />
-          <Route path="/" element={<Navigate to="/login" />} />
+
           <Route
             path="/login"
             element={
@@ -43,7 +44,7 @@ function App() {
               </>
             }
           />
-          <Route path="/" element={<Navigate to="/nosotros" />} />
+
           <Route
             path="/nosotros"
             element={
@@ -52,7 +53,7 @@ function App() {
               </>
             }
           />
-          <Route path="/" element={<Navigate to="/contacto" />} />
+
           <Route
             path="/contacto"
             element={
@@ -61,7 +62,7 @@ function App() {
               </>
             }
           />
-          <Route path="/" element={<Navigate to="/Catalogo" />} />
+
           <Route
             path="/Catalogo"
             element={
@@ -70,7 +71,7 @@ function App() {
               </>
             }
           />
-          <Route path="/" element={<Navigate to="/Perfil" />} />
+
           <Route
             path="/Perfil"
             element={
@@ -79,12 +80,20 @@ function App() {
               </>
             }
           />
-          <Route path="/" element={<Navigate to="/Detalle" />} />
+
           <Route
-            path="/Detalle"
+            path="/Detalle/:id_ancheta"
             element={
               <>
                 <VerDetalle />
+              </>
+            }
+          />
+                   <Route
+            path="/compra/:id_ancheta"
+            element={
+              <>
+                <Compra />
               </>
             }
           />
