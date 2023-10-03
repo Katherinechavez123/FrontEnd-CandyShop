@@ -96,9 +96,15 @@ function Nav() {
             )}
           </div>
         )}
-            <BiSearchAlt className="text-3xl text-pink-600" />
-            <BiUser className="text-3xl text-pink-600" />
-            <BiCart className="text-3xl text-pink-600" />
+        <Link to={"/catalogo"}>            
+        <BiSearchAlt className="text-3xl text-pink-600" />
+        </Link>
+        <Link to={"/catalogo"}>   
+        <BiUser className="text-3xl text-pink-600" />
+        </Link>
+        <Link to={"/carrito"}>   
+        <BiCart className="text-3xl text-pink-600" />
+        </Link>
 
 
       

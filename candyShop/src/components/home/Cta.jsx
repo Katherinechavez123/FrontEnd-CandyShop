@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 export default function Cta() {
 
   return (
-    <div className="fondito">
-    
+    <div className="fondito -mt-10">
         <div
-          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hiden blur-3xl sm:-top-50"
+          className="absolute inset-x-0 overflow-hiden blur-3xl sm:-top-50 "
           aria-hidden="true">
           <div
             className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
@@ -19,9 +18,8 @@ export default function Cta() {
           />
         </div>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-          <div className="hidden sm:mb-8 sm:flex sm:justify-center"></div>
           <div className="text-center">
-            <p className="mt-0 leading-8 text-gray-900 text-2xl">
+            <p className="mt-10 leading-8 text-gray-900 text-2xl">
               ¡Bienvenido a nuestra tienda de regalos, el lugar perfecto para
               encontrar ese detalle especial que hará sonreír a tus seres queridos!
             </p>

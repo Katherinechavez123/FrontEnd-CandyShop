@@ -1,50 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BiCake, BiGift, BiSolidWine, BiSolidTreeAlt, BiSolidHeart, BiSolidComponent, BiParty, BiBody } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 
 
-const features = [
-  {
-    name: 'Cumpleaños',
-    icon: BiCake,
-  },
-  {
-    name: 'Aniversario',
-    icon: BiSolidWine,
-  },
-  {
-    name: 'Amor y amistad',
-    icon: BiSolidHeart,
-  },
-  {
-    name: 'Día de la Madre',
-    icon: BiGift,
-  },
-  {
-    name: 'Dia del Padre',
-    icon: BiBody,
-  },
-  {
-    name: 'Navidad',
-    icon: BiSolidTreeAlt,
-  },
-  {
-    name: 'Infantil',
-    icon: BiSolidComponent,
-  },
-  {
-    name: 'Graduación',
-    icon: BiParty,
-  },
-];
-
 const Sesion2 = () => {
   return(
-  <div className=" bg-white py-24 sm:py-32">
+  <div className=" bg-white py-24 sm:py-32 -mt-20">
   <div className="mx-auto max-w-7xl px-6 lg:px-8">
     <div className="mx-auto max-w-2xl lg:text-center">
-      <p className="mt-2 text-3xl font-bold tracking-tight text-pink-600 sm:text-5xl">
+      <p className="text-3xl font-bold tracking-tight text-pink-600 sm:text-5xl">
         Explora las Categorías
       </p>
       <p className="mt-6 text-lg leading-8 text-gray-900 text-center">
