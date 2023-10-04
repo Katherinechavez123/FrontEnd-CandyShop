@@ -15,7 +15,7 @@ function Buy() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(endPoints.buy.postBuy(id_ancheta), {
+      const response = await axios.post(endPoints.buy.postBuy(id_ancheta, cantidad), {
 
         body: JSON.stringify({
           detalleOrden: [{ id_ancheta, cantidad }],
@@ -71,6 +71,8 @@ function Buy() {
   </div>
   <Button text="Comprar" type="submit" />
 </form>
+
+
 
 
       <div className="mt-4">{responseMessage}</div>

@@ -14,7 +14,8 @@ const endPoints = {
     },
     buy:{
         postBuy: (id_ancheta) => `${API}/buy-default/${id_ancheta}`
-    }
+        }
   };
+  
   
   export default endPoints;
