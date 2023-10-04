@@ -22,7 +22,8 @@ function Buy() {
         }),
         
       });
-      
+      console.log({ detalleOrden: [{ id_ancheta, cantidad }] });
+
       console.log(response);
 
       if (response.status == 200) {
@@ -51,14 +52,26 @@ function Buy() {
 <br />
         <p className="ml-5 text-fuchsia-950">Fecha: {fechaFormateada}</p>
 
-      <form className="bg-white p-4 shadow-md rounded-lg" onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="cantidad" className="block text-fuchsia-950">Seleccione la cantidad:</label> <br />
-          <input type="number" id="cantidad" className="w-150 rounded-full border-0 px-3.5  pl-5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6" value={cantidad} onChange={(e) => setCantidad(e.target.value)} required />
-        </div>
-        <Button text="Comprar" type="submit"/>
+        <form className="bg-white p-4 shadow-md rounded-lg" onSubmit={handleSubmit}>
+  <div className="mb-4">
+    <label htmlFor="cantidad" className="block text-fuchsia-950">
+      Seleccione la cantidad:
+    </label>
+    <br />
+    <input
+      name="cantidad"
+      type="number"
+      id="cantidad"
+      className="w-150 rounded-full border-0 px-3.5 pl-5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
+      value={cantidad}
+      onChange={(e) => setCantidad(e.target.value)}
+      required
+    />
 
-      </form>
+  </div>
+  <Button text="Comprar" type="submit" />
+</form>
+
 
       <div className="mt-4">{responseMessage}</div>
     </div>
