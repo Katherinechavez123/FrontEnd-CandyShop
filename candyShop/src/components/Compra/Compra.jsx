@@ -15,7 +15,7 @@ function Buy() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(endPoints.buy.postBuy(id_ancheta), {
+      const response = await axios.post(endPoints.buy.postBuy(id_ancheta, cantidad), {
 
         body: JSON.stringify({
           detalleOrden: [{ id_ancheta, cantidad }],
@@ -54,7 +54,7 @@ function Buy() {
       <form className="bg-white p-4 shadow-md rounded-lg" onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="cantidad" className="block text-fuchsia-950">Seleccione la cantidad:</label> <br />
-          <input type="number" id="cantidad" className="w-150 rounded-full border-0 px-3.5  pl-5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6" value={cantidad} onChange={(e) => setCantidad(e.target.value)} required />
+          <input name="cantidad" type="number" id="cantidad" className="w-150 rounded-full border-0 px-3.5  pl-5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6" value={cantidad} onChange={(e) => setCantidad(e.target.value)} required />
         </div>
         <Button text="Comprar" type="submit"/>
 
