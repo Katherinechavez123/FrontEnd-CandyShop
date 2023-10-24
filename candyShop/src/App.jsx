@@ -1,4 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate, Link} from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Link,
+  useActionData,
+} from "react-router-dom";
 import Register from "./components/register/Register";
 import Login from "./components/login/Login";
 import Contacto from "./components/contacto/Contacto";
@@ -9,98 +16,227 @@ import LlenarDatos from "./components/LlenarDatos/LlenarDatos";
 import VerDetalle from "./components/verDetalle/VerDetalle";
 import Footer from "./layouts/Footer/Footer";
 import Nosotros from "./components/nosotros/Nosotros";
+import LoginAdmin from "./Admin/components/LoginAdmin";
+import { useState } from "react";
+import Personalizar from "./components/Personalizar/Personalizar";
 import Compra from "./components/Compra/Compra";
+import PreCompra from "./components/PreCompra/Precompra";
 
 function App() {
+  const [allProducts, setAllProducts] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [countProducts, setCountProducts] = useState(0);
+
+  const numbreProd = allProducts.length;
+  console.log(numbreProd);
+  console.log(allProducts);
+
   return (
-    <>
-      <BrowserRouter>
-      <Header />
-        <Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/miweb"
+          element={
+            <>
+              <LoginAdmin />
+            </>
+          }
+        />
 
-          <Route
-            path="/"
-            element={
-              <>
-                <Home />
-              </>
-            }
-          />
+        <Route
+          path="/"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <Home />
+              <Footer />
+            </>
+          }
+        />
 
-          <Route
-            path="/register"
-            element={
-              <>
-                <Register />
-              </>
-            }
-          />
+        <Route
+          path="/register"
+          element={
+            <>
+              <Register />
+              <Footer />
+            </>
+          }
+        />
 
-          <Route
-            path="/login"
-            element={
-              <>
-                <Login />
-              </>
-            }
-          />
+        <Route
+          path="/login"
+          element={
+            <>
+              <Login />
+              <Footer />
+            </>
+          }
+        />
 
-          <Route
-            path="/nosotros"
-            element={
-              <>
-                <Nosotros />
-              </>
-            }
-          />
+        <Route
+          path="/nosotros"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <Nosotros />
+              <Footer />
+            </>
+          }
+        />
 
-          <Route
-            path="/contacto"
-            element={
-              <>
-                <Contacto />
-              </>
-            }
-          />
+        <Route
+          path="/contacto"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <Contacto />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/precompra"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <PreCompra allProducts={allProducts} />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/compra"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <Compra allProducts={allProducts} />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/Catalogo"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
 
-          <Route
-            path="/Catalogo"
-            element={
-              <>
-                <Productos />
-              </>
-            }
-          />
+              <Productos
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <Footer />
+            </>
+          }
+        />
 
-          <Route
-            path="/Perfil"
-            element={
-              <>
-                <LlenarDatos />
-              </>
-            }
-          />
+        <Route
+          path="/Perfil"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <LlenarDatos />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/personalizar"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <Personalizar
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <Footer />
+            </>
+          }
+        />
 
-          <Route
-            path="/Detalle/:id_ancheta"
-            element={
-              <>
-                <VerDetalle />
-              </>
-            }
-          />
-                   <Route
-            path="/compra/:id_ancheta"
-            element={
-              <>
-                <Compra />
-              </>
-            }
-          />
-        </Routes>
-        <Footer/>
-      </BrowserRouter>
-    </>
+        <Route
+          path="/Detalle/:id_ancheta"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <VerDetalle />
+              <Footer />
+            </>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

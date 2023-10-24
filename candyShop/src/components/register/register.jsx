@@ -1,53 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./register.css";
 import Button from "../Atoms/Button/Button";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import axios from "axios";
 import endPoints from "../../services/api";
 import { useForm } from "../../hooks";
 import { useNavigate } from "react-router-dom";
+import Modal from "../../layouts/Modal/Modal";
 
 const Register = () => {
-  const { serialize } = useForm(); // Llama al hook useForm para obtener la función serialize
+  const { serialize } = useForm();
   const navigate = useNavigate();
-  const [register, setRegister] = useState([]);
-  const [isRegistered, setIsRegistered] = useState(false); // Ejemplo: estado para verificar si el registro se completó
-  const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar un mensaje de confirmación
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [registroExitoso, setRegistroExitoso] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
+  const handleRegistroExitoso = () => {
+    setRegistroExitoso(true);
+    setIsModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const registerForm = async (ev) => {
     ev.preventDefault();
-    const formData = serialize(ev.target); // Utiliza serialize para obtener los datos del formulario
-    console.log(formData);
+    const formData = serialize(ev.target);
 
     try {
-      const response = await axios.post(endPoints.cliente.postRegister, formData);
-      setRegister(response.data);
+      const response = await axios.post(
+        endPoints.cliente.postRegister,
+        formData
+      );
       setIsRegistered(true);
+      handleRegistroExitoso();
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    // Verificar si el registro se completó (esto puede depender de tu lógica específica)
     if (isRegistered) {
-      // Redirigir al usuario a la página de inicio o a otra página deseada
       navigate("/login");
-
-      // Mostrar un mensaje de confirmación (puedes personalizarlo según tus necesidades)
       setShowConfirmation(true);
 
-      // Después de un tiempo, ocultar el mensaje de confirmación
       setTimeout(() => {
         setShowConfirmation(false);
-      }, 5000); // Por ejemplo, ocultar después de 5 segundos
+      }, 5000);
     }
-  }, [isRegistered]); 
-
-
+  }, [isRegistered]);
 
   return (
     <div>
@@ -121,14 +129,19 @@ const Register = () => {
               id="correo_cliente"
               placeholder="Ingresa tu correo"
             />
-            <input
-              name="contrasenia"
-              type="password"
-              className="rounded-full main__input"
-              id="contrasenia"
-              placeholder="Ingresa tu contraseña"
-            />
-                  {showConfirmation && <div>Mensaje de confirmación</div>}
+            <div className="password-input-container">
+              <input
+                name="contrasenia"
+                type={showPassword ? "text" : "password"}
+                className="rounded-full main__input" // Añade la misma clase de estilo para el campo de contraseña
+                id="contrasenia"
+                placeholder="Ingresa tu contraseña"
+              />
+              <span className="password-toggle" onClick={toggleShowPassword}>
+                {showPassword ? "Ocultar" : "Mostrar"}
+              </span>
+            </div>
+            {showConfirmation && <div>Mensaje de confirmación</div>}
             <Button type="submit" text="Registrarse" />
           </form>
 
@@ -136,40 +149,26 @@ const Register = () => {
 
           <p className="link_registro">
             ¿Tienes una cuenta?{" "}
-            <a href="/login" className="text-fuchsia-950">
+            <Link to="/login" className="text-fuchsia-950">
               Inicia sesión aquí
-            </a>
+            </Link>
           </p>
           <p className="main__paragraph">Continuar con</p>
 
           <article className="main__social">
             <a href="#" className="main__link">
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/google-icon.svg"
-                className="main__icon"
-                alt="Google"
-              />
-            </a>
-            <a href="#" className="main__link">
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/apple.svg"
-                className="main__icon"
-                alt="Apple"
-              />
-            </a>
-            <a href="#" className="main__link">
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/facebook.svg"
-                className="main__icon"
-                alt="Facebook"
-              />
+              {/* ...iconos de redes sociales */}
             </a>
           </article>
         </div>
       </section>
+      <Modal
+        isOpen={isModalOpen}
+        message="Registro exitoso"
+        onClose={closeModal}
+      />
     </div>
   );
 };
-
 
 export default Register;

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const Sesion2 = () => {
   return(
   <div className=" bg-white py-24 sm:py-32 -mt-20">
+    
   <div className="mx-auto max-w-7xl px-6 lg:px-8">
     <div className="mx-auto max-w-2xl lg:text-center">
       <p className="text-3xl font-bold tracking-tight text-pink-600 sm:text-5xl">

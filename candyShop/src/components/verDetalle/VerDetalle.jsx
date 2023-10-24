@@ -3,6 +3,8 @@ import Button from "../Atoms/Button/Button";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import endPoints from "../../services/api";
+import "./VerDetalle.css";
+import SliderAnchetas from "../../layouts/SliderAnchetas/SliderAnchetas";
 
 function VerDetalle() {
   const { id_ancheta } = useParams();
@@ -28,28 +30,13 @@ function VerDetalle() {
     return <div>Cargando...</div>;
   }
 
-  /*
-export default function VerDetalle() {
-  const [anchetas, setAnchetas] = useState([]);
-  
-  async function getAnchetas() {
-    
-    const response = await axios.get(endPoints.anchetas.getAnchetas);
-    setAnchetas(response.data);
-  }
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-
-  useEffect(() => {getAnchetas()}, [anchetas]);
-  console.log(anchetas);
-*/
   return (
     <div className="bg-white">
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
-          <Link to="/catalogo">Volver a la lista de anchetas</Link>
+        <Link to="/catalogo" className="text-pink-600 hover:text-cyan-700 ml-52 text-2xl mt-16">
+            Volver al catálogo
+          </Link>
           <ol
             role="list"
             className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
@@ -57,47 +44,49 @@ export default function VerDetalle() {
         </nav>
 
         {/* Image gallery */}
-        <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8 text-center justify-center items-center">
-          <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block text-center justify-center items-center">
+        <div className="mt-6 text-center">
+          <div className="hidden overflow-hidden rounded-lg lg:block img_detalle ml-20">
             <img
               src={ancheta.url_imagen_ancheta}
-              className="h-full w-full object-cover object-center mx-auto"
+              className="mx-auto my-auto w-full h-full"
               alt="Imagen de la ancheta"
             />
           </div>
         </div>
 
         {/* Product info */}
+
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
+
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+            <h1 className="text-2xl font-bold tracking-tight text-pink-600 sm:text-3xl">
               {ancheta.nombre_ancheta}
             </h1>
           </div>
 
           {/* Options */}
           <div className="mt-4 lg:row-span-3 lg:mt-0">
-            <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl tracking-tight text-gray-900">
-              {ancheta.valor_ancheta}
+            <p className="text-3xl tracking-tight text-fuchsia-950">
+              ${ancheta.valor_ancheta}
             </p>
 
             <br />
-            <Link to={`/compra/${id_ancheta}`}>
-              <Button text="Comprar" />
-            </Link>
+
+              <Button text="Añadir al carrito" />
+        
           </div>
 
           <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
             {/* Description and details */}
             <div>
-              <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">
+                <p className="text-base text-fuchsia-950">
                   {ancheta.detalle_ancheta}
                 </p>
               </div>
+            
+
             </div>
           </div>
         </div>
@@ -105,4 +94,5 @@ export default function VerDetalle() {
     </div>
   );
 }
+
 export default VerDetalle;

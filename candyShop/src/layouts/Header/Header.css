@@ -2,3 +2,12 @@
     display: flex;
     flex-direction: row;
 }
+.header-wrapper {
+    position: fixed; /* o 'position: absolute;' según tus necesidades */
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff; /* Ajusta el fondo a tu preferencia */
+    z-index: 1000; /* Asegúrate de que el z-index sea mayor que otros componentes */
+  }
+  

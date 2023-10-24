@@ -13,8 +13,13 @@ const endPoints = {
 
     },
     buy:{
-        postBuy: (id_ancheta) => `${API}/buy-default/${id_ancheta}`
-        }
+        postBuy: (id_ancheta) => `${API}/buy-default/${id_ancheta}`,
+        saveBuy: `${API}/buy-default`
+        },
+    productos:{
+        getProductos:`${API}/personalize`,
+        getProducto: (id_producto) => `${API}/personalize/${id_producto}`
+    }
   };
   
   
