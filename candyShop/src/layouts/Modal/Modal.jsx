@@ -1,17 +1,18 @@
-import React from 'react';
-import "./Modal.css"
+import React from "react";
 
-function Modal({ isOpen, onClose, children }) {
-  if (!isOpen) return null;
+const Modal = ({ isOpen, onClose, children }) => {
+  const handleModalContainerClick = (e) => e.stopPropagation();
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
+    <article className={`modal ${isOpen && "is-open"}`} onClick={onClose}>
+      <div className="modal-container" onClick={handleModalContainerClick}>
+        <button className="modal-close" onClick={onClose}>
+          X
+        </button>
         {children}
       </div>
-    </div>
+    </article>
   );
-}
+};
 
 export default Modal;

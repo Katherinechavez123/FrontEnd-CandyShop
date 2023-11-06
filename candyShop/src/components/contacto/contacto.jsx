@@ -13,8 +13,9 @@ export default function Contacto() {
   const [agreed, setAgreed] = useState(false)
 
   return (
-<>
-      <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/CONTACTANOS-1536x432.png" alt="" className=' w-30' />
+<><div className='flex justify-center mt-40'>
+      <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/CONTACTANOS-1536x432.png" alt="" className='h-72 ' />
+      </div>
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -28,7 +29,7 @@ export default function Contacto() {
         />
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-4xl text-fuchsia-950 font-light tracking-tight sm:text-4xl">Contáctanos</h2>
+        <h2 className="text-5xl font-bold text-fuchsia-950 tracking-tight">Contáctanos</h2>
         <p className="mt-2 text-lg leading-8 text-gray-900 text-justify">
         ¿Tienes alguna pregunta sobre nuestros productos?
          Estamos aquí para brindarte toda la información que necesitas.
@@ -147,7 +148,7 @@ export default function Contacto() {
               </Switch>
             </div>
             <Switch.Label className="text-sm leading-6 text-gray-600">
-            Al seleccionar esto, usted acepta nuestraB{' '}
+            Al seleccionar esto, usted acepta nuestra{' '}
               <a href="#" className="font-semibold text-pink-600">
                 Politica&nbsp;Privacidad
               </a>
@@ -155,7 +156,7 @@ export default function Contacto() {
             </Switch.Label>
           </Switch.Group>
         </div>
-        <div className="mt-10 text-center">
+        <div className="mt-10 text-center mb-20">
         <Link to="/inicio">
             <Button text="Enviar" />
             </Link>

@@ -8,7 +8,7 @@ const postBuy = async (body) => {
           'Content-Type': 'application/json',
         },
       };
-      const response = await axios.post(endPoints.cliente.postBuy, body, config);
+      const response = await axios.post(endPoints.cliente.saveBuy, body, config);
       console.log(response);
       return response.data;
 

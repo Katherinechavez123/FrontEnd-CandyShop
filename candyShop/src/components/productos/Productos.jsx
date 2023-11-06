@@ -73,26 +73,40 @@ const Productos = ({
 
   return (
     <>
-      <Title />
-      <div className="bg-white">
-        <ul className="flex justify-center">
-          {categorias.map((categoria) => (
-            <li key={categoria} className="mr-4">
-              <button
-                className={`category_item py-4 px-8 text-decoration-none rounded-full ${
-                  selectedCategory === categoria ? "bg-pink-600 text-white" : "bg-fuchsia-950 text-white hover:bg-pink-600"
-                }`}
-                onClick={() => setSelectedCategory(categoria)}
-              >
-                {categoria}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+         <Title />
+    <div className="bg-white">
+      <ul className="flex justify-center">
+        {categorias.slice(0, 6).map((categoria) => (
+          <li key={categoria} className="mr-4">
+            <button
+              className={`category_item py-4 px-8 text-decoration-none rounded-full mb-2 ${
+                selectedCategory === categoria ? "bg-pink-600 text-white" : "bg-fuchsia-950 text-white hover:bg-pink-600"
+              }`}
+              onClick={() => setSelectedCategory(categoria)}
+            >
+              {categoria}
+            </button>
+          </li>
+        ))}
+      </ul>
+      <ul className="flex justify-center">
+        {categorias.slice(6).map((categoria) => (
+          <li key={categoria} className="mr-4">
+            <button
+              className={`category_item py-4 px-8 text-decoration-none rounded-full ${
+                selectedCategory === categoria ? "bg-pink-600 text-white" : "bg-fuchsia-950 text-white hover:bg-pink-600"
+              }`}
+              onClick={() => setSelectedCategory(categoria)}
+            >
+              {categoria}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 flex-row">
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {filteredAnchetas.map((ancheta) => (
             <div key={ancheta.id_ancheta} className="group relative">
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">

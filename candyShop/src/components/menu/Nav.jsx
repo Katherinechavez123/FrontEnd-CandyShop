@@ -10,9 +10,22 @@ export const Nav = ({
   countProducts,
   setCountProducts
 }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // Declaración de isSearchOpen
+
+  const handleSearch = () => {
+    // Aquí puedes implementar la lógica de búsqueda.
+    // Por ejemplo, puedes hacer una solicitud a tu API para buscar "anchetas" o productos.
+    console.log('Buscando: ' + searchTerm);
+  }
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen); // Alternar la visibilidad del campo de búsqueda
+  }
+
   const navigate = useNavigate();
   const total = allProducts.reduce((acumulador, producto) => {
-    return acumulador + producto.valor_ancheta * producto.cantidad;
+    return acumulador + producto.valor_ancheta * producto.cantidad || acumulador + producto.precio * producto.cantidad;
   }, 0);
   
   localStorage.setItem("cart", JSON.stringify(allProducts));
@@ -42,7 +55,7 @@ export const Nav = ({
   
   const onDeleteProduct = (anchetaToDelete) => {
     const updatedProducts = allProducts.filter(
-      (ancheta) => ancheta.id_ancheta !== anchetaToDelete.id_ancheta
+      (ancheta) => ancheta.id_ancheta !== anchetaToDelete.id_ancheta || ancheta.id_producto !== anchetaToDelete.id_producto
     );
 
     setAllProducts(updatedProducts);
@@ -51,12 +64,9 @@ export const Nav = ({
       (total, ancheta) => total + ancheta.cantidad,
       0
     );
-    const newTotal = updatedProducts.reduce(
-      (total, ancheta) => total + ancheta.valor_ancheta,
-      0
-    );
+ 
     setCountProducts(newCountProducts);
-    setTotal(newTotal);
+    
 
     // Actualiza el carrito en localStorage después de eliminar un producto
     localStorage.setItem("cart", JSON.stringify(updatedProducts));
@@ -64,7 +74,7 @@ export const Nav = ({
 
   return (
     <>
-      <nav className="flex flex-wrap justify-center space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 md:space-x-8 mt-8 text-lg">
+      <nav className="flex flex-wrap justify-center md:space-x-8 text-lg">
         <Link
           to="/"
           className="font-bold px-3 py-2 text-fuchsia-950 hover:text-pink-600"
@@ -95,7 +105,6 @@ export const Nav = ({
         >
           Contacto
         </Link>
-
         {!isLoggedIn && (
           <li style={{ listStyleType: "none" }}>
             <Link
@@ -108,26 +117,50 @@ export const Nav = ({
         )}
 
         {isLoggedIn && (
-          <div className="relative">
-            <span className="font-bold px-3 py-2 text-fuchsia-950 cursor-pointer hover:text-pink-600">
-              {localStorage.getItem("correo_cliente")}
-            </span>
-            <Link to="/perfil" className="block">
-              <span className="font-bold px-4 py-2 text-fuchsia-950 hover:text-pink-600">
-                Perfil
-              </span>
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="block w-full px-4 py-2 text-left text-fuchsia-950 font-bold hover:text-pink-600"
-            >
-              Cerrar sesión
+  <div className="relative group">
+    <span
+      className="font-bold px-3 py-2 text-fuchsia-950 cursor-pointer hover:text-pink-600"
+    >
+      {localStorage.getItem("correo_cliente")}
+    </span>
+    <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible user-menu absolute right-0 bg-white border border-gray-200 shadow-md p-4 min-w-72 z-50 ">
+      <Link to="/perfil" className="block">
+        <span className="font-bold px-4 py-2 text-fuchsia-950 hover:text-pink-600">
+          Perfil
+        </span>
+      </Link>
+      <button
+        onClick={handleLogout}
+        className="block w-full px-4 py-2 text-left text-fuchsia-950 font-bold hover:text-pink-600"
+      >
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+)}
+
+<div>
+          {isSearchOpen ? (
+            // Muestra el campo de búsqueda si isSearchOpen es verdadero
+            <div>
+              <input
+                type="text"
+                placeholder="Buscar productos"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="rounded-full focus-visible:from-fuchsia-950"
+              />
+              <button onClick={handleSearch}>
+                <BiSearchAlt className="text-3xl text-pink-600" />
+              </button>
+            </div>
+          ) : (
+            // Muestra solo el icono de búsqueda y activa el campo de búsqueda al hacer clic
+            <button onClick={toggleSearch}>
+              <BiSearchAlt className="text-3xl text-pink-600" />
             </button>
-          </div>
-        )}
-
-        <BiSearchAlt className="text-3xl text-pink-600" />
-
+          )}
+        </div>
         <div className="relative" style={{ display: "inline-block" }}>
           <BiCart
             className={`text-3xl text-pink-600 cursor-pointer`}
@@ -143,22 +176,22 @@ export const Nav = ({
               {allProducts.length ? (
                 <div className="row-product">
                   {allProducts.map((ancheta) => (
-                    <div className="cart-product" key={ancheta.id_ancheta}>
+                    <div className="cart-product" key={ancheta.id_ancheta || ancheta.id_producto}>
                       {/* Renderiza los detalles del producto */}
                       <div className="info-cart-product flex items-center mb-2">
                         <span className="cantidad-producto-carrito mr-2 font-bold">
                           {ancheta.cantidad}
                         </span>
                         <img
-                          src={ancheta.url_imagen_ancheta}
-                          alt={ancheta.nombre_ancheta}
+                          src={ancheta.url_imagen_ancheta || ancheta.url_imagen_producto}
+                          alt={ancheta.nombre_ancheta || ancheta.nombre_producto}
                           className="w-12 h-12"
                         />
                         <p className="titulo-producto-carrito flex-1 ml-2">
-                          {ancheta.nombre_ancheta}
+                          {ancheta.nombre_ancheta || ancheta.nombre_producto}
                         </p>
                         <span className="precio-producto-carrito font-bold">
-                          ${ancheta.valor_ancheta}
+                          ${ancheta.valor_ancheta || ancheta.precio}
                         </span>
                         <button
                           onClick={() => onDeleteProduct(ancheta)}

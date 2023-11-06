@@ -18,17 +18,23 @@ const Personalizar = ({
   async function getProductos() {
     try {
       const response = await axios.get(endPoints.productos.getProductos);
-      setProductos(response.data);
-
-      const uniqueCategorias = [
-        ...new Set(response.data.map((producto) => producto.tipo_producto)),
-      ];
-      setCategorias(uniqueCategorias);
+      const productosData = response.data.result; // Accede directamente a "result" en la respuesta.
+  
+      if (Array.isArray(productosData)) { // Verifica si "productosData" es una matriz
+        setProductos(productosData);
+  
+        const uniqueCategorias = [
+          ...new Set(productosData.map((producto) => producto.tipo_producto)),
+        ];
+        setCategorias(uniqueCategorias);
+      } else {
+        console.error('La respuesta de la API no contiene una matriz de productos.');
+      }
     } catch (error) {
       console.error("Error al obtener los productos:", error);
     }
   }
-
+  
   useEffect(() => {
     getProductos();
   }, []);
@@ -52,8 +58,8 @@ const Personalizar = ({
   };
 
   return (
-    <div className="mt-20 ml-16 mr-16">
-      <h1 className="text-3xl font-bold tracking-tight text-fuchsia-950 mb-6 text-center mt-40">
+    <div className=" ml-16 mr-16 mt-32">
+      <h1 className="text-3xl font-bold tracking-tight text-fuchsia-950 mb-6 text-center">
         Crea tu ancheta personalizada con todos los productos que quieras
       </h1>
 
@@ -76,7 +82,8 @@ const Personalizar = ({
                 }`}
                 onClick={() => setSelectedCategory(tipo_producto)}
               >
-                {tipo_producto.toUpperCase()} {/* Convierte la categoría a mayúsculas */}
+                {tipo_producto.toUpperCase()}{" "}
+                {/* Convierte la categoría a mayúsculas */}
               </a>
             ))}
           </div>
@@ -85,11 +92,15 @@ const Personalizar = ({
         <div className="w-3/4 flex flex-wrap">
           {productos.map((producto) => {
             if (
-              selectedCategory === "Todo" ||
-              producto.tipo_producto === selectedCategory
+              (selectedCategory === "Todo" ||
+                producto.tipo_producto === selectedCategory) &&
+              producto.id_producto
             ) {
               return (
-                <div key={producto.id_producto} className="w-1/4 mb-4 px-2 mr-6">
+                <div
+                  key={producto.id_producto}
+                  className="w-1/4 mb-4 px-2 mr-6"
+                >
                   <div className="p-4 shadow-md flex flex-col items-center">
                     <img
                       src={producto.url_imagen_producto}
@@ -115,6 +126,5 @@ const Personalizar = ({
     </div>
   );
 };
-
 
 export default Personalizar;

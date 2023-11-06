@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./loginAdmin.scss"
-import Button from "../../components/Atoms/Button/Button";
+import Button from "../../../components/Atoms/Button/Button";
 import { Link, redirect, Navigate, useNavigate} from "react-router-dom";
 import axios from 'axios';
-import endPoints from "../../services/api";
-import { useForm } from "../../hooks";
+import endPoints from "../../../services/api";
+import { useForm } from "../../../hooks";
 
 const LoginAdmin = () => {
   const { serialize } = useForm();

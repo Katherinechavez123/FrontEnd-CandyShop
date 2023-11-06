@@ -16,11 +16,15 @@ import LlenarDatos from "./components/LlenarDatos/LlenarDatos";
 import VerDetalle from "./components/verDetalle/VerDetalle";
 import Footer from "./layouts/Footer/Footer";
 import Nosotros from "./components/nosotros/Nosotros";
-import LoginAdmin from "./Admin/components/LoginAdmin";
+import LoginAdmin from "./Admin/components/LoginAdmin/LoginAdmin";
 import { useState } from "react";
 import Personalizar from "./components/Personalizar/Personalizar";
 import Compra from "./components/Compra/Compra";
 import PreCompra from "./components/PreCompra/Precompra";
+import Modals from "./layouts/Modal/Modals";
+/*import Panel from "./Admin/components/Panel/Panel";
+import NavAdmin from "./layouts/NavAdmin/NavAdmin";
+import Sidebar from "./layouts/SideBar/SideBar";*/
 
 function App() {
   const [allProducts, setAllProducts] = useState([]);
@@ -55,6 +59,7 @@ function App() {
                 countProducts={countProducts}
                 setCountProducts={setCountProducts}
               />
+
               <Home />
               <Footer />
             </>
@@ -65,16 +70,45 @@ function App() {
           path="/register"
           element={
             <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
               <Register />
               <Footer />
+              <Modals />
             </>
           }
         />
+
+        {/*         <Route
+          path="/panel"
+          element={
+            <>
+            <NavAdmin />
+            <Sidebar />
+              <Panel />
+              
+            </>
+          }
+        /> */}
 
         <Route
           path="/login"
           element={
             <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
               <Login />
               <Footer />
             </>
@@ -94,6 +128,7 @@ function App() {
                 setCountProducts={setCountProducts}
               />
               <Nosotros />
+
               <Footer />
             </>
           }
@@ -146,6 +181,7 @@ function App() {
                 setCountProducts={setCountProducts}
               />
               <Compra allProducts={allProducts} />
+              <Modals />
               <Footer />
             </>
           }

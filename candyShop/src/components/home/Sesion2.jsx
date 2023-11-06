@@ -9,10 +9,10 @@ const Sesion2 = () => {
     
   <div className="mx-auto max-w-7xl px-6 lg:px-8">
     <div className="mx-auto max-w-2xl lg:text-center">
-      <p className="text-3xl font-bold tracking-tight text-pink-600 sm:text-5xl">
+      <p className="text-3xl font-bold tracking-tight text-fuchsia-950 sm:text-5xl">
         Explora las Categorías
       </p>
-      <p className="mt-6 text-lg leading-8 text-gray-900 text-center">
+      <p className="mt-6 text-lg leading-8 text-fuchsia-900 text-center">
         Únete a esta sesión de categorías para sumergirte en un mundo de diversidad y clasificación.
       </p>
     </div>
