@@ -5,23 +5,25 @@ import axios from "axios";
 import endPoints from "../../services/api";
 import { useForm } from "../../hooks";
 import { useNavigate } from "react-router-dom";
-import Modals from "../../layouts/Modal/Modals";
-import { Eye, EyeOff } from "react-feather"; 
+import { Eye, EyeOff } from "react-feather";
+import "./register.css";
+
 const Register = () => {
   const { serialize } = useForm();
   const navigate = useNavigate();
   const [isRegistered, setIsRegistered] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Estado para mostrar/ocultar confirmar contraseña
-
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
-
+  
   const toggleShowConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
+
   const registerForm = async (ev) => {
     ev.preventDefault();
     const formData = serialize(ev.target);
@@ -32,36 +34,49 @@ const Register = () => {
         formData
       );
       setIsRegistered(true);
+      setShowConfirmation(true);
+      setTimeout(() => {
+        setShowConfirmation(false);
+        navigate("/login");
+      }, 3000); // Redirige después de 3 segundos
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        setErrorMessage("Hubo un error en el registro. Por favor, verifica tus datos.");
+      } else if (error.request) {
+        setErrorMessage("No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.");
+      } else {
+        setErrorMessage("Ocurrió un error desconocido. Por favor, inténtalo de nuevo.");
+      }
     }
   };
 
   useEffect(() => {
     if (isRegistered) {
-      navigate("/login");
-      setShowConfirmation(true);
-
       setTimeout(() => {
         setShowConfirmation(false);
+        navigate("/login");
       }, 5000);
     }
-  }, [isRegistered]);
+  }, [isRegistered, navigate]);
 
   return (
     <div>
-
       <section className="main mt-28 mb-11">
         <figure className="main__figure flex justify-center items-center text-center">
-          <div className="logo h-72 w-72 bg-pink-150 rounded-full flex justify-center items-center text-center -mt-12 " >
-            <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/logo-v1-01.png" className="main-img  -mt-5" alt="Logo_candy_shop " />
+          <div className="logo h-72 w-72 bg-pink-150 rounded-full flex justify-center items-center text-center -mt-12 ">
+            <img
+              src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/logo-v1-01.png"
+              className="main-img -mt-5"
+              alt="Logo_candy_shop"
+            />
           </div>
         </figure>
 
         <div className="main__contact">
           <h2 className="main__title text-5xl font-Candylove">¡Bienvenidos!</h2>
           <p className="main__paragraph mt-3">
-            Estamos encantados de tenerte aquí y queremos asegurarnos de que tu experiencia de compra sea excepcional.
+            Estamos encantados de tenerte aquí y queremos asegurarnos de que tu
+            experiencia de compra sea excepcional.
           </p>
 
           <form className="main__form" onSubmit={registerForm} method="post">
@@ -115,38 +130,60 @@ const Register = () => {
               placeholder="Ingresa tu correo"
             />
             <div className="password-input-container relative">
-          <input
-            name="contrasenia"
-            type={showPassword ? "text" : "password"}
-            className="rounded-full main__input w-96"
-            id="contrasenia"
-            placeholder="Ingresa tu contraseña"
-          />
-          <span
-            className="password-toggle cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-5"
-            onClick={toggleShowPassword}
-          >
-            {showPassword ? <EyeOff size={20} className="text-fuchsia-950"/> : <Eye size={20} className="text-fuchsia-950"/>}
-          </span>
-        </div>
-        <div className="password-input-container relative">
-          <input
-            name="confirmar_contrasenia"
-            type={showConfirmPassword ? "text" : "password"}
-            className="rounded-full main__input w-96"
-            id="confirmar_contrasenia"
-            placeholder="Confirma tu contraseña"
-          />
-          <span
-            className="password-toggle cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-5"
-            onClick={toggleShowConfirmPassword}
-          >
-            {showConfirmPassword ? <EyeOff size={20} className="text-fuchsia-950"/> : <Eye size={20} className="text-fuchsia-950"/>}
-          </span>
+              <input
+                name="contrasenia"
+                type={showPassword ? "text" : "password"}
+                className="rounded-full main__input w-96"
+                id="contrasenia"
+                placeholder="Ingresa tu contraseña"
+              />
+              <span
+                className="password-toggle cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-5"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? (
+                  <EyeOff size={20} className="text-fuchsia-950" />
+                ) : (
+                  <Eye size={20} className="text-fuchsia-950" />
+                )}
+              </span>
             </div>
-            {showConfirmation && <div>Mensaje de confirmación</div>}
+            <div className="password-input-container relative">
+              <input
+                name="confirmar_contrasenia"
+                type={showConfirmPassword ? "text" : "password"}
+                className="rounded-full main__input w-96"
+                id="confirmar_contrasenia"
+                placeholder="Confirma tu contraseña"
+              />
+              <span
+                className="password-toggle cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-5"
+                onClick={toggleShowConfirmPassword}
+              >
+                {showConfirmPassword ? (
+                  <EyeOff size={20} className="text-fuchsia-950" />
+                ) : (
+                  <Eye size={20} className="text-fuchsia-950" />
+                )}
+              </span>
+            </div>
+            {errorMessage && (
+              <div className="error-message text-red-500">
+                {errorMessage}
+              </div>
+            )}
             <Button type="submit" text="Registrarse" />
+            {showConfirmation && (
+            <div className="modal-container">
+              <div className="modal">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Purple_check.svg" alt=""  />
+                <p>¡Registro exitoso!</p>
+              </div>
+            </div>
+          )}
+
           </form>
+
           <p className="link_registro">
             ¿Tienes una cuenta?{" "}
             <Link to="/login" className="text-fuchsia-950">
@@ -180,9 +217,9 @@ const Register = () => {
           </article>
         </div>
       </section>
-      <Modals isRegistered={isRegistered} />
     </div>
   );
 };
 
 export default Register;
+``;

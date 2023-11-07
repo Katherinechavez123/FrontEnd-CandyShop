@@ -16,7 +16,7 @@ export default function Sesion3() {
               Desde delicias gourmet hasta dulces tentaciones, puedes seleccionar cuidadosamente cada artículo para asegurarte de que refleje su estilo y personalidad.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-              <Link to="/catalogo">
+              <Link to="/personalizar">
             <Button text="Personalizar" />
             </Link>
               </div>

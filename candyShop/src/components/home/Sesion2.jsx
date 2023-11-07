@@ -12,7 +12,7 @@ const Sesion2 = () => {
       <p className="text-3xl font-bold tracking-tight text-fuchsia-950 sm:text-5xl">
         Explora las Categorías
       </p>
-      <p className="mt-6 text-lg leading-8 text-fuchsia-900 text-center">
+      <p className="mt-6 text-lg leading-8 text-black text-center">
         Únete a esta sesión de categorías para sumergirte en un mundo de diversidad y clasificación.
       </p>
     </div>

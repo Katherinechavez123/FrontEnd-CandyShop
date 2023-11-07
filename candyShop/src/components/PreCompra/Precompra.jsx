@@ -11,7 +11,10 @@ function PreCompra({ allProducts }) {
   useEffect(() => {
     // Calcular el precio total sumando el precio de cada producto
     const totalPrice = allProducts.reduce((total, ancheta) => {
-      return total + ancheta.valor_ancheta * ancheta.cantidad  || total + ancheta.precio *ancheta.cantidad;
+      return (
+        total + ancheta.valor_ancheta * ancheta.cantidad ||
+        total + ancheta.precio * ancheta.cantidad
+      );
     }, 0);
 
     setTotalPrice(totalPrice);
@@ -33,25 +36,34 @@ function PreCompra({ allProducts }) {
         </thead>
         <tbody>
           {allProducts.map((ancheta) => (
-            <tr key={ancheta.id_ancheta || ancheta.id_producto} className="border-b border-gray-300">
+            <tr
+              key={ancheta.id_ancheta || ancheta.id_producto}
+              className="border-b border-gray-300"
+            >
               <td className="py-2">
                 <div className="flex justify-center items-center ">
                   <img
-                    src={ancheta.url_imagen_ancheta  || ancheta.url_imagen_producto}
-                    alt={ancheta.nombre_ancheta  || ancheta.nombre_producto}
+                    src={
+                      ancheta.url_imagen_ancheta || ancheta.url_imagen_producto
+                    }
+                    alt={ancheta.nombre_ancheta || ancheta.nombre_producto}
                     className="w-16 h-16 object-cover mr-2"
                   />
-                  <span className="text-fuchsia-950  justify-center items-center text-center">{ancheta.nombre_ancheta  || ancheta.nombre_producto}</span>
+                  <span className="text-fuchsia-950  justify-center items-center text-center">
+                    {ancheta.nombre_ancheta || ancheta.nombre_producto}
+                  </span>
                 </div>
               </td>
               <td className="py-2 text-fuchsia-950  justify-center items-center text-center">
-                ${ancheta.valor_ancheta  || ancheta.precio}
+                ${ancheta.valor_ancheta || ancheta.precio}
               </td>
               <td className="py-2 text-fuchsia-950  justify-center items-center text-center">
                 {ancheta.cantidad}
               </td>
               <td className="py-2 text-fuchsia-950  justify-center items-center text-center">
-                ${ancheta.valor_ancheta * ancheta.cantidad  || ancheta.precio * ancheta.cantidad}
+                $
+                {ancheta.valor_ancheta * ancheta.cantidad ||
+                  ancheta.precio * ancheta.cantidad}
               </td>
             </tr>
           ))}

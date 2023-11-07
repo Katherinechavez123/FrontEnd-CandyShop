@@ -5,8 +5,6 @@ import endPoints from "../../services/api";
 import Button from "../Atoms/Button/Button";
 import Title from "./Title";
 
-
-
 const Productos = ({
   allProducts,
   setAllProducts,
@@ -19,7 +17,6 @@ const Productos = ({
   const [categorias, setCategorias] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Todo");
   const [filteredAnchetas, setFilteredAnchetas] = useState([]);
-  
 
   async function getAnchetas() {
     try {
@@ -27,17 +24,22 @@ const Productos = ({
       if (Array.isArray(response.data.products)) {
         setAnchetas(response.data.products); // Acceder a la propiedad "products" en lugar de "response.data"
         const uniqueCategorias = [
-          ...new Set(response.data.products.map((ancheta) => ancheta.categoria)),
+          ...new Set(
+            response.data.products.map((ancheta) => ancheta.categoria)
+          ),
         ];
         setCategorias(["Todo", ...uniqueCategorias]);
       } else {
-        console.error("Los datos de la respuesta no son un array:", response.data);
+        console.error(
+          "Los datos de la respuesta no son un array:",
+          response.data
+        );
       }
     } catch (error) {
       console.error("Error al obtener los productos:", error);
     }
   }
-      
+
   useEffect(() => {
     getAnchetas();
   }, []);
@@ -46,12 +48,13 @@ const Productos = ({
     if (selectedCategory === "Todo") {
       setFilteredAnchetas(anchetas);
     } else {
-      const filtered = anchetas.filter((ancheta) => ancheta.categoria === selectedCategory);
+      const filtered = anchetas.filter(
+        (ancheta) => ancheta.categoria === selectedCategory
+      );
       console.log("filtered:", filtered); // Registra el array filtrado
       setFilteredAnchetas(filtered);
     }
   }, [selectedCategory, anchetas]);
-  
 
   const onAddProduct = (ancheta) => {
     if (allProducts.find((item) => item.id_ancheta === ancheta.id_ancheta)) {
@@ -73,44 +76,51 @@ const Productos = ({
 
   return (
     <>
-         <Title />
-    <div className="bg-white">
-      <ul className="flex justify-center">
-        {categorias.slice(0, 6).map((categoria) => (
-          <li key={categoria} className="mr-4">
-            <button
-              className={`category_item py-4 px-8 text-decoration-none rounded-full mb-2 ${
-                selectedCategory === categoria ? "bg-pink-600 text-white" : "bg-fuchsia-950 text-white hover:bg-pink-600"
-              }`}
-              onClick={() => setSelectedCategory(categoria)}
-            >
-              {categoria}
-            </button>
-          </li>
-        ))}
-      </ul>
-      <ul className="flex justify-center">
-        {categorias.slice(6).map((categoria) => (
-          <li key={categoria} className="mr-4">
-            <button
-              className={`category_item py-4 px-8 text-decoration-none rounded-full ${
-                selectedCategory === categoria ? "bg-pink-600 text-white" : "bg-fuchsia-950 text-white hover:bg-pink-600"
-              }`}
-              onClick={() => setSelectedCategory(categoria)}
-            >
-              {categoria}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <Title />
+      <div className="bg-white">
+        <ul className="flex justify-center">
+          {categorias.slice(0, 6).map((categoria) => (
+            <li key={categoria} className="mr-4">
+              <button
+                className={`category_item py-4 px-8 text-decoration-none rounded-full mb-2 ${
+                  selectedCategory === categoria
+                    ? "bg-pink-600 text-white"
+                    : "bg-fuchsia-950 text-white hover:bg-pink-600"
+                }`}
+                onClick={() => setSelectedCategory(categoria)}
+              >
+                {categoria}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <ul className="flex justify-center">
+          {categorias.slice(6).map((categoria) => (
+            <li key={categoria} className="mr-4">
+              <button
+                className={`category_item py-4 px-8 text-decoration-none rounded-full ${
+                  selectedCategory === categoria
+                    ? "bg-pink-600 text-white"
+                    : "bg-fuchsia-950 text-white hover:bg-pink-600"
+                }`}
+                onClick={() => setSelectedCategory(categoria)}
+              >
+                {categoria}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 flex-row">
         <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {filteredAnchetas.map((ancheta) => (
             <div key={ancheta.id_ancheta} className="group relative">
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <Link to={`/detalle/${ancheta.id_ancheta}`} className="hover:underline">
+                <Link
+                  to={`/detalle/${ancheta.id_ancheta}`}
+                  className="hover:underline"
+                >
                   <img
                     src={ancheta.url_imagen_ancheta}
                     className="h-full w-full object-cover object-center lg:h-full lg:w-full"
@@ -128,19 +138,23 @@ const Productos = ({
                 </p>
                 <br />
               </div>
-              <Link to={`/detalle/${ancheta.id_ancheta}`} className="hover:underline">
+              <Link
+                to={`/detalle/${ancheta.id_ancheta}`}
+                className="hover:underline"
+              >
                 Ver detalle
               </Link>
               <br />
               <br />
               <div className="text-center">
-                <Button onClick={(e) => onAddProduct(ancheta)} text="Añadir al carrito" />
+                <Button
+                  onClick={(e) => onAddProduct(ancheta)}
+                  text="Añadir al carrito"
+                />
                 <br /> <br />
               </div>
             </div>
           ))}
-          
-
         </div>
       </div>
     </>

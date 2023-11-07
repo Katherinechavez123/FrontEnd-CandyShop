@@ -13,8 +13,7 @@ const endPoints = {
 
     },
     buy:{
-        postBuy: (id_ancheta) => `${API}/buy-default/${id_ancheta}`,
-        saveBuy: `${API}/buy-default`
+        postBuy:`${API}/buy-default`
         },
     productos:{
         getProductos:`${API}/personalize`,

@@ -8,27 +8,23 @@ export const Nav = ({
   allProducts,
   setAllProducts,
   countProducts,
-  setCountProducts
+  setCountProducts,
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // Declaración de isSearchOpen
-
-  const handleSearch = () => {
-    // Aquí puedes implementar la lógica de búsqueda.
-    // Por ejemplo, puedes hacer una solicitud a tu API para buscar "anchetas" o productos.
-    console.log('Buscando: ' + searchTerm);
-  }
-
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen); // Alternar la visibilidad del campo de búsqueda
-  }
-
-  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  
   const total = allProducts.reduce((acumulador, producto) => {
     return acumulador + producto.valor_ancheta * producto.cantidad || acumulador + producto.precio * producto.cantidad;
   }, 0);
-  
-  localStorage.setItem("cart", JSON.stringify(allProducts));
+  const handleSearch = () => {
+    console.log("Buscando: " + searchTerm);
+  };
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+  };
+
+  const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -46,16 +42,16 @@ export const Nav = ({
 
   const onCleanCart = () => {
     setAllProducts([]);
-    setTotal(0);
     setCountProducts(0);
     // Limpia el carrito en localStorage
     localStorage.removeItem("cart");
   };
 
-  
   const onDeleteProduct = (anchetaToDelete) => {
     const updatedProducts = allProducts.filter(
-      (ancheta) => ancheta.id_ancheta !== anchetaToDelete.id_ancheta || ancheta.id_producto !== anchetaToDelete.id_producto
+      (ancheta) =>
+        ancheta.id_ancheta !== anchetaToDelete.id_ancheta ||
+        ancheta.id_producto !== anchetaToDelete.id_producto
     );
 
     setAllProducts(updatedProducts);
@@ -64,13 +60,24 @@ export const Nav = ({
       (total, ancheta) => total + ancheta.cantidad,
       0
     );
- 
+
     setCountProducts(newCountProducts);
-    
 
     // Actualiza el carrito en localStorage después de eliminar un producto
     localStorage.setItem("cart", JSON.stringify(updatedProducts));
   };
+
+  // Recupera los productos del carrito desde localStorage al cargar el componente
+  useEffect(() => {
+    const cartData = localStorage.getItem("cart");
+    if (cartData) {
+      const parsedCart = JSON.parse(cartData);
+      setAllProducts(parsedCart);
+      setCountProducts(
+        parsedCart.reduce((total, ancheta) => total + ancheta.cantidad, 0)
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -172,8 +179,10 @@ export const Nav = ({
             </span>
           )}
           {isCartOpen && (
-            <div className="cart-dropdown bg-white border border-gray-200 shadow-md p-4 min-w-72 z-50 absolute top-16 right-0 pr-20">
-              {allProducts.length ? (
+            <div
+            className="cart-dropdown bg-white border border-gray-200 shadow-md p-4 min-w-72 z-50 absolute top-16 right-0 pr-20"
+            style={{ maxHeight: "500px", overflowY: "auto" }}
+          >{allProducts.length ? (
                 <div className="row-product">
                   {allProducts.map((ancheta) => (
                     <div className="cart-product" key={ancheta.id_ancheta || ancheta.id_producto}>

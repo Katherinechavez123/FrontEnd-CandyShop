@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Button from "../Atoms/Button/Button";
-import Modal from "../../layouts/Modal/Modal";
 import endPoints from "../../services/api";
-import Modals from "../../layouts/Modal/Modals";
-import { useForm, useModal } from "../../hooks";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
-function Compra({ allProducts }) {
-  const [responseMessage, setResponseMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
+
+
+
+function Compra({allProducts}) {
+  //const location = useLocation();
+//const allProducts = location.state ? location.state.allProducts : [];
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -19,58 +20,76 @@ function Compra({ allProducts }) {
   const [accountHolder, setAccountHolder] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [showBankForm, setShowBankForm] = useState(false);
-  const { serialize } = useForm();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
 
   useEffect(() => {
-    // Calcula el precio total de la compra
     const totalPrice = allProducts.reduce((total, ancheta) => {
       return total + ancheta.valor_ancheta * ancheta.cantidad || total + ancheta.precio * ancheta.cantidad;
     }, 0);
 
     setTotalPrice(totalPrice);
   }, [allProducts]);
-
+  //console.log("Productos recibidos:", allProducts);
   const handleBankChange = (e) => {
     const selectedBank = e.target.value;
     setSelectedBank(selectedBank);
-    // Si el banco seleccionado requiere formulario, muestra el formulario
-    setShowBankForm(selectedBank === "banco1" || selectedBank === "banco2" || selectedBank === "banco3");
+    setShowBankForm(
+      selectedBank === "banco1" ||
+      selectedBank === "banco2" ||
+      selectedBank === "banco3" ||
+      selectedBank === "banco4" ||
+      selectedBank === "banco5" ||
+      selectedBank === "banco6"
+    );
   };
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+    console.log("Submit button clicked");
   
-    if (allProducts.length === 0) {
+    /*if (allProducts.length === 0) {
+      console.log("No se encontraron detalles de la ancheta.");
       setResponseMessage("No se encontraron detalles de la ancheta.");
       return;
     }
-  
     if (!name || !email || !phone || !identification || !selectedBank) {
       setResponseMessage("Por favor, completa todos los campos.");
       return;
     }
-  
+
     if (showBankForm && (!accountNumber || !accountHolder)) {
       setResponseMessage("Por favor, completa los campos del formulario bancario.");
       return;
-    }
-  
+    }*/
+    const anchetasFiltradas = allProducts.map(ancheta => {
+      return {
+        id_ancheta: ancheta.id_ancheta,
+        cantidad: ancheta.cantidad
+      } 
+    
+  });
+  console.log(anchetasFiltradas);
+
     const datosCompra = {
-      nombre: name,
+      /*nombre: name,
       email,
       telefono: phone,
       identificacion: identification,
       banco: selectedBank,
-      valorTotal: totalPrice,
-      productos: allProducts, 
-      idCliente: userId, 
+    valorTotal: totalPrice,*/
+      detalleOrden: anchetasFiltradas,
+      id_cliente: "11111", 
     };
-  
+    //console.log(datosCompra);
+
+    //console.log(allProducts);
+
     try {
-      const response = await axios.post(endPoints.buy.saveBuy, datosCompra);
-  
+      const response = await axios.post(endPoints.buy.postBuy, datosCompra);
       if (response.status === 200) {
-        setModalMessage("Compra exitosa. ID de factura: " + response.data.facturaId);
-        setShowModal(true);
+        setResponseMessage("Compra exitosa. ID de factura: " + response.data.facturaId);
+        setShowConfirmation(true);
       } else {
         setResponseMessage("Error al realizar la compra. Por favor, intenta de nuevo.");
       }
@@ -79,9 +98,6 @@ function Compra({ allProducts }) {
       setResponseMessage("Error al realizar la compra. Por favor, intenta de nuevo.");
     }
   };
-  
-  
-  
   return (
     <div className="container mx-auto p-4 mt-32 text-center">
       <h1 className="text-3xl font-semibold mb-4 text-center text-fuchsia-950">
@@ -137,7 +153,11 @@ function Compra({ allProducts }) {
 
         <div className="mb-4">
           <label htmlFor="bank">Seleccione el banco:</label>
-          <select id="bank" className="w-full p-2 rounded-full focus:ring-pink-600" onChange={handleBankChange}>
+          <select
+            id="bank"
+            className="w-full p-2 rounded-full focus:ring-pink-600"
+            onChange={handleBankChange}
+          >
             <option value="">Seleccionar banco</option>
             <option value="banco1">Nequi</option>
             <option value="banco2">Bancolombia</option>
@@ -153,9 +173,14 @@ function Compra({ allProducts }) {
             <h2 className="text-2xl font-semibold mb-4 text-center text-fuchsia-950">
               Datos Bancarios
             </h2>
-            <h3>Por tu seguridad no guardaremos esta información <a href="" className=" text-sky-600">términos y condiciones</a></h3>
-              <br />
-    
+            <h3>
+              Por tu seguridad no guardaremos esta información{" "}
+              <a href="" className=" text-sky-600">
+                términos y condiciones
+              </a>
+            </h3>
+            <br />
+
             <div className="mb-4">
               <label htmlFor="accountNumber">Número de cuenta:</label>
               <input
@@ -184,6 +209,20 @@ function Compra({ allProducts }) {
         )}
 
         <Button text="Comprar" onClick={handleSubmit} type="submit" />
+        {showConfirmation && (
+          <div className="modal-container">
+            <div className="modal">
+            <p>PAGO REALIZADO CON PSE</p>
+              <img
+                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/11/icono-carro-compra-tienda-compras-navidenas-compra-regalo-compra-exitosa-boton-desenfoque-degradado-construccion-vidrio-transparente-glassmorphism_399089-40401-e1699329000736.jpg"
+                alt="exito"
+              />
+              <p>¡Compra exitosa!</p>
+              <p>Número de factura: ${facturaId}</p>
+              <p>Total pagado: ${totalPrice}</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
