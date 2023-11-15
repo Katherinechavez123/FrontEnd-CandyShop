@@ -3,6 +3,8 @@ import Button from "../Atoms/Button/Button";
 import endPoints from "../../services/api";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Productos from "../productos/Productos";
 
 
 
@@ -10,7 +12,8 @@ import { useLocation } from "react-router-dom";
 function Compra({allProducts}) {
   //const location = useLocation();
 //const allProducts = location.state ? location.state.allProducts : [];
-
+const [facturaId, setFacturaId] = useState(null);
+const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -62,13 +65,23 @@ function Compra({allProducts}) {
       setResponseMessage("Por favor, completa los campos del formulario bancario.");
       return;
     }*/
-    const anchetasFiltradas = allProducts.map(ancheta => {
-      return {
-        id_ancheta: ancheta.id_ancheta,
-        cantidad: ancheta.cantidad
-      } 
+    const anchetasFiltradas = allProducts.map((product) => {
+      // Verifica si el elemento es una ancheta
+      if (product.id_ancheta !== undefined) {
+        return {
+          id_ancheta: product.id_ancheta,
+          cantidad: product.cantidad,
+        };
+      } else {
+        // El elemento es un Producto
+        return {
+          id_producto: product.id_producto,
+          cantidad: product.cantidad,
+        };
+      }
+    });
+  
     
-  });
   console.log(anchetasFiltradas);
 
     const datosCompra = {
@@ -79,25 +92,33 @@ function Compra({allProducts}) {
       banco: selectedBank,
     valorTotal: totalPrice,*/
       detalleOrden: anchetasFiltradas,
-      id_cliente: "11111", 
+      id_cliente: "999999", 
     };
     //console.log(datosCompra);
+    const endpoint =
+    allProducts.some((product) => product.id_ancheta !== undefined)
+      ? endPoints.buy.postBuy // Si hay al menos una ancheta en los productos, usa el endpoint buy-default
+      : endPoints.buyPersonalize.postBuy; // Si no hay anchetas, usa el endpoint buy-personalize
 
-    //console.log(allProducts);
-
-    try {
-      const response = await axios.post(endPoints.buy.postBuy, datosCompra);
-      if (response.status === 200) {
-        setResponseMessage("Compra exitosa. ID de factura: " + response.data.facturaId);
-        setShowConfirmation(true);
-      } else {
-        setResponseMessage("Error al realizar la compra. Por favor, intenta de nuevo.");
+      try {
+        const response = await axios.post(endpoint, datosCompra);
+        if (response.status === 200) {
+          setFacturaId(response.data.facturaId);
+          setResponseMessage("Compra exitosa. ID de factura: " + response.data.facturaId);
+          setShowConfirmation(true);
+        } else {
+          setResponseMessage("Error al realizar la compra. " + response.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+        setResponseMessage("Error al realizar la compra. " + error.response.data.message);
       }
-    } catch (error) {
-      console.error(error);
-      setResponseMessage("Error al realizar la compra. Por favor, intenta de nuevo.");
-    }
-  };
+    } 
+  if (showConfirmation) {
+    setTimeout(() => {
+      navigate("/"); // Redirige a la página de inicio después de 5 segundos
+    }, 5000); // 5000 milisegundos (5 segundos)
+  }
   return (
     <div className="container mx-auto p-4 mt-32 text-center">
       <h1 className="text-3xl font-semibold mb-4 text-center text-fuchsia-950">
@@ -198,7 +219,7 @@ function Compra({allProducts}) {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="accountHolder">Clave:</label>
+              <label htmlFor="password">Clave:</label>
               <input
                 type="password"
                 id="password"
@@ -218,8 +239,9 @@ function Compra({allProducts}) {
                 alt="exito"
               />
               <p>¡Compra exitosa!</p>
-              <p>Número de factura: ${facturaId}</p>
+              <p>Número de factura: {facturaId}</p>
               <p>Total pagado: ${totalPrice}</p>
+              <p>En 5 segundos serás redirigido al inicio...</p>
             </div>
           </div>
         )}

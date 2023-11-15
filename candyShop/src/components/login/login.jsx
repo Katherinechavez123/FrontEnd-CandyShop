@@ -5,9 +5,12 @@ import axios from "axios";
 import endPoints from "../../services/api";
 import { useForm } from "../../hooks";
 import { Eye, EyeOff } from "react-feather";
+import "./Login.css";
+import { FiAlertTriangle } from "react-icons/fi";
 
 const Login = () => {
-  const [showIncorrectPasswordAlert, setShowIncorrectPasswordAlert] = useState(false);
+  const [showIncorrectPasswordAlert, setShowIncorrectPasswordAlert] =
+    useState(false);
   const { serialize } = useForm();
   const [correoCliente, setCorreoCliente] = useState("");
   const [contrasenia, setContrasenia] = useState("");
@@ -34,7 +37,8 @@ const Login = () => {
       if (token) {
         localStorage.setItem("token", token);
         localStorage.setItem("correo_cliente", correoCliente);
-        navigate("/"); // Redirige al usuario a la página principal después de iniciar sesión
+        navigate("/");
+        window.location.reload();
       } else {
         // Respuesta del servidor indica contraseña incorrecta, muestra la alerta
         setShowIncorrectPasswordAlert(true);
@@ -57,7 +61,7 @@ const Login = () => {
           </div>
         </figure>
 
-        <div className="main__contact">
+        <div className="main__contact justify-center items-center">
           <h2 className="main__title text-5xl font-Candylove">
             ¡Iniciar sesión!
           </h2>
@@ -103,16 +107,19 @@ const Login = () => {
           </form>
 
           {showIncorrectPasswordAlert && (
-  <div className="bg-red-500 text-white p-2 mt-3">
-    Contraseña incorrecta. Por favor, inténtalo de nuevo.
-  </div>
-)}
-
+            <div className="bg-white text-red-500 font-bold p-2 mt-3 grid grid-flow-col items-center justify-center text-center w-80 rounded-full">
+              <FiAlertTriangle className="text-red-500 font-bold text-2xl" />
+              <span>
+                *Usuario o Contraseña incorrecta*
+              </span>
+            </div>
+          
+          )}
 
           <p className="link_registro mt-3">
             ¿No tienes una cuenta?{" "}
             <a href="/register" className="text-fuchsia-950">
-              Registrate aquí
+              Regístrate aquí
             </a>
           </p>
           <p className="main__paragraph mt-3">Continuar con</p>

@@ -1,0 +1,91 @@
+.my-updated-figure {
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.my-updated-img {
+    margin: auto;
+    width: 100%;
+    max-width: 60vw;
+    margin-top: 15px;
+}
+
+.my-updated-contact {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5em;
+    padding: 3em .7em;
+    text-align: center;
+}
+
+.my-updated-form {
+    display: grid;
+    justify-items: center;
+    gap: 1.5em;
+}
+
+.my-updated-input {
+    width: 80%;
+    max-width: 500px;
+    outline: none;
+    border: none;
+    padding: 1em;
+    font: inherit;
+    border-radius: .6em;
+}
+
+.my-updated-input--send {
+    background-color: #410B57;
+    color: #fff;
+    font-weight: 600;
+    width: 80%;
+    height: 200%;
+    border-radius: .6em;
+}
+
+.my-updated-title {
+    font-size: 3rem;
+    color: white;
+    font-family: Candylove;
+}
+
+.my-updated-paragraph {
+    margin: .3em 0;
+    color: white;
+}
+
+.my-updated-main {
+
+    margin: auto;
+    width: 90%;
+    max-width: 1000px;
+    background-color: #410b57;
+    overflow: hidden;
+    padding: .7em;
+    border-radius: 1em;
+    display: grid;
+    grid-auto-rows: max-content;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: .6em;
+    animation: mostrar 1.5s ease-in-out;
+}
+
+@keyframes mostrar {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.my-updated-logo {
+    height: 60%;
+    border-radius: 10rem;
+    width: 60%;
+}

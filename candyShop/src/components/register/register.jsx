@@ -7,6 +7,7 @@ import { useForm } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "react-feather";
 import "./register.css";
+import { FiAlertTriangle } from "react-icons/fi";
 
 const Register = () => {
   const { serialize } = useForm();
@@ -19,6 +20,7 @@ const Register = () => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+  const [nombreCliente, setNombreCliente] = useState("");
   
   const toggleShowConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
@@ -41,7 +43,7 @@ const Register = () => {
       }, 3000); // Redirige después de 3 segundos
     } catch (error) {
       if (error.response) {
-        setErrorMessage("Hubo un error en el registro. Por favor, verifica tus datos.");
+        setErrorMessage("*Hubo un error en el registro*");
       } else if (error.request) {
         setErrorMessage("No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.");
       } else {
@@ -168,7 +170,8 @@ const Register = () => {
               </span>
             </div>
             {errorMessage && (
-              <div className="error-message text-red-500">
+              <div className="bg-white text-red-500 font-bold p-2 mt-3 grid grid-flow-col items-center justify-center text-center w-80 rounded-full">
+              <FiAlertTriangle className="text-red-500 font-bold text-2xl" />
                 {errorMessage}
               </div>
             )}

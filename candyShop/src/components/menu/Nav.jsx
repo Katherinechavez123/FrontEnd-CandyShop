@@ -13,9 +13,10 @@ export const Nav = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   
-  const total = allProducts.reduce((acumulador, producto) => {
-    return acumulador + producto.valor_ancheta * producto.cantidad || acumulador + producto.precio * producto.cantidad;
+  const total = allProducts.reduce((accumulator, product) => {
+    return accumulator + (product.valor_ancheta * product.cantidad || product.precio * product.cantidad);
   }, 0);
+  
   const handleSearch = () => {
     console.log("Buscando: " + searchTerm);
   };
@@ -39,6 +40,7 @@ export const Nav = ({
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
+  
 
   const onCleanCart = () => {
     setAllProducts([]);
@@ -47,17 +49,15 @@ export const Nav = ({
     localStorage.removeItem("cart");
   };
 
-  const onDeleteProduct = (anchetaToDelete) => {
-    const updatedProducts = allProducts.filter(
-      (ancheta) =>
-        ancheta.id_ancheta !== anchetaToDelete.id_ancheta ||
-        ancheta.id_producto !== anchetaToDelete.id_producto
+  const onDeleteProduct = (itemToDelete) => {
+    const updatedProducts = allProducts.filter((product) =>
+      product.id_ancheta !== itemToDelete.id_ancheta ||
+      product.id_producto !== itemToDelete.id_producto
     );
-
     setAllProducts(updatedProducts);
 
     const newCountProducts = updatedProducts.reduce(
-      (total, ancheta) => total + ancheta.cantidad,
+      (total, ancheta, producto) => total + ancheta.cantidad || total + producto.cantidad,
       0
     );
 
@@ -74,7 +74,10 @@ export const Nav = ({
       const parsedCart = JSON.parse(cartData);
       setAllProducts(parsedCart);
       setCountProducts(
-        parsedCart.reduce((total, ancheta) => total + ancheta.cantidad, 0)
+        parsedCart.reduce(
+          (total, product) => total + (product.cantidad || product.valor_ancheta),
+          0
+        )
       );
     }
   }, []);
@@ -184,26 +187,26 @@ export const Nav = ({
             style={{ maxHeight: "500px", overflowY: "auto" }}
           >{allProducts.length ? (
                 <div className="row-product">
-                  {allProducts.map((ancheta) => (
-                    <div className="cart-product" key={ancheta.id_ancheta || ancheta.id_producto}>
+                  {allProducts.map((product) => (
+                    <div className="cart-product" key={product.id_ancheta || product.id_producto}>
                       {/* Renderiza los detalles del producto */}
                       <div className="info-cart-product flex items-center mb-2">
                         <span className="cantidad-producto-carrito mr-2 font-bold">
-                          {ancheta.cantidad}
+                          {product.cantidad || product.cantidad}
                         </span>
                         <img
-                          src={ancheta.url_imagen_ancheta || ancheta.url_imagen_producto}
-                          alt={ancheta.nombre_ancheta || ancheta.nombre_producto}
+                          src={product.url_imagen_ancheta || product.url_imagen_producto}
+                          alt={product.nombre_ancheta || product.nombre_producto}
                           className="w-12 h-12"
                         />
                         <p className="titulo-producto-carrito flex-1 ml-2">
-                          {ancheta.nombre_ancheta || ancheta.nombre_producto}
+                          {product.nombre_ancheta || product.nombre_producto}
                         </p>
                         <span className="precio-producto-carrito font-bold">
-                          ${ancheta.valor_ancheta || ancheta.precio}
+                          ${product.valor_ancheta || product.precio}
                         </span>
                         <button
-                          onClick={() => onDeleteProduct(ancheta)}
+                          onClick={() => onDeleteProduct(product)}
                           className="ml-2 text-red-600 cursor-pointer"
                         >
                           Eliminar

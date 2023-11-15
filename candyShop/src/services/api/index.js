@@ -18,6 +18,9 @@ const endPoints = {
     productos:{
         getProductos:`${API}/personalize`,
         getProducto: (id_producto) => `${API}/personalize/${id_producto}`
+    },
+    buyPersonalize:{
+        postBuy:`${API}/buyPersonalized`
     }
   };
   
