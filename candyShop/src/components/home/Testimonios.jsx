@@ -87,10 +87,10 @@ export default function Testimonios() {
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <section className="relative isolate overflow-hidden bg-white px-6 pb-24 sm:py-32 lg:px-8">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.indigo.100),white)] opacity-20" />
       <div className="mx-auto max-w-2xl lg:max-w-4xl">
-        <h2 className="text-3xl font-bold tracking-tight text-fuchsia-950 sm:text-5xl text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-fuchsia-950 sm:text-5xl text-center -mt-12">
           Comentarios
         </h2>
         

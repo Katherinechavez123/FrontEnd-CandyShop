@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import "./loginAdmin.css"
 import Button from "../../../components/Atoms/Button/Button";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import endPoints from "../../../services/api";
 import { useForm } from "../../../hooks";
+import "./loginAdmin.css"
 
-const LoginAdmin = () => {
+
+const Login= () => {
   const { serialize } = useForm();
   const [correoCliente, setCorreoCliente] = useState('');
   const [contrasenia, setContrasenia] = useState('');
@@ -37,21 +38,13 @@ const LoginAdmin = () => {
   };
 
   return (
+    <>
     <div>
       <br />
       <br />
-      <section className="my-updated-main">
-        <figure className="my-updated-figure bg-pink-200">
-          <div className="my-updated-logo">
-            <img
-              src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/logo-v1-01.png"
-              className="my-updated-img"
-              alt="Logo_candy_shop"
-            />
-          </div>
-        </figure>
 
-        <div className="my-updated-contact">
+      <section className="my-updated-main" >
+          <div className="my-updated-contact">
           <h2 className="my-updated-title">¡Iniciar sesión!</h2>
           <p className="my-updated-paragraph text-base">
             Ingresa tus credenciales.
@@ -82,7 +75,8 @@ const LoginAdmin = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 
-export default LoginAdmin;
+export default Login;

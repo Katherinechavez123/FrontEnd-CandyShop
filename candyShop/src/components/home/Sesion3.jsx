@@ -13,7 +13,7 @@ export default function Sesion3() {
                 <br />
               </h2>
               <p className="mt-6 text-lg leading-8 text-gray-900">
-              Desde delicias gourmet hasta dulces tentaciones, puedes seleccionar cuidadosamente cada artículo para asegurarte de que refleje su estilo y personalidad.
+              Desde delicias gourmet hasta dulces tentaciones, puedes seleccionar cuidadosamente cada artículo para asegurarte de que refleje tú estilo y personalidad.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
               <Link to="/personalizar">
