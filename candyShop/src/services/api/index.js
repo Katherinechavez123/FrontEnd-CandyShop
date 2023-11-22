@@ -21,6 +21,9 @@ const endPoints = {
     },
     buyPersonalize:{
         postBuy:`${API}/buyPersonalized`
+    },
+    admin:{
+        getLogin:`${API}/auth_admin` 
     }
   };
   

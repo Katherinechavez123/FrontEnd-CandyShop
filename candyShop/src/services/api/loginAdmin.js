@@ -8,7 +8,7 @@ const postLogin = async (body) => {
           'Content-Type': 'application/json',
         },
       };
-      const response = await axios.post(endPoints.cliente.getLogin, body, config);
+      const response = await axios.post(endPoints.admin.getLogin, body, config);
       console.log(response);
       return response.data;
 

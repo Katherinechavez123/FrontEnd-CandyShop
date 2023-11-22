@@ -19,7 +19,11 @@ const Personalizar = ({
     try {
       const response = await axios.get(endPoints.productos.getProductos);
       const productosData = response.data.result; // Accede directamente a "result" en la respuesta.
-  
+  console.log(productosData);
+  let productosPersonalizados = productosData.map(producto => {
+    return {...producto, isPersonalize: true}
+  }) 
+  console.log(productosPersonalizados);
       if (Array.isArray(productosData)) { // Verifica si "productosData" es una matriz
         setProductos(productosData);
   

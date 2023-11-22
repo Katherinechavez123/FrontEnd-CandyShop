@@ -18,7 +18,7 @@ const Login= () => {
     const formData = serialize(ev.target);
 
     try {
-      const response = await axios.post(endPoints.cliente.getLogin, formData, {
+      const response = await axios.post(endPoints.admin.getLogin, formData, {
         correo_cliente: correoCliente,
         contrasenia: contrasenia,
       });
@@ -29,7 +29,7 @@ const Login= () => {
       localStorage.setItem('correo_cliente', correoCliente);
 
       if (token) {
-        navigate("/");
+        navigate("/panel");
       }
       return null;
     } catch (error) {

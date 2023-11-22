@@ -22,9 +22,9 @@ import Personalizar from "./components/Personalizar/Personalizar";
 import Compra from "./components/Compra/Compra";
 import PreCompra from "./components/PreCompra/Precompra";
 import Modals from "./layouts/Modal/Modals";
-/*import Panel from "./Admin/components/Panel/Panel";
-import NavAdmin from "./layouts/NavAdmin/NavAdmin";
-import Sidebar from "./layouts/SideBar/SideBar";*/
+import Panel from "./Admin/components/Panel/Panel";
+//import NavAdmin from "./layouts/NavAdmin/NavAdmin";
+//import Sidebar from "./layouts/SideBar/SideBar";*/
 
 function App() {
   const [allProducts, setAllProducts] = useState([]);
@@ -43,6 +43,14 @@ function App() {
           element={
             <>
               <LoginAdmin />
+            </>
+          }
+        />
+        <Route
+          path="/panel"
+          element={
+            <>
+              <Panel />
             </>
           }
         />

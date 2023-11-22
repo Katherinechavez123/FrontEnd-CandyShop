@@ -92,7 +92,7 @@ const navigate = useNavigate();
       banco: selectedBank,
     valorTotal: totalPrice,*/
       detalleOrden: anchetasFiltradas,
-      id_cliente: "999999", 
+      id_cliente: "12345", 
     };
     //console.log(datosCompra);
     const endpoint =
