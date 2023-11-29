@@ -14,37 +14,42 @@ const Personalizar = ({
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Todo");
-
   async function getProductos() {
     try {
       const response = await axios.get(endPoints.productos.getProductos);
-      const productosData = response.data.result; // Accede directamente a "result" en la respuesta.
-  console.log(productosData);
-  let productosPersonalizados = productosData.map(producto => {
-    return {...producto, isPersonalize: true}
-  }) 
-  console.log(productosPersonalizados);
-      if (Array.isArray(productosData)) { // Verifica si "productosData" es una matriz
+      const productosData = response.data.result;
+
+      let productosPersonalizados = productosData.map((producto) => {
+        return { ...producto, isPersonalize: true };
+      });
+
+      if (Array.isArray(productosData)) {
         setProductos(productosData);
-  
+
         const uniqueCategorias = [
           ...new Set(productosData.map((producto) => producto.tipo_producto)),
         ];
         setCategorias(uniqueCategorias);
       } else {
-        console.error('La respuesta de la API no contiene una matriz de productos.');
+        console.error(
+          "La respuesta de la API no contiene una matriz de productos."
+        );
       }
     } catch (error) {
       console.error("Error al obtener los productos:", error);
     }
   }
-  
+
   useEffect(() => {
     getProductos();
   }, []);
 
   const onAddProduct = (producto) => {
-    if (allProducts.find((item) => item.id_producto === producto.id_producto)) {
+    const existingProduct = allProducts.find(
+      (item) => item.id_producto === producto.id_producto
+    );
+
+    if (existingProduct) {
       const updatedProducts = allProducts.map((item) =>
         item.id_producto === producto.id_producto
           ? { ...item, cantidad: item.cantidad + 1 }
@@ -53,14 +58,16 @@ const Personalizar = ({
       setAllProducts(updatedProducts);
       setTotal(total + producto.precio);
       setCountProducts(countProducts + 1);
+      localStorage.setItem("cart", JSON.stringify(updatedProducts));
     } else {
       const newProduct = { ...producto, cantidad: 1 };
-      setAllProducts([...allProducts, newProduct]);
+      const updatedProducts = [...allProducts, newProduct];
+      setAllProducts(updatedProducts);
       setTotal(total + producto.precio);
       setCountProducts(countProducts + 1);
+      localStorage.setItem("cart", JSON.stringify(updatedProducts));
     }
   };
-
   return (
     <div className=" ml-16 mr-16 mt-32">
       <h1 className="text-3xl font-bold tracking-tight text-fuchsia-950 mb-6 text-center">

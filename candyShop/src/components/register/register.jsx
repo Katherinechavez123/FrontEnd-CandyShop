@@ -25,22 +25,23 @@ const Register = () => {
   const toggleShowConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-
   const registerForm = async (ev) => {
     ev.preventDefault();
     const formData = serialize(ev.target);
 
     try {
-      const response = await axios.post(
-        endPoints.cliente.postRegister,
-        formData
-      );
+      const response = await axios.post(endPoints.cliente.postRegister, formData);
+
+      // Guardar datos de registro en localStorage
+      localStorage.setItem("registrationData", JSON.stringify(formData));
+
       setIsRegistered(true);
       setShowConfirmation(true);
+
       setTimeout(() => {
         setShowConfirmation(false);
         navigate("/login");
-      }, 3000); // Redirige después de 3 segundos
+      }, 3000); // Redirigir después de 3 segundos
     } catch (error) {
       if (error.response) {
         setErrorMessage("*Hubo un error en el registro*");

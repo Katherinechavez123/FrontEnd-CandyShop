@@ -9,7 +9,8 @@ const endPoints = {
     },
     cliente:{
         postRegister:`${API}/register`,
-        getLogin:`${API}/auth`
+        getLogin:`${API}/auth`,
+        updateCliente:`${API}/register`
 
     },
     buy:{
@@ -23,7 +24,14 @@ const endPoints = {
         postBuy:`${API}/buyPersonalized`
     },
     admin:{
-        getLogin:`${API}/auth_admin` 
+        getLogin:`${API}/auth_admin`,
+        getAnchetas:`${API}/anchetas-admin`,
+        editAncheta:(id_ancheta) => `${API}/anchetas-admin`,
+        deleteAncheta:(id_ancheta) => `${API}/anchetas-admin`,
+        getProductos: `${API}/productos-admin`,
+        insertAncheta: `${API}/anchetas-admin`,
+        editProducto:(id_producto) => `${API}/productos-admin`,
+        deleteProducto:(id_producto) => `${API}/productos-admin`
     }
   };
   

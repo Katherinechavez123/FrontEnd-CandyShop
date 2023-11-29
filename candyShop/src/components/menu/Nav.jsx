@@ -45,10 +45,11 @@ export const Nav = ({
   const onCleanCart = () => {
     setAllProducts([]);
     setCountProducts(0);
+  
     // Limpia el carrito en localStorage
     localStorage.removeItem("cart");
   };
-
+  
   const onDeleteProduct = (itemToDelete) => {
     const updatedProducts = allProducts.filter((product) =>
       product.id_ancheta !== itemToDelete.id_ancheta ||
@@ -75,12 +76,14 @@ export const Nav = ({
       setAllProducts(parsedCart);
       setCountProducts(
         parsedCart.reduce(
-          (total, product) => total + (product.cantidad || product.valor_ancheta),
+          (total, product) =>
+            total + (product.cantidad || product.valor_ancheta),
           0
         )
       );
     }
   }, []);
+  
 
   return (
     <>

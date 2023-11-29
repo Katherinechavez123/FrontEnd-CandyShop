@@ -23,6 +23,14 @@ import Compra from "./components/Compra/Compra";
 import PreCompra from "./components/PreCompra/Precompra";
 import Modals from "./layouts/Modal/Modals";
 import Panel from "./Admin/components/Panel/Panel";
+import Sidebar from "./layouts/SideBar/SideBar";
+import NavAdmin from "./layouts/NavAdmin/NavAdmin";
+import HomeAdmin from "./Admin/pages/Home/Home";
+import NuevaAncheta from "./Admin/pages/NuevaAncheta/NuevaAncheta";
+import Anchetas from "./Admin/pages/Anchetas/Anchetas";
+import ProductosAd from "./Admin/pages/Productos/Productos";
+
+
 //import NavAdmin from "./layouts/NavAdmin/NavAdmin";
 //import Sidebar from "./layouts/SideBar/SideBar";*/
 
@@ -38,6 +46,38 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+      <Route
+          path="/nuevaAncheta"
+          element={
+            <>
+              <NuevaAncheta />
+            </>
+          }
+        />
+        <Route
+          path="/panelAdmin"
+          element={
+            <>
+              <HomeAdmin />
+            </>
+          }
+        />
+                <Route
+          path="/anchetas-admin"
+          element={
+            <>
+              <Anchetas />
+            </>
+          }
+        />
+                <Route
+          path="/productos-admin"
+          element={
+            <>
+              <ProductosAd />
+            </>
+          }
+        />
         <Route
           path="/miweb"
           element={
@@ -50,6 +90,8 @@ function App() {
           path="/panel"
           element={
             <>
+              <NavAdmin />
+              <Sidebar />
               <Panel />
             </>
           }
@@ -274,7 +316,14 @@ function App() {
                 countProducts={countProducts}
                 setCountProducts={setCountProducts}
               />
-              <VerDetalle />
+              <VerDetalle
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
               <Footer />
             </>
           }

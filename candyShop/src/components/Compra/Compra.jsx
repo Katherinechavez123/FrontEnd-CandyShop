@@ -6,14 +6,9 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Productos from "../productos/Productos";
 
-
-
-
-function Compra({allProducts}) {
-  //const location = useLocation();
-//const allProducts = location.state ? location.state.allProducts : [];
-const [facturaId, setFacturaId] = useState(null);
-const navigate = useNavigate();
+function Compra({ allProducts }) {
+  const [facturaId, setFacturaId] = useState(null);
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -33,7 +28,7 @@ const navigate = useNavigate();
 
     setTotalPrice(totalPrice);
   }, [allProducts]);
-  //console.log("Productos recibidos:", allProducts);
+
   const handleBankChange = (e) => {
     const selectedBank = e.target.value;
     setSelectedBank(selectedBank);
@@ -46,78 +41,62 @@ const navigate = useNavigate();
       selectedBank === "banco6"
     );
   };
-
+  const correo_cliente = localStorage.getItem("correo_cliente");
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     console.log("Submit button clicked");
-  
-    /*if (allProducts.length === 0) {
-      console.log("No se encontraron detalles de la ancheta.");
-      setResponseMessage("No se encontraron detalles de la ancheta.");
-      return;
-    }
-    if (!name || !email || !phone || !identification || !selectedBank) {
-      setResponseMessage("Por favor, completa todos los campos.");
-      return;
-    }
 
-    if (showBankForm && (!accountNumber || !accountHolder)) {
-      setResponseMessage("Por favor, completa los campos del formulario bancario.");
-      return;
-    }*/
     const anchetasFiltradas = allProducts.map((product) => {
-      // Verifica si el elemento es una ancheta
       if (product.id_ancheta !== undefined) {
         return {
           id_ancheta: product.id_ancheta,
           cantidad: product.cantidad,
+          nombre_ancheta: product.nombre_ancheta, // Agrega el nombre de la ancheta
+          valor_ancheta: product.valor_ancheta // Agrega el valor de la ancheta
         };
       } else {
-        // El elemento es un Producto
         return {
           id_producto: product.id_producto,
           cantidad: product.cantidad,
+          nombre_producto: product.nombre_producto, // Agrega el nombre de la ancheta
+          precio: product.precio
+          // Si estás trabajando con productos, también agrega sus detalles según sea necesario
         };
       }
     });
-  
     
-  console.log(anchetasFiltradas);
-
     const datosCompra = {
-      /*nombre: name,
-      email,
-      telefono: phone,
-      identificacion: identification,
-      banco: selectedBank,
-    valorTotal: totalPrice,*/
       detalleOrden: anchetasFiltradas,
-      id_cliente: "12345", 
+      id_cliente: localStorage.getItem("registrationData")
+        ? JSON.parse(localStorage.getItem("registrationData")).id_cliente
+        : "",
+      correo_cliente: correo_cliente,
     };
-    //console.log(datosCompra);
+    
     const endpoint =
-    allProducts.some((product) => product.id_ancheta !== undefined)
-      ? endPoints.buy.postBuy // Si hay al menos una ancheta en los productos, usa el endpoint buy-default
-      : endPoints.buyPersonalize.postBuy; // Si no hay anchetas, usa el endpoint buy-personalize
+      allProducts.some((product) => product.id_ancheta !== undefined)
+        ? endPoints.buy.postBuy
+        : endPoints.buyPersonalize.postBuy;
 
-      try {
-        const response = await axios.post(endpoint, datosCompra);
-        if (response.status === 200) {
-          setFacturaId(response.data.facturaId);
-          setResponseMessage("Compra exitosa. ID de factura: " + response.data.facturaId);
-          setShowConfirmation(true);
-        } else {
-          setResponseMessage("Error al realizar la compra. " + response.data.message);
-        }
-      } catch (error) {
-        console.error(error);
-        setResponseMessage("Error al realizar la compra. " + error.response.data.message);
+    try {
+      const response = await axios.post(endpoint, datosCompra);
+      if (response.status === 200) {
+        setFacturaId(response.data.facturaId);
+        setResponseMessage("Compra exitosa. ID de factura: " + response.data.facturaId);
+        setShowConfirmation(true);
+      } else {
+        setResponseMessage("Error al realizar la compra. " + response.data.message);
       }
-    } 
+    } catch (error) {
+      console.error(error);
+      setResponseMessage("Error al realizar la compra. " + error.response.data.message);
+    }
+  };
+
   if (showConfirmation) {
     setTimeout(() => {
-      navigate("/"); // Redirige a la página de inicio después de 5 segundos
-    }, 5000); // 5000 milisegundos (5 segundos)
+      navigate("/");
+    }, 5000);
   }
   return (
     <div className="container mx-auto p-4 mt-32 text-center">

@@ -5,11 +5,51 @@ import axios from "axios";
 import endPoints from "../../services/api";
 import "./VerDetalle.css";
 
-
-function VerDetalle() {
+const VerDetalle = ({
+  allProducts,
+  setAllProducts,
+  countProducts,
+  setCountProducts,
+  total,
+  setTotal,
+}) => {
   const { id_ancheta } = useParams();
   const [ancheta, setAncheta] = useState(null);
-
+  const onAddProduct = async (anchetaId) => {
+    let updatedProducts; // Define la variable aquí
+  
+    try {
+      const response = await axios.get(
+        endPoints.anchetas.getAncheta(anchetaId)
+      );
+  
+      const newAncheta = response.data.getProductById[0];
+  
+      const existingProduct = allProducts.find(
+        (item) => item.id_ancheta === newAncheta.id_ancheta
+      );
+  
+      if (existingProduct) {
+        updatedProducts = allProducts.map((item) =>
+          item.id_ancheta === newAncheta.id_ancheta
+            ? { ...item, cantidad: item.cantidad + 1 }
+            : item
+        );
+        setAllProducts(updatedProducts);
+      } else {
+        updatedProducts = [...allProducts, { ...newAncheta, cantidad: 1 }];
+        setAllProducts(updatedProducts);
+      }
+      localStorage.setItem("cart", JSON.stringify(updatedProducts));
+      setTotal(total + newAncheta.valor_ancheta);
+      setCountProducts(countProducts + 1);
+    } catch (error) {
+      console.error("Error al obtener los detalles de la ancheta:", error);
+    }
+  };
+  
+  
+  
   useEffect(() => {
     async function fetchAncheta() {
       try {
@@ -17,7 +57,8 @@ function VerDetalle() {
           endPoints.anchetas.getAncheta(id_ancheta)
         );
 
-        setAncheta(response.data);
+        console.log("API Response:", response.data);
+        setAncheta(response.data.getProductById[0]);
       } catch (error) {
         console.error("Error al obtener los detalles de la ancheta:", error);
       }
@@ -29,56 +70,47 @@ function VerDetalle() {
   if (ancheta === null) {
     return <div>Cargando...</div>;
   }
+
   return (
     <div className="bg-white">
-      <div className="pt-6">
-        <nav aria-label="Breadcrumb">
-        <Link to="/catalogo" className="text-pink-600 hover:text-cyan-700 ml-52 text-2xl mt-16">
-            Volver al catálogo
-          </Link>
-          <ol
-            role="list"
-            className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8"
-          ></ol>
-        </nav>
-
-        {/* Image gallery */}
-        <div className="mt-6 text-center">
-          <div className="hidden overflow-hidden rounded-lg lg:block img_detalle ml-20">
+      <div className="pt-6 mt-16">
+        <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 lg:px-8 py-10">
+          {/* Columna de la imagen */}
+          <div className="hidden lg:block overflow-hidden rounded-lg">
             <img
               src={ancheta.url_imagen_ancheta}
-              className="mx-auto my-auto w-full h-full"
+              className="mx-auto my-auto w-2/3 lg:w-full h-full"
               alt="Imagen de la ancheta"
             />
           </div>
-        </div>
 
-{/* Product info */}
-<div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-        <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-          <h1 className="text-2xl font-bold tracking-tight text-pink-600 sm:text-3xl">
-            {ancheta.nombre_ancheta}
-          </h1>
-        </div>
-
-        <div className="mt-4 lg:row-span-3 lg:mt-0">
-          <p className="text-3xl tracking-tight text-fuchsia-950">
-            ${ancheta.valor_ancheta}
-          </p>
-
-          <br />
-
-          <Button text="Añadir al carrito" />
-        </div>
-
-        <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
+          {/* Columna de los detalles */}
           <div>
-            <div className="space-y-6">
-              <p className="text-base text-fuchsia-950">
-                {ancheta.detalle_ancheta}
-              </p>
-            </div>
-          </div>
+            <h1 className="text-3xl font-bold tracking-tight text-pink-600 mb-4">
+              {ancheta.nombre_ancheta}
+            </h1>
+
+            <p className="text-base text-fuchsia-950 mb-4">
+              {ancheta.detalle_ancheta}
+            </p>
+
+            <p className="text-3xl tracking-tight text-fuchsia-950 mb-4">
+              ${ancheta.valor_ancheta}
+            </p>
+
+            <Button 
+            onClick={(e) => onAddProduct(id_ancheta)}
+            text="Añadir al carrito" />
+            
+            {/* Enlace de vuelta al catálogo */}
+            <nav aria-label="Breadcrumb" className="items-start justify-start text-left">
+              <Link
+                to="/catalogo"
+                className="text-pink-600 hover:text-cyan-400 mt-8 text-xl underline items-start justify-start text-left"
+              >
+                Volver al catálogo
+              </Link>
+            </nav>
           </div>
         </div>
       </div>
@@ -87,3 +119,4 @@ function VerDetalle() {
 }
 
 export default VerDetalle;
+ 

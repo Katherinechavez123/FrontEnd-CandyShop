@@ -14,8 +14,9 @@
       justify-content: center;
       margin-top: 40px;
       margin-bottom: 30px;
+      background-color: white;
   
-      .logo {
+      .logosidebar {
   
   height: 90px;
   margin: 10px;
@@ -51,12 +52,12 @@
           cursor: pointer;
   
           &:hover {
-            background-color: #ece8ff;
+            background-color: #e8fcff;
           }
   
           .icon {
             font-size: 18px;
-            color: #7451f8;
+            color: #FC036B;
           }
   
           span{

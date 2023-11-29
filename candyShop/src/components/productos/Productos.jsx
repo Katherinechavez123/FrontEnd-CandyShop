@@ -22,7 +22,7 @@ const Productos = ({
     try {
       const response = await axios.get(endPoints.anchetas.getAnchetas);
       if (Array.isArray(response.data.products)) {
-        setAnchetas(response.data.products); // Acceder a la propiedad "products" en lugar de "response.data"
+        setAnchetas(response.data.products);
         const uniqueCategorias = [
           ...new Set(
             response.data.products.map((ancheta) => ancheta.categoria)
@@ -51,13 +51,16 @@ const Productos = ({
       const filtered = anchetas.filter(
         (ancheta) => ancheta.categoria === selectedCategory
       );
-      console.log("filtered:", filtered); // Registra el array filtrado
       setFilteredAnchetas(filtered);
     }
   }, [selectedCategory, anchetas]);
 
   const onAddProduct = (ancheta) => {
-    if (allProducts.find((item) => item.id_ancheta === ancheta.id_ancheta)) {
+    const existingProduct = allProducts.find(
+      (item) => item.id_ancheta === ancheta.id_ancheta
+    );
+
+    if (existingProduct) {
       const updatedProducts = allProducts.map((item) =>
         item.id_ancheta === ancheta.id_ancheta
           ? { ...item, cantidad: item.cantidad + 1 }
@@ -66,11 +69,14 @@ const Productos = ({
       setAllProducts(updatedProducts);
       setTotal(total + ancheta.valor_ancheta);
       setCountProducts(countProducts + 1);
+      localStorage.setItem("cart", JSON.stringify(updatedProducts));
     } else {
       const newProduct = { ...ancheta, cantidad: 1 };
-      setAllProducts([...allProducts, newProduct]);
+      const updatedProducts = [...allProducts, newProduct];
+      setAllProducts(updatedProducts);
       setTotal(total + ancheta.valor_ancheta);
       setCountProducts(countProducts + 1);
+      localStorage.setItem("cart", JSON.stringify(updatedProducts));
     }
   };
 
