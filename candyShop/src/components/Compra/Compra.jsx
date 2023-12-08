@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import Button from "../Atoms/Button/Button";
 import endPoints from "../../services/api";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Productos from "../productos/Productos";
 
-function Compra({ allProducts }) {
+function Compra({ allProducts, limpiarCarrito }) {
   const [facturaId, setFacturaId] = useState(null);
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -20,10 +18,16 @@ function Compra({ allProducts }) {
   const [showBankForm, setShowBankForm] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
 
   useEffect(() => {
     const totalPrice = allProducts.reduce((total, ancheta) => {
-      return total + ancheta.valor_ancheta * ancheta.cantidad || total + ancheta.precio * ancheta.cantidad;
+      return (
+        total + ancheta.valor_ancheta * ancheta.cantidad ||
+        total + ancheta.precio * ancheta.cantidad
+      );
     }, 0);
 
     setTotalPrice(totalPrice);
@@ -34,77 +38,126 @@ function Compra({ allProducts }) {
     setSelectedBank(selectedBank);
     setShowBankForm(
       selectedBank === "banco1" ||
-      selectedBank === "banco2" ||
-      selectedBank === "banco3" ||
-      selectedBank === "banco4" ||
-      selectedBank === "banco5" ||
-      selectedBank === "banco6"
+        selectedBank === "banco2" ||
+        selectedBank === "banco3" ||
+        selectedBank === "banco4" ||
+        selectedBank === "banco5" ||
+        selectedBank === "banco6"
     );
   };
+
   const correo_cliente = localStorage.getItem("correo_cliente");
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     console.log("Submit button clicked");
+  
+    const formattedDateTime = `${deliveryDate} ${deliveryTime}`;
+    const formattedDeliveryDateTime = new Date(formattedDateTime).toISOString();
+    
 
     const anchetasFiltradas = allProducts.map((product) => {
       if (product.id_ancheta !== undefined) {
         return {
           id_ancheta: product.id_ancheta,
           cantidad: product.cantidad,
-          nombre_ancheta: product.nombre_ancheta, // Agrega el nombre de la ancheta
-          valor_ancheta: product.valor_ancheta // Agrega el valor de la ancheta
+          nombre_ancheta: product.nombre_ancheta,
+          valor_ancheta: product.valor_ancheta,
         };
       } else {
         return {
           id_producto: product.id_producto,
           cantidad: product.cantidad,
-          nombre_producto: product.nombre_producto, // Agrega el nombre de la ancheta
-          precio: product.precio
-          // Si estás trabajando con productos, también agrega sus detalles según sea necesario
+          nombre_producto: product.nombre_producto,
+          precio: product.precio,
         };
       }
     });
-    
+  
     const datosCompra = {
       detalleOrden: anchetasFiltradas,
       id_cliente: localStorage.getItem("registrationData")
         ? JSON.parse(localStorage.getItem("registrationData")).id_cliente
         : "",
       correo_cliente: correo_cliente,
+      direccion_entrega: deliveryAddress,
+      fecha_entrega: formattedDeliveryDateTime,
+      estado_pedido: "Pendiente",
     };
     
     const endpoint =
       allProducts.some((product) => product.id_ancheta !== undefined)
         ? endPoints.buy.postBuy
         : endPoints.buyPersonalize.postBuy;
-
+  
     try {
       const response = await axios.post(endpoint, datosCompra);
       if (response.status === 200) {
         setFacturaId(response.data.facturaId);
-        setResponseMessage("Compra exitosa. ID de factura: " + response.data.facturaId);
+        setResponseMessage(
+          "Compra exitosa. ID de factura: " + response.data.facturaId
+        );
         setShowConfirmation(true);
+  
+        // Limpia el carrito después de la compra
+        limpiarCarrito();
       } else {
-        setResponseMessage("Error al realizar la compra. " + response.data.message);
+        setResponseMessage(
+          "Error al realizar la compra. " + response.data.message
+        );
       }
     } catch (error) {
       console.error(error);
-      setResponseMessage("Error al realizar la compra. " + error.response.data.message);
+      setResponseMessage(
+        "Error al realizar la compra. " + error.response.data.message
+      );
     }
   };
+  console.log("Fecha de Entrega:", deliveryDate);
+console.log("Hora de Entrega:", deliveryTime);
+
 
   if (showConfirmation) {
     setTimeout(() => {
       navigate("/");
     }, 5000);
   }
+
   return (
-    <div className="container mx-auto p-4 mt-32 text-center">
+    <div className="container mx-auto p-4 mt-32 text-center p-4 shadow-md rounded-lg max-w-md mx-auto">
       <h1 className="text-3xl font-semibold mb-4 text-center text-fuchsia-950">
         Finaliza tu compra
       </h1>
       <p className="text-fuchsia-950">Precio total: ${totalPrice}</p>
-
+      {/* Otros campos del formulario */}
+      <div className="mb-4">
+        <label htmlFor="deliveryDate">Fecha de Entrega:</label>
+        <input
+          type="date"
+          id="deliveryDate"
+          className="w-full p-2 rounded-full focus:ring-pink-600"
+          onChange={(e) => setDeliveryDate(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="deliveryTime">Hora de Entrega:</label>
+        <input
+          type="time"
+          id="deliveryTime"
+          className="w-full p-2 rounded-full focus:ring-pink-600"
+          onChange={(e) => setDeliveryTime(e.target.value)}
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="deliveryAddress">Dirección de Entrega:</label>
+        <input
+          type="text"
+          id="deliveryAddress"
+          className="w-full p-2 rounded-full focus:ring-pink-600"
+          onChange={(e) => setDeliveryAddress(e.target.value)}
+        />
+      </div>
+      {/* Fin de los campos del formulario */}
       <div className="bg-white p-4 shadow-md rounded-lg max-w-md mx-auto mt-8 text-fuchsia-950 text-center items-center justify-center">
         <h2 className="text-2xl font-semibold mb-4 text-center text-fuchsia-950">
           Realiza tu pago por PSE
@@ -212,7 +265,7 @@ function Compra({ allProducts }) {
         {showConfirmation && (
           <div className="modal-container">
             <div className="modal">
-            <p>PAGO REALIZADO CON PSE</p>
+              <p>PAGO REALIZADO CON PSE</p>
               <img
                 src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/11/icono-carro-compra-tienda-compras-navidenas-compra-regalo-compra-exitosa-boton-desenfoque-degradado-construccion-vidrio-transparente-glassmorphism_399089-40401-e1699329000736.jpg"
                 alt="exito"

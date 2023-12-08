@@ -4,30 +4,32 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import endPoints from "../../../services/api";
 import { useForm } from "../../../hooks";
-import "./loginAdmin.css"
+import "./loginAdmin.css";
 
 
 const Login= () => {
   const { serialize } = useForm();
-  const [correoCliente, setCorreoCliente] = useState('');
-  const [contrasenia, setContrasenia] = useState('');
+  const [correoAdmin, setCorreoAdmin] = useState('');
+  const [contrasenia, setContrasenia_hash] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (ev) => {
     ev.preventDefault();
-    const formData = serialize(ev.target);
-
+  
+    // Cambia los nombres de los campos para que coincidan con el servidor
+    const formData = {
+      correo_admin: correoAdmin,
+      contrasenia_hash: contrasenia,
+    };
+  
     try {
-      const response = await axios.post(endPoints.admin.getLogin, formData, {
-        correo_cliente: correoCliente,
-        contrasenia: contrasenia,
-      });
+      const response = await axios.post(endPoints.admin.getLogin, formData);
       console.log(response);
       const token = response.data.token;
-
+  
       localStorage.setItem('token', token);
-      localStorage.setItem('correo_cliente', correoCliente);
-
+      localStorage.setItem('correo_admin', correoAdmin);
+  
       if (token) {
         navigate("/panel");
       }
@@ -36,7 +38,6 @@ const Login= () => {
       console.error('Error al iniciar sesión:', error);
     }
   };
-
   return (
     <>
     <div>
@@ -57,7 +58,7 @@ const Login= () => {
               className="my-updated-input rounded-full"
               id="exampleInputEmail1"
               placeholder="Ingresa tu correo"
-              onChange={(e) => setCorreoCliente(e.target.value)}
+              onChange={(e) => setCorreoAdmin(e.target.value)}
             />
             <input
               name="contrasenia"
@@ -65,7 +66,7 @@ const Login= () => {
               className="my-updated-input rounded-full"
               id="exampleInputPassword1"
               placeholder="Ingresa tu contraseña"
-              onChange={(e) => setContrasenia(e.target.value)}
+              onChange={(e) => setContrasenia_hash(e.target.value)}
             />
 
             <Button text="Ingresar" type="submit" />

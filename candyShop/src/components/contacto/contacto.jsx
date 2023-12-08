@@ -13,7 +13,7 @@ export default function Contacto() {
   const [agreed, setAgreed] = useState(false)
 
   return (
-<><div className='flex justify-center mt-40'>
+<><div className='flex justify-center mt-20'>
       <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/CONTACTANOS-1536x432.png" alt="" className='h-72 ' />
       </div>
       <div

@@ -15,8 +15,8 @@ const NavAdmin = () => {
   return (
     <div className="navbar">
       <div className="wrapper">
-        <div className="search">
-          <input type="text" placeholder="Search..." />
+        <div className="search rounded-full">
+          <input type="text" placeholder="Search..." className="rounded-full"/>
           <SearchOutlinedIcon />
         </div>
         <div className="items">

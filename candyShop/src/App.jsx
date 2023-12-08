@@ -29,7 +29,7 @@ import HomeAdmin from "./Admin/pages/Home/Home";
 import NuevaAncheta from "./Admin/pages/NuevaAncheta/NuevaAncheta";
 import Anchetas from "./Admin/pages/Anchetas/Anchetas";
 import ProductosAd from "./Admin/pages/Productos/Productos";
-
+import MisCompras from "./components/MisCompras/MisCompras";
 
 //import NavAdmin from "./layouts/NavAdmin/NavAdmin";
 //import Sidebar from "./layouts/SideBar/SideBar";*/
@@ -38,15 +38,42 @@ function App() {
   const [allProducts, setAllProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [countProducts, setCountProducts] = useState(0);
+  const id_cliente = JSON.parse(
+    localStorage.getItem("registrationData")
+  )?.id_cliente;
 
   const numbreProd = allProducts.length;
   console.log(numbreProd);
   console.log(allProducts);
 
+  const [carrito, setCarrito] = useState([]);
+
+  const limpiarCarrito = () => {
+    setCarrito([]);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-      <Route
+        <Route
+          path="/misCompras"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <MisCompras id_cliente={id_cliente} />
+              <Footer />
+            </>
+            
+          }
+        />
+        <Route
           path="/nuevaAncheta"
           element={
             <>
@@ -62,7 +89,7 @@ function App() {
             </>
           }
         />
-                <Route
+        <Route
           path="/anchetas-admin"
           element={
             <>
@@ -70,7 +97,7 @@ function App() {
             </>
           }
         />
-                <Route
+        <Route
           path="/productos-admin"
           element={
             <>
@@ -230,7 +257,8 @@ function App() {
                 countProducts={countProducts}
                 setCountProducts={setCountProducts}
               />
-              <Compra allProducts={allProducts} />
+             <Compra allProducts={allProducts} limpiarCarrito={limpiarCarrito} />
+
               <Modals />
               <Footer />
             </>

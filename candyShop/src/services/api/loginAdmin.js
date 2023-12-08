@@ -1,7 +1,7 @@
 import axios from 'axios';
 import endPoints from './index';
 
-const postLogin = async (body) => {
+const getLogin = async (body) => {
     const config = {
         headers: {
           accept: '*//*',

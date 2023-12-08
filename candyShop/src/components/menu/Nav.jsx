@@ -142,6 +142,11 @@ export const Nav = ({
           Perfil
         </span>
       </Link>
+      <Link to="/misCompras" className="block">
+        <span className="font-bold px-4 py-2 text-fuchsia-950 hover:text-pink-600">
+          Mis compras
+        </span>
+      </Link>
       <button
         onClick={handleLogout}
         className="block w-full px-4 py-2 text-left text-fuchsia-950 font-bold hover:text-pink-600"

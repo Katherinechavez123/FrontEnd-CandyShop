@@ -1,0 +1,32 @@
+/* MisCompras.css */
+.compras-list {
+  list-style: none;
+  padding: 0;
+}
+
+.compra-item {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.compra-detalle {
+  display: flex;
+  align-items: center;
+}
+
+.detalle-izquierdo {
+  margin-right: 20px;
+}
+
+.detalle-derecho {
+  flex: 1;
+}
+
+.detalle-derecho p {
+  margin: 5px 0;
+}
+
+.compra-detalle img {
+  max-width: 100px; /* Ajusta el tamaño máximo de la imagen según tus preferencias */
+}

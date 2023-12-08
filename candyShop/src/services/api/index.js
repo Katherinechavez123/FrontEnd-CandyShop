@@ -10,7 +10,8 @@ const endPoints = {
     cliente:{
         postRegister:`${API}/register`,
         getLogin:`${API}/auth`,
-        updateCliente:`${API}/register`
+        updateCliente:`${API}/register`,
+        myShopping:(id_cliente) => `${API}/historial-compras/${id_cliente}`
 
     },
     buy:{

@@ -25,7 +25,7 @@ export default function Cta() {
               queridos!
             </p>
             <h1 className="text-4xl mt-4 mb-20 text-fuchsia-950 font-light tracking-tight  sm:text-7xl fuente">
-              Desayunos sorpresa, regalos, sorpresas y anchetas
+              Desayunos sorpresa, regalos sorpresas y anchetas
             </h1>
             <div className="absolute ml-48">
               <Link to="/catalogo">

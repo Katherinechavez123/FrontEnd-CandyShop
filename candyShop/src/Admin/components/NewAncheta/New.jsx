@@ -5,6 +5,8 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 import { useState } from "react";
 import endPoints from "../../../services/api";
 import axios from "axios";
+import Button from "../../../components/Atoms/Button/Button";
+const API = import.meta.env.VITE_API_URL;
 
 const New = ({ onAddAncheta, onCancel }) => {
   const [file, setFile] = useState(null);
@@ -13,50 +15,57 @@ const New = ({ onAddAncheta, onCancel }) => {
   const [detalle, setDetalle] = useState("");
   const [categoria, setCategoria] = useState("");
   const [cantidadInventario, setCantidadInventario] = useState("");
-    const handleFileChange = (e) => {
-      const selectedFile = e.target.files[0];
-  
-      if (selectedFile) {
-        setFile(selectedFile);
-      }
-    };
-  
-    const handleAddClick = async () => {
-      try {
-        // Crea un objeto FormData para enviar la imagen al backend
-        const formData = new FormData();
-        formData.append("imagen", file);
-  
-        // Realiza una solicitud para subir la imagen y obtén la URL
-        const response = await axios.post(endPoints.admin.uploadImage, formData);
-        const urlImagenSubida = response.data.url; // Ajusta según la respuesta real del backend
-  
-        // Crea un objeto con los datos de la ancheta, incluida la URL de la imagen
-        const nuevaAncheta = {
-            nombre_ancheta: nombre,
-            valor_ancheta: valor,
-            url_imagen_ancheta: urlImagenSubida,
-            detalle_ancheta: detalle,
-            categoria: categoria,
-            cantidad_inventario: cantidadInventario,
-            // Agrega otros campos según tu modelo de datos
-          };
-          
-        // Realiza una solicitud para agregar la ancheta utilizando la URL correspondiente
-        await axios.post(endPoints.admin.insertAncheta, nuevaAncheta);
-  
-        // Llama a la función proporcionada por el padre para manejar la adición de la ancheta
-        onAddAncheta(nuevaAncheta);
-      } catch (error) {
-        console.error("Error al agregar la ancheta", error);
-        // Puedes manejar el error de alguna manera, por ejemplo, mostrando un mensaje al usuario
-      }
-    };
-  const handleCancelClick = () => {
-    // Llama a la función proporcionada por el padre para cancelar la operación
-    onCancel();
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
   };
 
+  const handleAddClick = async () => {
+    try {
+      // Crea un objeto FormData para enviar la imagen al backend
+      const formData = new FormData();
+      formData.append("imagen", file);
+
+      // Realiza una solicitud para subir la imagen y obtén la URL
+      const response = await axios.post(endPoints.admin.uploadImage, formData);
+      const urlImagenSubida = response.data.url; // Ajusta según la respuesta real del backend
+
+      // Crea un objeto con los datos de la ancheta, incluida la URL de la imagen
+      const nuevaAncheta = {
+        nombre_ancheta: nombre,
+        valor_ancheta: valor,
+        url_imagen_ancheta: urlImagenSubida,
+        detalle_ancheta: detalle,
+        categoria: categoria,
+        cantidad_inventario: cantidadInventario,
+        // Agrega otros campos según tu modelo de datos
+      };
+
+      // Realiza una solicitud para agregar la ancheta utilizando la URL correspondiente
+      await axios.post(`${API}/anchetas-admin`, nuevaAncheta);
+
+      // Llama a la función proporcionada por el padre para manejar la adición de la ancheta
+      onAddAncheta(nuevaAncheta);
+    } catch (error) {
+      console.error("Error al agregar la ancheta", error);
+      // Puedes manejar el error de alguna manera, por ejemplo, mostrando un mensaje al usuario
+    }
+  };
+  const handleCancelClick = () => {
+    const isConfirmed = window.confirm("¿Estás seguro que deseas cancelar?");
+    
+    if (isConfirmed) {
+      // Llama a la función proporcionada por el padre para cancelar la operación
+      onCancel();
+  
+      // Redirige a la ruta "anchetas-admin"
+      window.location.href = "/anchetas-admin";
+    }
+  };
+  
   return (
     <div className="new">
       <div className="newContainer">
@@ -67,7 +76,11 @@ const New = ({ onAddAncheta, onCancel }) => {
           <div className="left">
             <label htmlFor="file" className="fileLabel">
               <img
-                src={file ? URL.createObjectURL(file) : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"}
+                src={
+                  file
+                    ? URL.createObjectURL(file)
+                    : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                }
                 alt=""
                 className="previewImage"
               />
@@ -132,12 +145,18 @@ const New = ({ onAddAncheta, onCancel }) => {
                 />
               </div>
 
-              <button type="button" onClick={handleAddClick}>
-                Añadir Ancheta
-              </button>
-              <button type="button" onClick={handleCancelClick}>
-                Cancelar
-              </button>
+              <Button
+                type="button"
+                onClick={handleAddClick}
+                text={"Añadir Ancheta"}
+              ></Button>
+
+              <Button
+                type="button"
+                onClick={handleCancelClick}
+                text={"Cancelar"}
+              ></Button>
+
             </form>
           </div>
         </div>
