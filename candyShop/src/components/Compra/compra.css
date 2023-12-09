@@ -1,40 +1,95 @@
-/* Estilos para el contenedor del modal */
-.modal-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999; /* Asegura que esté en la parte superior de todos los elementos */
+/* Estilos para el modal principal */
+.factura-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para el contenido del modal */
+.factura-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+
+}
+
+/* Estilos para la sección del encabezado */
+.factura-header {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para la imagen del encabezado */
+.factura-image {
+  width: 100%;
+  max-width: 150px; /* Ajusta según tu preferencia */
+  height: auto;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilos para el título del encabezado */
+.factura-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Estilos para la sección de información */
+.factura-info-section {
+  margin-bottom: 20px;
+}
+
+/* Estilos para las secciones de detalles */
+.factura-section {
+  margin-bottom: 20px;
+}
+
+/* Estilos para la tabla de productos */
+.factura-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.factura-table th, .factura-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Estilos para la información del total pagado */
+.factura-total {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* Estilos para la sección de botones */
+.factura-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Estilos para los botones */
+.factura-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .factura-content {
+    width: 90%;
   }
-  
-  
-  
-  /* Ajusta los estilos según tus preferencias */
-  /* Estilos para el cuadro blanco del modal */
-.modal {
-    background: white;
-    border-radius: 10px;
-    padding: 30px; /* Aumenta el espacio interno para hacerlo un poco más grande */
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  }
-  
-  /* Estilos para la imagen */
-  .modal img {
-    width: 100px; /* Ajusta el tamaño de la imagen según tus preferencias */
-    height: 100px;
-    margin: 0 auto; /* Centra la imagen horizontalmente */
-    display: block; /* Asegura que la imagen esté centrada correctamente */
-  }
-  
-  /* Estilos para el texto del mensaje de confirmación */
-  .modal p {
-    font-size: 18px; /* Aumenta el tamaño del texto si es necesario */
-    color: #333;
-  }
-  
+}

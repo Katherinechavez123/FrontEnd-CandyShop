@@ -6,20 +6,23 @@ import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { BiGift } from "react-icons/bi";
-import "./SideBar.scss"
+import "./SideBar.scss";
 
 const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
-       <img src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/logo-v1-01.png" alt="" className="logosidebar"/>
+          <img
+            src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/logo-v1-01.png"
+            alt=""
+            className="logosidebar"
+          />
         </Link>
       </div>
       <hr />
       <div className="center">
         <ul>
-
           <li>
             <DashboardIcon className="icon" />
             <span>Panel</span>
@@ -31,16 +34,18 @@ const Sidebar = () => {
               <span>Productos</span>
             </li>
           </Link>
-<Link to={"/anchetas-admin"}>
-          <li>
-            <BiGift className="icon" />
-            <span>Anchetas</span>
-          </li>
+          <Link to={"/anchetas-admin"}>
+            <li>
+              <BiGift className="icon" />
+              <span>Anchetas</span>
+            </li>
           </Link>
-          <li>
-            <CreditCardIcon className="icon" />
-            <span>Ordenes</span>
-          </li>
+          <Link to={"/ventas"}>
+            <li>
+              <CreditCardIcon className="icon" />
+              <span>Ventas</span>
+            </li>
+          </Link>
 
           <li>
             <AccountCircleOutlinedIcon className="icon" />

@@ -30,6 +30,8 @@ import NuevaAncheta from "./Admin/pages/NuevaAncheta/NuevaAncheta";
 import Anchetas from "./Admin/pages/Anchetas/Anchetas";
 import ProductosAd from "./Admin/pages/Productos/Productos";
 import MisCompras from "./components/MisCompras/MisCompras";
+import NuevoProductoo from "./Admin/pages/NuevoProducto/NuevoProducto";
+import Ventas from "./Admin/pages/VentasAdmin/Ventas";
 
 //import NavAdmin from "./layouts/NavAdmin/NavAdmin";
 //import Sidebar from "./layouts/SideBar/SideBar";*/
@@ -70,7 +72,22 @@ function App() {
               <MisCompras id_cliente={id_cliente} />
               <Footer />
             </>
-            
+          }
+        />
+        <Route
+          path="/nuevoProducto"
+          element={
+            <>
+              <NuevoProductoo />
+            </>
+          }
+        />
+        <Route
+          path="/ventas"
+          element={
+            <>
+              <Ventas />
+            </>
           }
         />
         <Route
@@ -257,10 +274,13 @@ function App() {
                 countProducts={countProducts}
                 setCountProducts={setCountProducts}
               />
-             <Compra allProducts={allProducts} limpiarCarrito={limpiarCarrito} />
+              <Compra
+                allProducts={allProducts}
+                limpiarCarrito={limpiarCarrito}
+              />
 
               <Modals />
-              <Footer />
+
             </>
           }
         />
