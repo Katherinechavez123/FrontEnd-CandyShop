@@ -5,7 +5,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-
+import { BiGift } from "react-icons/bi";
 import "./SideBar.scss"
 
 const Sidebar = () => {
@@ -33,7 +33,7 @@ const Sidebar = () => {
           </Link>
 <Link to={"/anchetas-admin"}>
           <li>
-            <LocalShippingIcon className="icon" />
+            <BiGift className="icon" />
             <span>Anchetas</span>
           </li>
           </Link>
