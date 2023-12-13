@@ -31,7 +31,7 @@ const Login= () => {
       localStorage.setItem('correo_admin', correoAdmin);
   
       if (token) {
-        navigate("/panel");
+        navigate("/panelAdmin");
       }
       return null;
     } catch (error) {

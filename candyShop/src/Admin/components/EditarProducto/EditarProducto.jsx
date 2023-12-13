@@ -1,12 +1,9 @@
-// NewProducto.jsx
-import "./New.scss";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// Importa las bibliotecas necesarias y los estilos
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Button from "../../../components/Atoms/Button/Button";
 
-const API = import.meta.env.VITE_API_URL;
-// ModalError.jsx
 const ModalError = ({ message, onClose }) => (
   <div className="modal modal-error">
     <div className="modal-content">
@@ -27,46 +24,73 @@ const ModalConfirm = ({ message, onConfirm, onCancel }) => (
   </div>
 );
 
-const NewProducto = ({ onAddProducto, onCancel }) => {
-  const [nombre, setNombre] = useState("");
-  const [tipo, setTipo] = useState("");
+const API = import.meta.env.VITE_API_URL;
+
+// Define el componente EditarProducto
+const EditarProducto = ({ onUpdateProduct, onCancel }) => {
+  // Estado para almacenar los datos del producto
+  const [nombre_producto, setNombre] = useState("");
+  const [tipo_producto, setTipo] = useState("");
   const [precio, setPrecio] = useState("");
-  const [cantidadInventario, setCantidadInventario] = useState("");
+  const [cantidad_productos_inventario, setCantidadInventario] = useState("");
   const [file, setFile] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [modalError, setModalError] = useState(null);
+  const [modalCancel, setModalCancel] = useState(null);
   const [modalConfirm, setModalConfirm] = useState(null);
-
-  // Define el estado de los mensajes de error
+  // Estado para los mensajes de error
   const [errorMessages, setErrorMessages] = useState({
     nombre: "",
     tipo: "",
     precio: "",
-    cantidadInventario: "",
+    cantidad_productos_inventario: "",
     file: "",
   });
 
+  // Obtén el ID del producto de los parámetros de la URL
+  const { id } = useParams();
+
+  // Objeto de navegación para redirigir después de la actualización
   const navigate = useNavigate();
+
+  // En el useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API}/productos-admin/${id}`);
+        const productData = response.data.product;
+
+        setNombre(productData.nombre_producto || "");
+        setTipo(productData.tipo_producto || "");
+        setPrecio(productData.precio || "");
+        setCantidadInventario(productData.cantidad_productos_inventario || "");
+      } catch (error) {
+        console.error("Error al cargar los datos del producto", error);
+        // Maneja el error según tus necesidades
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    console.log("Selected File:", selectedFile);
     setFile(selectedFile);
   };
-
   const validateFields = () => {
     const errors = {};
-    if (!nombre.trim()) {
-      errors.nombre = "El nombre es obligatorio.";
+    if (!nombre_producto.trim()) {
+      errors.nombre_producto = "El nombre es obligatorio.";
     }
-    if (!tipo.trim()) {
-      errors.tipo = "El tipo es obligatorio.";
+    if (!tipo_producto.trim()) {
+      errors.tipo_producto = "El tipo es obligatorio.";
     }
-    if (!precio.trim()) {
+    if (!`${precio}`.trim()) {
       errors.precio = "El precio es obligatorio.";
     }
-    if (!cantidadInventario.trim()) {
-      errors.cantidadInventario = "La cantidad en inventario es obligatoria.";
+    
+    if (!`${cantidad_productos_inventario}`.trim()) {
+      errors.cantidad_productos_inventario = "La cantidad en inventario es obligatoria.";
     }
     if (!file) {
       errors.file = "La imagen es obligatoria.";
@@ -74,34 +98,53 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
     setErrorMessages(errors);
     return errors;
   };
-
-  const handleAddClick = async () => {
+  
+  const handleUpdateClick = async () => {
     const errors = validateFields();
 
     if (Object.keys(errors).length > 0) {
       const errorMessage = "Por favor, completa todos los campos.";
-      setModalError(<ModalError message={errorMessage} onClose={() => setModalError(null)} />);
+      setModalError(
+        <ModalError message={errorMessage} onClose={() => setModalError(null)} />
+      );
       return;
     }
 
     try {
       const formData = new FormData();
 
-      formData.append("url_imagen_producto", file);
-      formData.append("nombre_producto", nombre);
-      formData.append("tipo_producto", tipo);
+      if (file) {
+        formData.append("url_imagen_producto", file);
+      } else {
+        const response = await axios.get(`${API}/productos-admin/${id}`);
+        const productData = response.data.product;
+        if (productData.url_imagen_producto) {
+          formData.append(
+            "url_imagen_producto",
+            productData.url_imagen_producto
+          );
+        }
+      }
+
+      formData.append("nombre_producto", nombre_producto);
+      formData.append("tipo_producto", tipo_producto);
       formData.append("precio", precio);
-      formData.append("cantidad_productos_inventario", cantidadInventario);
+      formData.append(
+        "cantidad_productos_inventario",
+        cantidad_productos_inventario
+      );
 
-      const response = await axios.post(`${API}/productos-admin`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.put(
+        `${API}/productos-admin/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      const responseImageUrl = response.data.imageUrl;
-
-      onAddProducto && onAddProducto();
+      onUpdateProduct && onUpdateProduct();
 
       setShowSuccessMessage(true);
 
@@ -110,8 +153,11 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
         navigate("/productos-admin");
       }, 2000);
     } catch (error) {
-      const errorMessage = "Error al agregar el producto. Inténtalo de nuevo.";
-      setModalError(<ModalError message={errorMessage} onClose={() => setModalError(null)} />);
+      const errorMessage =
+        "Error al actualizar el producto. Inténtalo de nuevo.";
+      setModalError(
+        <ModalError message={errorMessage} onClose={() => setModalError(null)} />
+      );
     }
   };
 
@@ -130,11 +176,12 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
     );
   };
 
+
   return (
     <div className="new">
       <div className="newContainer">
         <div className="top">
-          <h1>Añadir Nuevo Producto</h1>
+          <h1>Editar Producto</h1>
         </div>
         <div className="bottom">
           <div className="right">
@@ -145,7 +192,7 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
                   type="text"
                   className="rounded-full"
                   placeholder="Nombre del producto"
-                  value={nombre}
+                  value={nombre_producto}
                   onChange={(e) => setNombre(e.target.value)}
                 />
                 {errorMessages.nombre && (
@@ -159,7 +206,7 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
                   type="text"
                   className="rounded-full"
                   placeholder="Tipo del producto"
-                  value={tipo}
+                  value={tipo_producto}
                   onChange={(e) => setTipo(e.target.value)}
                 />
                 {errorMessages.tipo && (
@@ -187,11 +234,15 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
                   type="number"
                   className="rounded-full"
                   placeholder="Cantidad en inventario"
-                  value={cantidadInventario}
-                  onChange={(e) => setCantidadInventario(e.target.value)}
+                  value={cantidad_productos_inventario}
+                  onChange={(e) =>
+                    setCantidadInventario(e.target.value)
+                  }
                 />
-                {errorMessages.cantidadInventario && (
-                  <span className="error-message">{errorMessages.cantidadInventario}</span>
+                {errorMessages.cantidad_productos_inventario && (
+                  <span className="error-message">
+                    {errorMessages.cantidad_productos_inventario}
+                  </span>
                 )}
               </div>
 
@@ -211,8 +262,8 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
 
               <Button
                 type="button"
-                onClick={handleAddClick}
-                text={"Añadir Producto"}
+                onClick={handleUpdateClick}
+                text={"Actualizar"}
               ></Button>
 
               <Button
@@ -224,6 +275,7 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
           </div>
         </div>
       </div>
+
       {showSuccessMessage && (
         <div className="modal-container">
           <div className="modal">
@@ -231,7 +283,7 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
               src="http://localhost:10101/img/newProductoPersonalizado-1702394377617.png"
               alt="exito"
             />
-            <p>¡Producto Agregado!</p>
+            <p>¡Producto Actualizado!</p>
           </div>
         </div>
       )}
@@ -240,5 +292,5 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
     </div>
   );
 };
-export { NewProducto, ModalConfirm, ModalError };
 
+export default EditarProducto;

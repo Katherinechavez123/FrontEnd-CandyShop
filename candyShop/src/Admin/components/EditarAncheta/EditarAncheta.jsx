@@ -1,33 +1,17 @@
+// Importa las bibliotecas necesarias y los estilos
 import "./New.scss";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Button from "../../../components/Atoms/Button/Button";
+import { ModalConfirm, ModalError } from "../NewProducto/New";
 
 const API = import.meta.env.VITE_API_URL;
 
-const ModalError = ({ message, onClose }) => (
-  <div className="modal modal-error">
-    <div className="modal-content">
-      <p>{message}</p>
-      <button onClick={onClose}>Cerrar</button>
-    </div>
-  </div>
-);
-
-// ModalConfirm.jsx
-const ModalConfirm = ({ message, onConfirm, onCancel }) => (
-  <div className="modal modal-confirm">
-    <div className="modal-content">
-      <p>{message}</p>
-      <button onClick={onConfirm}>Confirmar</button>
-      <button onClick={onCancel}>Cancelar</button>
-    </div>
-  </div>
-);
-
-const New = ({ onAddAncheta, onCancel }) => {
-  const [nombre, setNombre] = useState("");
+// Define el componente EditarAncheta
+const EditarAncheta = ({ onUpdateAncheta, onCancel }) => {
+  // Estado para almacenar los datos de la ancheta
+  const [nombre_ancheta, setNombre] = useState("");
   const [valor, setValor] = useState("");
   const [detalle, setDetalle] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -36,22 +20,56 @@ const New = ({ onAddAncheta, onCancel }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [modalError, setModalError] = useState(null);
   const [modalConfirm, setModalConfirm] = useState(null);
-  const [errorMessages, setErrorMessages] = useState({});
 
+  // Obtiene el ID de la ancheta de los parámetros de la URL
+  const { id } = useParams();
+
+  // Objeto de navegación para redirigir después de la actualización
   const navigate = useNavigate();
 
+  // Hook useEffect para cargar los datos de la ancheta al montar el componente
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Realiza una solicitud para obtener los datos de la ancheta por su ID
+        const response = await axios.get(`${API}/anchetas-admin/${id}`);
+        const anchetaData = response.data.product;
+
+        // Actualiza el estado con los datos de la ancheta
+        setNombre(anchetaData.nombre_ancheta || "");
+        setValor(anchetaData.valor_ancheta || "");
+        setDetalle(anchetaData.detalle_ancheta || "");
+        setCategoria(anchetaData.categoria || "");
+        setCantidadInventario(anchetaData.cantidad_inventario || "");
+      } catch (error) {
+        console.error("Error al cargar los datos de la ancheta", error);
+        // Maneja el error de acuerdo a tus necesidades
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  // Manejador de cambio de archivo
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    console.log("Selected File:", selectedFile);
     setFile(selectedFile);
   };
+  const [errorMessages, setErrorMessages] = useState({
+    nombre: "",
+    tipo: "",
+    precio: "",
+    cantidadInventario: "",
+    file: "",
+  });
 
+  // Validaciones para campos obligatorios
   const validateFields = () => {
     const errors = {};
-    if (!nombre.trim()) {
-      errors.nombre = "El nombre es obligatorio.";
+    if (!nombre_ancheta.trim()) {
+      errors.nombre_ancheta = "El nombre es obligatorio.";
     }
-    if (!valor.trim()) {
+    if (!`${valor}`.trim()) {
       errors.valor = "El valor es obligatorio.";
     }
     if (!detalle.trim()) {
@@ -60,7 +78,7 @@ const New = ({ onAddAncheta, onCancel }) => {
     if (!categoria.trim()) {
       errors.categoria = "La categoría es obligatoria.";
     }
-    if (!cantidadInventario.trim()) {
+    if (!`${cantidadInventario}`.trim()) {
       errors.cantidadInventario = "La cantidad en inventario es obligatoria.";
     }
     if (!file) {
@@ -70,7 +88,8 @@ const New = ({ onAddAncheta, onCancel }) => {
     return errors;
   };
 
-  const handleAddClick = async () => {
+  // Manejador de clic en el botón de actualizar
+  const handleUpdateClick = async () => {
     const errors = validateFields();
 
     if (Object.keys(errors).length > 0) {
@@ -85,36 +104,43 @@ const New = ({ onAddAncheta, onCancel }) => {
       const formData = new FormData();
 
       formData.append("url_imagen_ancheta", file);
-      formData.append("nombre_ancheta", nombre);
+      formData.append("nombre_ancheta", nombre_ancheta);
       formData.append("valor_ancheta", valor);
       formData.append("detalle_ancheta", detalle);
       formData.append("categoria", categoria);
       formData.append("cantidad_inventario", cantidadInventario);
 
-      const response = await axios.post(`${API}/anchetas-admin`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.put(
+        `${API}/anchetas-admin/${id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-      const responseImageUrl = response.data.imageUrl;
-
-      onAddAncheta && onAddAncheta();
-
+      // Llama a la función de actualización proporcionada como prop
+      onUpdateAncheta && onUpdateAncheta();
+      // Muestra el mensaje de éxito
       setShowSuccessMessage(true);
 
+      // Después de 2 segundos, oculta el mensaje y redirige
       setTimeout(() => {
         setShowSuccessMessage(false);
+        // Redirige a la página de anchetas después de la actualización
         navigate("/anchetas-admin");
       }, 2000);
     } catch (error) {
-      const errorMessage = "Error al agregar la ancheta. Inténtalo de nuevo.";
+      const errorMessage =
+        "Error al actualizar la ancheta. Inténtalo de nuevo.";
       setModalError(
         <ModalError message={errorMessage} onClose={() => setModalError(null)} />
       );
     }
   };
 
+  // Manejador de clic en el botón de cancelar
   const handleCancelClick = () => {
     const confirmationMessage = "¿Estás seguro que deseas cancelar?";
     setModalConfirm(
@@ -130,11 +156,12 @@ const New = ({ onAddAncheta, onCancel }) => {
     );
   };
 
+  // Renderiza el componente
   return (
     <div className="new">
       <div className="newContainer">
         <div className="top">
-          <h1>Añadir Nueva Ancheta</h1>
+          <h1>Editar Ancheta</h1>
         </div>
         <div className="bottom">
           <div className="right">
@@ -145,11 +172,11 @@ const New = ({ onAddAncheta, onCancel }) => {
                   type="text"
                   className="rounded-full"
                   placeholder="Nombre de la ancheta"
-                  value={nombre}
+                  value={nombre_ancheta}
                   onChange={(e) => setNombre(e.target.value)}
                 />
-                {errorMessages.nombre && (
-                  <span className="error-message">{errorMessages.nombre}</span>
+                {errorMessages.nombre_ancheta && (
+                  <span className="error-message">{errorMessages.nombre_ancheta}</span>
                 )}
               </div>
 
@@ -223,8 +250,17 @@ const New = ({ onAddAncheta, onCancel }) => {
                 )}
               </div>
 
-              <Button type="button" onClick={handleAddClick} text={"Añadir Ancheta"}></Button>
-              <Button type="button" onClick={handleCancelClick} text={"Cancelar"}></Button>
+              <Button
+                type="button"
+                onClick={handleUpdateClick}
+                text={"Actualizar"}
+              ></Button>
+
+              <Button
+                type="button"
+                onClick={handleCancelClick}
+                text={"Cancelar"}
+              ></Button>
             </form>
           </div>
         </div>
@@ -237,16 +273,14 @@ const New = ({ onAddAncheta, onCancel }) => {
               src="http://localhost:10101/img/newProductoPersonalizado-1702394377617.png"
               alt="exito"
             />
-            <p>¡Ancheta Agregada!</p>
+            <p>¡Ancheta Actualizada!</p>
           </div>
         </div>
       )}
-
       {modalError}
-
       {modalConfirm}
     </div>
   );
 };
 
-export default New;
+export default EditarAncheta;

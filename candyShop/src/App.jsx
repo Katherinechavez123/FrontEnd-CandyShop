@@ -32,7 +32,8 @@ import ProductosAd from "./Admin/pages/Productos/Productos";
 import MisCompras from "./components/MisCompras/MisCompras";
 import NuevoProductoo from "./Admin/pages/NuevoProducto/NuevoProducto";
 import Ventas from "./Admin/pages/VentasAdmin/Ventas";
-
+import EditarAn from "./Admin/pages/EditarAn/EditarAn";
+import EditarPro from "./Admin/pages/EditarPro/EditarPro";
 //import NavAdmin from "./layouts/NavAdmin/NavAdmin";
 //import Sidebar from "./layouts/SideBar/SideBar";*/
 
@@ -43,7 +44,7 @@ function App() {
   const id_cliente = JSON.parse(
     localStorage.getItem("registrationData")
   )?.id_cliente;
-
+  
   const numbreProd = allProducts.length;
   console.log(numbreProd);
   console.log(allProducts);
@@ -82,6 +83,15 @@ function App() {
             </>
           }
         />
+         <Route
+          path="//editar-ancheta/:id"
+          element={
+            <>
+              <EditarAn />
+            </>
+          }
+        />
+         <Route path="/editarProducto/:id" element={<EditarPro />} />
         <Route
           path="/ventas"
           element={
@@ -130,16 +140,7 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/panel"
-          element={
-            <>
-              <NavAdmin />
-              <Sidebar />
-              <Panel />
-            </>
-          }
-        />
+
 
         <Route
           path="/"
@@ -338,7 +339,9 @@ function App() {
                 setTotal={setTotal}
                 countProducts={countProducts}
                 setCountProducts={setCountProducts}
+                
               />
+
               <Personalizar
                 allProducts={allProducts}
                 setAllProducts={setAllProducts}

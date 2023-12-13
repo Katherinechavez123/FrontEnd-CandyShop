@@ -15,31 +15,31 @@ const VerDetalle = ({
 }) => {
   const { id_ancheta } = useParams();
   const [ancheta, setAncheta] = useState(null);
+
   const onAddProduct = async (anchetaId) => {
-    let updatedProducts; // Define la variable aquí
-  
     try {
       const response = await axios.get(
         endPoints.anchetas.getAncheta(anchetaId)
       );
-  
       const newAncheta = response.data.getProductById[0];
-  
+
       const existingProduct = allProducts.find(
         (item) => item.id_ancheta === newAncheta.id_ancheta
       );
-  
+
+      let updatedProducts;
+
       if (existingProduct) {
         updatedProducts = allProducts.map((item) =>
           item.id_ancheta === newAncheta.id_ancheta
             ? { ...item, cantidad: item.cantidad + 1 }
             : item
         );
-        setAllProducts(updatedProducts);
       } else {
         updatedProducts = [...allProducts, { ...newAncheta, cantidad: 1 }];
-        setAllProducts(updatedProducts);
       }
+
+      setAllProducts(updatedProducts);
       localStorage.setItem("cart", JSON.stringify(updatedProducts));
       setTotal(total + newAncheta.valor_ancheta);
       setCountProducts(countProducts + 1);
@@ -47,9 +47,7 @@ const VerDetalle = ({
       console.error("Error al obtener los detalles de la ancheta:", error);
     }
   };
-  
-  
-  
+
   useEffect(() => {
     async function fetchAncheta() {
       try {
@@ -71,19 +69,31 @@ const VerDetalle = ({
     return <div>Cargando...</div>;
   }
 
+  // Función para formatear el precio
+  const formatPrice = (price) => {
+    if (typeof price === "string") {
+      const numericValue = parseFloat(price.replace(/[^\d.-]/g, ""));
+      if (!isNaN(numericValue)) {
+        return numericValue.toLocaleString("es-ES");
+      }
+    } else if (typeof price === "number") {
+      return price.toLocaleString("es-ES");
+    }
+
+    return price;
+  };
+
   return (
     <div className="bg-white">
       <div className="pt-6 mt-16">
         <div className="mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 lg:px-8 py-10">
-          {/* Columna de la imagen */}
           <div className="hidden lg:block overflow-hidden rounded-lg">
             <img
               src={ancheta.url_imagen_ancheta}
-              className="mx-auto my-auto w-2/3 lg:w-full h-full"
+              className="mx-auto my-auto w-96 h-auto"
               alt="Imagen de la ancheta"
             />
           </div>
-
           {/* Columna de los detalles */}
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-pink-600 mb-4">
@@ -95,15 +105,19 @@ const VerDetalle = ({
             </p>
 
             <p className="text-3xl tracking-tight text-fuchsia-950 mb-4">
-              ${ancheta.valor_ancheta}
+              ${formatPrice(ancheta.valor_ancheta)}
             </p>
 
-            <Button 
-            onClick={(e) => onAddProduct(id_ancheta)}
-            text="Añadir al carrito" />
-            
+            <Button
+              onClick={(e) => onAddProduct(id_ancheta)}
+              text="Añadir al carrito"
+            />
+
             {/* Enlace de vuelta al catálogo */}
-            <nav aria-label="Breadcrumb" className="items-start justify-start text-left">
+            <nav
+              aria-label="Breadcrumb"
+              className="items-start justify-start text-left"
+            >
               <Link
                 to="/catalogo"
                 className="text-pink-600 hover:text-cyan-400 mt-8 text-xl underline items-start justify-start text-left"
@@ -116,7 +130,6 @@ const VerDetalle = ({
       </div>
     </div>
   );
-}
+};
 
 export default VerDetalle;
- 

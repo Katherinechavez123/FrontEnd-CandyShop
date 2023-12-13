@@ -39,6 +39,18 @@ const Productos = ({
       console.error("Error al obtener los productos:", error);
     }
   }
+  const formatPrice = (price) => {
+    if (typeof price === 'string') {
+      const numericValue = parseFloat(price.replace(/[^\d.-]/g, ''));
+      if (!isNaN(numericValue)) {
+        return numericValue.toLocaleString('es-ES');
+      }
+    } else if (typeof price === 'number') {
+      return price.toLocaleString('es-ES');
+    }
+  
+    return price;
+  };
 
   useEffect(() => {
     getAnchetas();
@@ -59,7 +71,7 @@ const Productos = ({
     const existingProduct = allProducts.find(
       (item) => item.id_ancheta === ancheta.id_ancheta
     );
-
+  
     if (existingProduct) {
       const updatedProducts = allProducts.map((item) =>
         item.id_ancheta === ancheta.id_ancheta
@@ -67,19 +79,19 @@ const Productos = ({
           : item
       );
       setAllProducts(updatedProducts);
-      setTotal(total + ancheta.valor_ancheta);
+      setTotal(total + parseFloat(formatPrice(ancheta.valor_ancheta)));
       setCountProducts(countProducts + 1);
       localStorage.setItem("cart", JSON.stringify(updatedProducts));
     } else {
       const newProduct = { ...ancheta, cantidad: 1 };
       const updatedProducts = [...allProducts, newProduct];
       setAllProducts(updatedProducts);
-      setTotal(total + ancheta.valor_ancheta);
+      setTotal((prevTotal) => prevTotal + parseFloat(formatPrice(ancheta.valor_ancheta)));
       setCountProducts(countProducts + 1);
       localStorage.setItem("cart", JSON.stringify(updatedProducts));
     }
   };
-
+  
   return (
     <>
       <Title />
@@ -140,7 +152,7 @@ const Productos = ({
                   {ancheta.nombre_ancheta}
                 </h3>
                 <p className="text-sm font-medium text-gray-900">
-                  ${ancheta.valor_ancheta}
+                ${formatPrice(ancheta.valor_ancheta)}
                 </p>
                 <br />
               </div>

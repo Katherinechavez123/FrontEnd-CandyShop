@@ -17,7 +17,7 @@
   
   .sales-container {
     max-width: 1200px;
-    margin: 0 auto;
+
     padding: 1rem;
   }
   
@@ -46,20 +46,19 @@
   
   .sales-table th,
   .sales-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #e9cce0;
     padding: 0.5rem;
     text-align: center;
   }
   
   .sales-table th {
-    background-color: #f2f2f2;
+    background-color: #f0e3eb;
   }
   
   .filter select,
   .export-button button {
     padding: 0.5rem;
     border: 1px solid #ddd;
-    border-radius: 4px;
     cursor: pointer;
   }
   
@@ -73,4 +72,10 @@
     background-color: #45a049;
   }
   
-  
+  .search {
+    display: flex;
+    align-items: center;
+    border: 0.5px solid lightgray;
+    padding: 3px;
+    
+  }

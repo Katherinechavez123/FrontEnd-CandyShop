@@ -18,8 +18,7 @@
   /* Estilos para el cuadro blanco del modal */
 .modal {
     background: white;
-    border-radius: 10px;
-    padding: 30px; /* Aumenta el espacio interno para hacerlo un poco más grande */
+    padding: 60px; /* Aumenta el espacio interno para hacerlo un poco más grande */
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   }

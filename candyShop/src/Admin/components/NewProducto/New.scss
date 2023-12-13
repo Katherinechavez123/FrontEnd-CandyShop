@@ -96,3 +96,69 @@
     width: 90%;
   }
 }
+
+/* Estilos para el contenedor del modal */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Asegura que esté en la parte superior de todos los elementos */
+}
+
+
+/* Ajusta los estilos según tus preferencias */
+/* Estilos para el cuadro blanco del modal */
+.modal {
+  background: white;
+  padding: 60px; /* Aumenta el espacio interno para hacerlo un poco más grande */
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para la imagen */
+.modal img {
+  width: 100px; /* Ajusta el tamaño de la imagen según tus preferencias */
+  height: 100px;
+  margin: 0 auto; /* Centra la imagen horizontalmente */
+  display: block; /* Asegura que la imagen esté centrada correctamente */
+}
+
+/* Estilos para el texto del mensaje de confirmación */
+.modal p {
+  font-size: 18px; /* Aumenta el tamaño del texto si es necesario */
+  color: #333;
+}
+
+/* New.scss o tu hoja de estilos global */
+
+.modal-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Estilos específicos para la ventana de error */
+.modal-error {
+  background-color: #ffffff; /* Color de fondo rojo para errores */
+}
+
+/* Estilos específicos para la ventana de confirmación */
+.modal-confirm {
+  background-color: #ffffff; /* Color de fondo azul para confirmaciones */
+}
+
+/* Otros estilos según tus preferencias */
+.modal button {
+  background-color: #fccee9; /* Color de fondo verde para botones */
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}

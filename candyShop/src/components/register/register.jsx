@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "react-feather";
 import "./register.css";
 import { FiAlertTriangle } from "react-icons/fi";
+import { FaFacebook, FaWhatsapp, FaInstagram } from "react-icons/fa";
 
 const Register = () => {
   const { serialize } = useForm();
@@ -17,20 +18,54 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
   const [nombreCliente, setNombreCliente] = useState("");
-  
+
   const toggleShowConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
+
   const registerForm = async (ev) => {
     ev.preventDefault();
     const formData = serialize(ev.target);
 
+    // Validación de la contraseña
+    const contraseña = formData.contrasenia;
+    const tieneMayuscula = /[A-Z]/.test(contraseña);
+    const tieneMinuscula = /[a-z]/.test(contraseña);
+    const tieneNumero = /\d/.test(contraseña);
+    const tieneEspecial = /[!@#$%^&*(),.?":{}|<>]/.test(contraseña);
+
+    if (!(tieneMayuscula && tieneMinuscula && tieneNumero && tieneEspecial)) {
+      setErrorMessage("Formato de contraseña incorrecto.");
+      return;
+    }
+    if (formData.contrasenia !== formData.confirmar_contrasenia) {
+      setPasswordError("Las contraseñas no coinciden.");
+      return;
+    } else {
+      setPasswordError(""); // Reiniciar el mensaje de error si las contraseñas coinciden
+    }
+      // Validar campos obligatorios
+  const requiredFields = ["id_cliente", "nombre_cliente", "direccion_cliente", "ciudad_cliente", "telefono_cliente", "correo_cliente", "contrasenia", "confirmar_contrasenia"];
+  const emptyFields = requiredFields.filter(field => !formData[field]);
+
+  if (emptyFields.length > 0) {
+    setErrorMessage("Todos los campos son obligatorios.");
+    return;
+  } else {
+    setErrorMessage(""); // Reiniciar el mensaje de error si todos los campos están llenos
+  }
     try {
-      const response = await axios.post(endPoints.cliente.postRegister, formData);
+      const response = await axios.post(
+        endPoints.cliente.postRegister,
+        formData
+      );
 
       // Guardar datos de registro en localStorage
       localStorage.setItem("registrationData", JSON.stringify(formData));
@@ -44,11 +79,15 @@ const Register = () => {
       }, 3000); // Redirigir después de 3 segundos
     } catch (error) {
       if (error.response) {
-        setErrorMessage("*Hubo un error en el registro*");
+        setErrorMessage("Hubo un error en el registro");
       } else if (error.request) {
-        setErrorMessage("No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.");
+        setErrorMessage(
+          "No se pudo conectar con el servidor. Inténtalo de nuevo más tarde."
+        );
       } else {
-        setErrorMessage("Ocurrió un error desconocido. Por favor, inténtalo de nuevo.");
+        setErrorMessage(
+          "Ocurrió un error desconocido. Por favor, inténtalo de nuevo."
+        );
       }
     }
   };
@@ -88,14 +127,14 @@ const Register = () => {
               type="text"
               className="rounded-full main__input w-96"
               id="id_cliente"
-              placeholder="Ingresa tu documento"
+              placeholder="Ingresa tu documento*"
             />
             <input
               name="nombre_cliente"
               type="text"
               className="rounded-full main__input w-96"
               id="nombre_cliente"
-              placeholder="Ingresa tu nombre"
+              placeholder="Ingresa tu nombre*"
             />
             <input
               name="apellido_cliente"
@@ -109,28 +148,28 @@ const Register = () => {
               type="text"
               className="rounded-full main__input w-96"
               id="direccion_cliente"
-              placeholder="Ingresa tu dirección"
+              placeholder="Ingresa tu dirección*"
             />
             <input
               name="ciudad_cliente"
               type="text"
               className="rounded-full main__input w-96"
               id="ciudad_cliente"
-              placeholder="Ingresa tu ciudad"
+              placeholder="Ingresa tu ciudad*"
             />
             <input
               name="telefono_cliente"
               type="text"
               className="rounded-full main__input w-96"
               id="telefono_cliente"
-              placeholder="Ingresa tu telefono"
+              placeholder="Ingresa tu telefono*"
             />
             <input
               name="correo_cliente"
               type="email"
               className="rounded-full main__input w-96"
               id="correo_cliente"
-              placeholder="Ingresa tu correo"
+              placeholder="Ingresa tu correo*"
             />
             <div className="password-input-container relative">
               <input
@@ -138,7 +177,8 @@ const Register = () => {
                 type={showPassword ? "text" : "password"}
                 className="rounded-full main__input w-96"
                 id="contrasenia"
-                placeholder="Ingresa tu contraseña"
+                placeholder="Ingresa tu contraseña*"
+                onChange={(e) => setErrorMessage("")}
               />
               <span
                 className="password-toggle cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-5"
@@ -157,7 +197,8 @@ const Register = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 className="rounded-full main__input w-96"
                 id="confirmar_contrasenia"
-                placeholder="Confirma tu contraseña"
+                placeholder="Confirma tu contraseña*"
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <span
                 className="password-toggle cursor-pointer absolute top-1/2 transform -translate-y-1/2 right-5"
@@ -169,23 +210,37 @@ const Register = () => {
                   <Eye size={20} className="text-fuchsia-950" />
                 )}
               </span>
+              
             </div>
+            {passwordError && (
+                <div className="bg-white text-red-500 font-bold p-2 mt-3 grid grid-flow-col items-center justify-center text-center w-80 rounded-full">
+                  <FiAlertTriangle className="text-red-500 font-bold text-2xl" />
+                  {passwordError}
+                </div>
+              )}
             {errorMessage && (
               <div className="bg-white text-red-500 font-bold p-2 mt-3 grid grid-flow-col items-center justify-center text-center w-80 rounded-full">
-              <FiAlertTriangle className="text-red-500 font-bold text-2xl" />
+                <FiAlertTriangle className="text-red-500 font-bold text-2xl" />
                 {errorMessage}
               </div>
-            )}
+            )}{" "}
+            <span className="text-xs">
+              *La contraseña debe de contener al menos una letra mayúscula, una
+              letra minúscula, un número y un carácter especial, y mínimo 8
+              caracteres*
+            </span>
             <Button type="submit" text="Registrarse" />
             {showConfirmation && (
-            <div className="modal-container">
-              <div className="modal">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Purple_check.svg" alt=""  />
-                <p>¡Registro exitoso!</p>
+              <div className="modal-container">
+                <div className="modal">
+                  <img
+                    src="http://localhost:10101/img/newProductoPersonalizado-1702394377617.png"
+                    alt=""
+                  />
+                  <p>¡Registro exitoso!</p>
+                </div>
               </div>
-            </div>
-          )}
-
+            )}
           </form>
 
           <p className="link_registro">
@@ -194,29 +249,26 @@ const Register = () => {
               Inicia sesión aquí
             </Link>
           </p>
-          <p className="main__paragraph">Continuar con</p>
+          <p className="main__paragraph">Encuéntranos en:</p>
 
           <article className="main__social">
-            <a href="https://www.google.com/?hl=es" className="main__link">
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/google-icon.svg"
-                className="main__icon"
-                alt="Google"
-              />
+            <a
+              href="https://www.facebook.com"
+              className="hover:text-pink-600 mx-3 text-fuchsia-950"
+            >
+              <FaFacebook size={30} />
             </a>
-            <a href="https://www.apple.com/co" className="main__link">
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/apple.svg"
-                className="main__icon"
-                alt="Apple"
-              />
+            <a
+              href="https://www.whatsapp.com/"
+              className="text-fuchsia-950 hover:text-pink-600 mx-3"
+            >
+              <FaWhatsapp size={30} />
             </a>
-            <a href="https://www.facebook.com" className="main__link">
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/facebook.svg"
-                className="main__icon"
-                alt="Facebook"
-              />
+            <a
+              href="https://www.instagram.com"
+              className="text-fuchsia-950 hover:text-pink-600 mx-3"
+            >
+              <FaInstagram size={30} />
             </a>
           </article>
         </div>

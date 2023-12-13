@@ -3,9 +3,11 @@ import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import endPoints from "../../../services/api";
 import Button from "../../../components/Atoms/Button/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const API = import.meta.env.VITE_API_URL;
 
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import styled from "@emotion/styled";
 const AnchetasAdmin = () => {
   const [anchetas, setAnchetas] = useState([]);
   const [error, setError] = useState(null);
@@ -14,6 +16,7 @@ const AnchetasAdmin = () => {
   const [categorias, setCategorias] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Todo");
   const [filteredAnchetas, setFilteredAnchetas] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,8 +69,23 @@ const AnchetasAdmin = () => {
     setAnchetaToDelete(null);
     setShowConfirmation(false);
   };
+  const formatPrice = (price) => {
+    const numericValue = parseFloat(price);
 
+    if (!isNaN(numericValue)) {
+      const roundedPrice = Math.round(numericValue * 100) / 100;
+      const parts = roundedPrice.toString().split(".");
+      const formattedInteger = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const formattedPrice =
+        parts.length === 2 ? `${formattedInteger}.${parts[1]}` : formattedInteger;
+
+      return formattedPrice;
+    }
+
+    return price;
+  };
   return (
+    
     <div className="container mx-auto mt-8">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-semibold text-fuchsia-950">Lista de Anchetas</h2>
@@ -110,7 +128,7 @@ const AnchetasAdmin = () => {
             <tr key={ancheta.id_ancheta} className="hover:bg-gray-100">
               <td className="py-2 px-4 border-b text-center">{ancheta.id_ancheta}</td>
               <td className="py-2 px-4 border-b text-center">{ancheta.nombre_ancheta}</td>
-              <td className="py-2 px-4 border-b text-center">{ancheta.valor_ancheta}</td>
+              <td className="py-2 px-4 border-b text-center">${formatPrice(ancheta.valor_ancheta)}</td>
               <td className="py-2 px-4 border-b text-center">
                 <img
                   src={ancheta.url_imagen_ancheta}
@@ -121,9 +139,11 @@ const AnchetasAdmin = () => {
               <td className="py-2 px-4 border-b text-center">{ancheta.categoria}</td>
               <td className="py-2 px-4 border-b text-center">{ancheta.cantidad_inventario}</td>
               <td className="py-2 px-4 border-b text-center">
+              <Link to={`/editar-ancheta/${ancheta.id_ancheta}`} className="text-blue-500 hover:underline mr-2">
                 <button className="text-blue-500 hover:underline mr-2">
                   <FaEdit /> {/* Icono de editar */}
                 </button>
+                </Link>
                 <button
                   className="text-red-500 hover:underline"
                   onClick={() => handleDelete(ancheta.id_ancheta)}

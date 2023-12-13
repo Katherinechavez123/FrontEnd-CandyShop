@@ -1,5 +1,5 @@
 import "./NavAdmin.scss";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+
 import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import FullscreenExitOutlinedIcon from "@mui/icons-material/FullscreenExitOutlined";
@@ -11,16 +11,12 @@ import ListOutlinedIcon from "@mui/icons-material/ListOutlined";
 
 const NavAdmin = () => {
   //const { dispatch } = useContext(DarkModeContext);
-
+  const correoAdmin = localStorage.getItem("correo_admin");
   return (
     <div className="navbar">
       <div className="wrapper">
-        <div className="search rounded-full">
-          <input type="text" placeholder="Search..." className="rounded-full"/>
-          <SearchOutlinedIcon />
-        </div>
-        <div className="items">
 
+        <div className="items">
 
           <div className="item">
             <FullscreenExitOutlinedIcon className="icon" />
@@ -31,11 +27,7 @@ const NavAdmin = () => {
           </div>
 
           <div className="item">
-            <img
-              src="https://images.pexels.com/photos/941693/pexels-photo-941693.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-              alt=""
-              className="avatar"
-            />
+            <span className="admin-email text-base" >{correoAdmin} </span>
           </div>
         </div>
       </div>

@@ -20,6 +20,7 @@
   text-align: center;
   align-items: center;
   justify-content: center;
+
 }
 
 /* Estilos para la imagen del encabezado */
@@ -92,4 +93,76 @@
   .factura-content {
     width: 90%;
   }
+}
+.error-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.error-popup p {
+  margin-bottom: 10px;
+}
+
+.error-popup button {
+  padding: 10px;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+/* Estilos para el contenedor del modal */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* Asegura que esté en la parte superior de todos los elementos */
+}
+
+
+
+/* Ajusta los estilos según tus preferencias */
+/* Estilos para el cuadro blanco del modal */
+.modal {
+  background: white;
+  padding: 60px; /* Aumenta el espacio interno para hacerlo un poco más grande */
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para la imagen */
+.modal img {
+  width: 100px; /* Ajusta el tamaño de la imagen según tus preferencias */
+  height: 100px;
+  margin: 0 auto; /* Centra la imagen horizontalmente */
+  display: block; /* Asegura que la imagen esté centrada correctamente */
+}
+
+/* Estilos para el texto del mensaje de confirmación */
+.modal p {
+  font-size: 18px; /* Aumenta el tamaño del texto si es necesario */
+  color: #333;
+}
+.logo-factura{
+  width: 100px;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.div-factura{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

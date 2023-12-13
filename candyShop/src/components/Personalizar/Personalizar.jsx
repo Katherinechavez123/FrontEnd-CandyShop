@@ -14,6 +14,33 @@ const Personalizar = ({
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("Todo");
+
+  const formatPrice = (price) => {
+    if (typeof price === "string") {
+      const numericValue = parseFloat(price.replace(/[^\d.-]/g, ""));
+      if (!isNaN(numericValue)) {
+        const formattedPrice = new Intl.NumberFormat("es-CO", {
+          style: "currency",
+          currency: "COP",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2,
+        }).format(numericValue);
+        return formattedPrice;
+      }
+    } else if (typeof price === "number") {
+      const formattedPrice = new Intl.NumberFormat("es-CO", {
+        style: "currency",
+        currency: "COP",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      }).format(price);
+      return formattedPrice;
+    }
+  
+    return price;
+  };
+  
+  
   async function getProductos() {
     try {
       const response = await axios.get(endPoints.productos.getProductos);
@@ -25,7 +52,8 @@ const Personalizar = ({
 
       if (Array.isArray(productosData)) {
         setProductos(productosData);
-
+        console.log("Productos:", productosData);
+      
         const uniqueCategorias = [
           ...new Set(productosData.map((producto) => producto.tipo_producto)),
         ];
@@ -35,6 +63,7 @@ const Personalizar = ({
           "La respuesta de la API no contiene una matriz de productos."
         );
       }
+
     } catch (error) {
       console.error("Error al obtener los productos:", error);
     }
@@ -68,11 +97,13 @@ const Personalizar = ({
       localStorage.setItem("cart", JSON.stringify(updatedProducts));
     }
   };
+
   return (
     <div className=" ml-16 mr-16 mt-32">
       <h1 className="text-3xl font-bold tracking-tight text-fuchsia-950 mb-6 text-center">
         Crea tu ancheta personalizada con todos los productos que quieras
       </h1>
+      <h2 className="text-center text-red-700">*El monto mínimo de compra son $60.000*</h2>
 
       <div className="flex flex-wrap">
         <div className="w-1/4 pr-4">
@@ -120,7 +151,7 @@ const Personalizar = ({
                     />
                     <p className="block text-fuchsia-950 py-2 text-center text-decoration-none rounded-full font-normal">
                       {producto.nombre_producto}
-                      <br />${producto.precio}
+                      <br />{formatPrice(producto.precio)}
                     </p>
                     <Button
                       onClick={(e) => onAddProduct(producto)}

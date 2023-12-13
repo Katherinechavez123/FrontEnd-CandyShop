@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import endPoints from '../../../services/api';
 import Button from '../../../components/Atoms/Button/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaEdit, FaTrash } from 'react-icons/fa';
-
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 const API = import.meta.env.VITE_API_URL;
 
 const ProductosAdmin = () => {
@@ -15,7 +15,7 @@ const ProductosAdmin = () => {
   const [categorias, setCategorias] = useState([]);
   const [selectedCategoria, setSelectedCategoria] = useState('Todos'); // Inicialmente mostramos todos las categorías
   const [filteredProductos, setFilteredProductos] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Obtener categorías de productos para el filtro
     const fetchData = async () => {
@@ -38,7 +38,21 @@ const ProductosAdmin = () => {
 
     fetchData();
   }, []);
+  const formatPrice = (price) => {
+    const numericValue = parseFloat(price);
 
+    if (!isNaN(numericValue)) {
+      const roundedPrice = Math.round(numericValue * 100) / 100;
+      const parts = roundedPrice.toString().split(".");
+      const formattedInteger = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      const formattedPrice =
+        parts.length === 2 ? `${formattedInteger}.${parts[1]}` : formattedInteger;
+
+      return formattedPrice;
+    }
+
+    return price;
+  };
   useEffect(() => {
     // Filtrar productos por categoría seleccionada
     if (selectedCategoria === 'Todos') {
@@ -49,10 +63,6 @@ const ProductosAdmin = () => {
     }
   }, [selectedCategoria, productos]);
 
-  const handleEdit = async (id_producto) => {
-    // Lógica para editar el producto
-    // ...
-  };
 
   const showDeleteConfirmation = (id_producto) => {
     setConfirmDelete(true);
@@ -128,12 +138,14 @@ const ProductosAdmin = () => {
                   className="w-12 h-12 object-cover mx-auto"
                 />
               </td>
-              <td className="py-2 px-4 border-b text-center">{producto.precio}</td>
+              <td className="py-2 px-4 border-b text-center">${formatPrice(producto.precio)}</td>
               <td className="py-2 px-4 border-b text-center">{producto.cantidad_productos_inventario}</td>
               <td className="py-2 px-4 border-b text-center">
-                <button className="text-blue-500 hover:underline mr-2" onClick={() => handleEdit(producto.id_producto)}>
+              <Link to={`/editarProducto/${producto.id_producto}`} className="text-blue-500 hover:underline mr-2">
+                <button className="text-blue-500 hover:underline mr-2">
                   <FaEdit /> {/* Icono de editar */}
                 </button>
+                </Link>
                 <button className="text-red-500 hover:underline" onClick={() => showDeleteConfirmation(producto.id_producto)}>
                   <FaTrash /> {/* Icono de eliminar */}
                 </button>

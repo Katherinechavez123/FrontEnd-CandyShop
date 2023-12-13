@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import "./Home.scss";
 import Sidebar from "../../../layouts/SideBar/SideBar";
 import NavAdmin from "../../../layouts/NavAdmin/NavAdmin";
-import AnchetasAdmin from "../../components/AnchetasAdmin/AnchetasAdmin";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import EditarProducto from "../../components/EditarProducto/EditarProducto";
 
-const Anchetas = () => {
+const EditarPro = () => {
   const navigate = useNavigate();
-
   useEffect(() => {
     // Verificar si el usuario está autenticado
     const isAuthenticated = !!localStorage.getItem("token");
@@ -22,10 +22,10 @@ const Anchetas = () => {
       <Sidebar />
       <div className="homeContainer">
         <NavAdmin />
-        <AnchetasAdmin/>
+        <EditarProducto />
       </div>
     </div>
   );
 };
 
-export default Anchetas;
+export default EditarPro;

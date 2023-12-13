@@ -7,16 +7,18 @@ import { useForm } from "../../hooks";
 import { Eye, EyeOff } from "react-feather";
 import "./Login.css";
 import { FiAlertTriangle } from "react-icons/fi";
+import { FaFacebook, FaWhatsapp, FaInstagram } from "react-icons/fa";
 
 const Login = () => {
   const [showIncorrectPasswordAlert, setShowIncorrectPasswordAlert] =
     useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // Agregar estado para el mensaje de error
   const { serialize } = useForm();
   const [correoCliente, setCorreoCliente] = useState("");
   const [contrasenia, setContrasenia] = useState("");
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // Estado para mostrar/ocultar confirmar contraseña
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -25,29 +27,45 @@ const Login = () => {
   const toggleShowConfirmPassword = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
+
   const handleLogin = async (ev) => {
     ev.preventDefault();
     const formData = serialize(ev.target);
-
+  
+    // Validar campos obligatorios
+    const requiredFields = ["correo_cliente", "contrasenia"];
+    const emptyFields = requiredFields.filter((field) => !formData[field]);
+  
+    if (emptyFields.length > 0) {
+      setShowIncorrectPasswordAlert(false);
+      setErrorMessage("Todos los campos son obligatorios.");
+      return;
+    } else {
+      setErrorMessage(""); // Reiniciar el mensaje de error si todos los campos están llenos
+    }
+  
     try {
-      const response = await axios.post(endPoints.cliente.getLogin, formData);
-
+      const response = await axios.post(
+        endPoints.cliente.getLogin,
+        formData
+      );
+  
       const token = response.data.token;
-
+  
       if (token) {
         localStorage.setItem("token", token);
-        localStorage.setItem("correo_cliente", correoCliente);
+        localStorage.setItem("correo_cliente", formData.correo_cliente);
         navigate("/");
         window.location.reload();
       } else {
-        // Respuesta del servidor indica contraseña incorrecta, muestra la alerta
         setShowIncorrectPasswordAlert(true);
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
   };
-
+  
+  
   return (
     <div>
       <section className="main mt-32 mb-11">
@@ -66,7 +84,7 @@ const Login = () => {
             ¡Iniciar sesión!
           </h2>
           <p className="main__paragraph mt-3">
-            ¡Bienvenido/a de vuelta! Por favor, ingresa tus credenciales para
+            ¡Bienvenid@ de vuelta! Por favor, ingresa tus credenciales para
             iniciar sesión en nuestra página.
           </p>
 
@@ -79,7 +97,7 @@ const Login = () => {
               type="email"
               className="main__input outline-none border-none p-4 font-inherit rounded-full w-96 h-10"
               id="exampleInputEmail1"
-              placeholder="Ingresa tu correo"
+              placeholder="Ingresa tu correo*"
               onChange={(e) => setCorreoCliente(e.target.value)}
             />
             <div className="password-input-container relative">
@@ -88,7 +106,7 @@ const Login = () => {
                 name="contrasenia"
                 className="main__input w-96 h-10 outline-none border-none p-4 font-inherit rounded-full"
                 id="exampleInputPassword1"
-                placeholder="Ingresa tu contraseña"
+                placeholder="Ingresa tu contraseña*"
                 onChange={(e) => setContrasenia(e.target.value)}
               />
               <span
@@ -122,38 +140,17 @@ const Login = () => {
               Regístrate aquí
             </a>
           </p>
-          <p className="main__paragraph mt-3">Continuar con</p>
+          <p className="main__paragraph mt-3">Encuéntranos en:</p>
 
           <article className="main__social grid grid-auto-flow-col justify-content-center grid-auto-columns-max-content gap-6">
-            <a
-              href="https://www.google.com/?hl=es"
-              className="main__link border border-white rounded-10px p-2"
-            >
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/google-icon.svg"
-                className="main__icon w-30 h-30"
-                alt="Google"
-              />
+          <a href="https://www.facebook.com" className=" text-fuchsia-950 hover:text-pink-600 mx-3">
+              <FaFacebook size={30} />
             </a>
-            <a
-              href="https://www.apple.com/co"
-              className="main__link border border-white rounded-10px p-2"
-            >
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/apple.svg"
-                className="main__icon w-30 h-30"
-                alt="Apple"
-              />
+            <a href="https://www.whatsapp.com/" className="text-fuchsia-950 hover:text-pink-600 mx-3">
+              <FaWhatsapp size={30} />
             </a>
-            <a
-              href="https://www.facebook.com"
-              className="main__link border border-white rounded-10px p-2"
-            >
-              <img
-                src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/07/facebook.svg"
-                className="main__icon w-30 h-30"
-                alt="Facebook"
-              />
+            <a href="https://www.instagram.com" className="text-fuchsia-950 hover:text-pink-600 mx-3">
+              <FaInstagram size={30} />
             </a>
           </article>
         </div>

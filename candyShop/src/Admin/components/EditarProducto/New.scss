@@ -96,7 +96,6 @@
     width: 90%;
   }
 }
-
 /* Estilos para el contenedor del modal */
 .modal-container {
   position: fixed;
@@ -136,44 +135,3 @@
   color: #333;
 }
 
-/* New.scss o tu hoja de estilos global */
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  text-align: center;
-}
-
-.modal-content {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-/* Estilos específicos para la ventana de error */
-.modal-error {
-  background-color: #ffffff; /* Color de fondo rojo para errores */
-}
-
-/* Estilos específicos para la ventana de confirmación */
-.modal-confirm {
-  background-color: #ffffff; /* Color de fondo azul para confirmaciones */
-}
-
-/* Otros estilos según tus preferencias */
-.modal button {
-  background-color: #fccee9; /* Color de fondo verde para botones */
-  color: rgb(0, 0, 0);
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  border: none;
-  border-radius: 4px;
-}

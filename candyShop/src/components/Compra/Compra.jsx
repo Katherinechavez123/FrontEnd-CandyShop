@@ -7,22 +7,45 @@ import Modal from "react-modal";
 import { useReactToPrint } from "react-to-print";
 import "./compra.css"; // Importa un archivo CSS separado para los estilos
 // ... (importaciones y otros componentes)
+const formatPrice = (price) => {
+  if (typeof price === "string") {
+    const numericValue = parseFloat(price.replace(/[^\d.-]/g, ""));
+    if (!isNaN(numericValue)) {
+      return numericValue.toLocaleString("es-ES");
+    }
+  } else if (typeof price === "number") {
+    return price.toLocaleString("es-ES");
+  }
 
-function FacturaModal({
-  facturaId,
-  totalPrice,
-  allProducts,
-  deliveryDate,
-  deliveryAddress,
-  nombre_cliente,
-  correo_cliente,
-  telefono_cliente,
-  id_cliente,
-}) {
+  return price;
+};
+const setAvailableHoursForDate = (selectedDate) => {
+  // Tu lógica para establecer las horas disponibles según la fecha seleccionada
+  // Por ejemplo, podrías obtener esta información de una API
+  const hours = ["10:00 AM", "12:00 PM", "2:00 PM", "4:00 PM", "6:00 PM"];
+  setAvailableHours(hours);
+};
+
+function FacturaModal(props) {
+  const {
+    facturaId,
+    totalPrice,
+    allProducts,
+    deliveryDate,
+    deliveryAddress,
+    nombre_cliente,
+    correo_cliente,
+    telefono_cliente,
+    id_cliente,
+  } = props;
   const componentRef = useRef();
+
+  const [showFactura, setShowFactura] = useState(false); // Agrega estado para controlar la visibilidad
+  const [showFacturaModal, setShowFacturaModal] = useState(false);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+    onAfterPrint: () => setShowFactura(true), // Configura el estado para mostrar el modal
   });
 
   const [customerData, setCustomerData] = useState({
@@ -38,12 +61,8 @@ function FacturaModal({
 
     // Verificar si hay datos almacenados
     if (storedRegistrationData) {
-      const {
-        nombre_cliente,
-        correo_cliente,
-        telefono_cliente,
-        id_cliente,
-      } = JSON.parse(storedRegistrationData);
+      const { nombre_cliente, correo_cliente, telefono_cliente, id_cliente } =
+        JSON.parse(storedRegistrationData);
 
       // Actualizar el estado con los datos recuperados del cliente
       setCustomerData({
@@ -58,21 +77,30 @@ function FacturaModal({
 
   return (
     <Modal
-      isOpen={true}
-      onRequestClose={() => {}}
+      isOpen={showFactura} // Utiliza el estado para controlar la visibilidad
+      onRequestClose={() => setShowFactura(false)} // Configura el estado para cerrar el modal
       contentLabel="Factura"
       className="factura-modal"
       overlayClassName="factura-overlay"
     >
       <div ref={componentRef} className="factura-content mt-28">
         <div className="factura-header">
+          <div className="div-factura">
+            <img
+              className="logo-factura"
+              src="https://candyshop.publitin.net/redetron/wp-content/uploads/2023/06/logo-v1-01.png"
+              alt="logo"
+            />
+          </div>
 
           <h2 className="factura-title">Factura de Compra</h2>
         </div>
         <div className="factura-info-section">
           <p className="factura-info">Número de factura: {facturaId}</p>
           <p className="factura-info">Fecha de compra: {getCurrentDate()}</p>
-          <p className="factura-info">Dirección de entrega: {deliveryAddress}</p>
+          <p className="factura-info">
+            Dirección de entrega: {deliveryAddress}
+          </p>
         </div>
 
         <div className="factura-section">
@@ -99,28 +127,48 @@ function FacturaModal({
                 <tr key={product.id}>
                   <td>{product.nombre_ancheta || product.nombre_producto}</td>
                   <td>{product.cantidad}</td>
-                  <td>${product.valor_ancheta || product.precio}</td>
-                  <td>${calculateSubtotal(product)}</td>
+                  <td>
+                    ${formatPrice(product.valor_ancheta || product.precio)}
+                  </td>
+                  <td>${formatPrice(calculateSubtotal(product))}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
+        <p className="factura-info factura-total">
+          Total pagado: ${formatPrice(totalPrice)}
+        </p>
+        <div className="factura-buttons mt-4">
+          <Button
+            onClick={handlePrint}
+            className="factura-button "
+            text="Descargar Factura en PDF"
+          />
 
-        <p className="factura-info factura-total">Total pagado: ${totalPrice}</p>
-<div className="factura-buttons mt-4">
-  <Button onClick={handlePrint} className="factura-button " text="Descargar Factura en PDF"/>
-
-  <Button
-  onClick={() => navigate("/")} // Assuming "/" is the path to the home page
-  className="factura-button"
-  text="Cerrar"
-/>
-</div>
+          <Button
+            onClick={() => navigate("/")} // Suponiendo que "/" es la ruta a la página de inicio
+            className="factura-button"
+            text="Cerrar"
+          />
+        </div>
       </div>
-
     </Modal>
+  );
+}
+
+function SuccessfulPurchaseModal({ onClose }) {
+  return (
+    <div className="modal-container">
+      <div className="modal">
+        <img
+          src="http://localhost:10101/img/newProductoPersonalizado-1702394377617.png"
+          alt="exito"
+        />
+        <p>¡Compra exitosa!</p>
+      </div>
+    </div>
   );
 }
 
@@ -132,25 +180,92 @@ function getCurrentDate() {
 function calculateSubtotal(product) {
   return (product.valor_ancheta || product.precio) * product.cantidad;
 }
+function CustomerData() {
+  const [customerData, setCustomerData] = useState({
+    nombre_cliente: "",
+    correo_cliente: "",
+    telefono_cliente: "",
+    id_cliente: "",
+  });
+
+  useEffect(() => {
+    // Recuperar datos del cliente del localStorage
+    const storedRegistrationData = localStorage.getItem("registrationData");
+
+    // Verificar si hay datos almacenados
+    if (storedRegistrationData) {
+      const { nombre_cliente, correo_cliente, telefono_cliente, id_cliente } =
+        JSON.parse(storedRegistrationData);
+
+      // Actualizar el estado con los datos recuperados del cliente
+      setCustomerData({
+        nombre_cliente,
+        correo_cliente,
+        telefono_cliente,
+        id_cliente,
+      });
+    }
+  }, []); // Ensure this effect runs only once on mount
+
+  return customerData;
+}
 
 function Compra({ allProducts, limpiarCarrito }) {
   const [facturaId, setFacturaId] = useState(null);
-  const navigate = useNavigate();
-const [nombre_cliente, setName] = useState("");
-const [telefono_cliente, setPhone] = useState("");
-const [id_cliente, setIdentification] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedBank, setSelectedBank] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [accountHolder, setAccountHolder] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
   const [showBankForm, setShowBankForm] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [responseMessage, setResponseMessage] = useState("");
   const [deliveryDate, setDeliveryDate] = useState("");
   const [email, setEmail] = useState("");
   const [deliveryTime, setDeliveryTime] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [error, setError] = useState(null);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showFactura, setShowFactura] = useState(false);
 
+  const [availableHours, setAvailableHours] = useState([]);
+  const { currentDate, maxDate } = getCurrentDate();
+
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    setShowFacturaModal(true); // Actualiza el estado para mostrar el modal de factura
+    // No es necesario establecer facturaId aquí, ya que se establece más adelante en setTimeout
+  };
+
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+
+    // Verifica si la fecha seleccionada es válida
+    if (selectedDate < currentDate || selectedDate > maxDate) {
+      setError(
+        "La fecha de entrega debe ser posterior a la fecha actual y dentro de los próximos 2 meses."
+      );
+      setShowErrorModal(true);
+      return;
+    }
+
+    // Limpiamos el error si la fecha es válida
+    setError(null);
+    setDeliveryDate(selectedDate);
+  };
+  const [showFacturaModal, setShowFacturaModal] = useState(false);
+
+  // Establecer las horas disponibles de 8 am a 7 pm
+  useEffect(() => {
+    const hours = [];
+    for (let i = 8; i <= 19; i++) {
+      const formattedHour = i < 10 ? `0${i}` : `${i}`;
+      hours.push(`${formattedHour}:00`);
+    }
+    setAvailableHours(hours);
+  }, []);
+
+  const handleHourChange = (e) => {
+    const selectedHour = e.target.value;
+    setDeliveryTime(selectedHour);
+  };
   useEffect(() => {
     const totalPrice = allProducts.reduce((total, ancheta) => {
       return (
@@ -161,7 +276,6 @@ const [id_cliente, setIdentification] = useState("");
 
     setTotalPrice(totalPrice);
   }, [allProducts]);
-
 
   const handleBankChange = (e) => {
     const selectedBank = e.target.value;
@@ -180,26 +294,31 @@ const [id_cliente, setIdentification] = useState("");
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+    if (!deliveryDate || !deliveryTime || !deliveryAddress) {
+      setError("Todos los campos marcados con * son obligatorios.");
+      setShowErrorModal(true);
+      return;
+    }
+
+    const currentDate = new Date();
+    const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+
+    if (!deliveryDate || deliveryDate <= formattedCurrentDate) {
+      setError("La fecha de entrega debe ser posterior a la fecha actual.");
+      setShowErrorModal(true);
+      return;
+    }
 
     const formattedDateTime = `${deliveryDate} ${deliveryTime}`;
     const formattedDeliveryDateTime = new Date(formattedDateTime).toISOString();
 
     const anchetasFiltradas = allProducts.map((product) => {
-      if (product.id_ancheta !== undefined) {
-        return {
-          id_ancheta: product.id_ancheta,
-          cantidad: product.cantidad,
-          nombre_ancheta: product.nombre_ancheta,
-          valor_ancheta: product.valor_ancheta,
-        };
-      } else {
-        return {
-          id_producto: product.id_producto,
-          cantidad: product.cantidad,
-          nombre_producto: product.nombre_producto,
-          precio: product.precio,
-        };
-      }
+      return {
+        id_ancheta: product.id_ancheta,
+        cantidad: product.cantidad,
+        nombre_ancheta: product.nombre_ancheta,
+        valor_ancheta: product.valor_ancheta,
+      };
     });
 
     const datosCompra = {
@@ -207,86 +326,111 @@ const [id_cliente, setIdentification] = useState("");
       id_cliente: localStorage.getItem("registrationData")
         ? JSON.parse(localStorage.getItem("registrationData")).id_cliente
         : "",
-      correo_cliente: correo_cliente,
+      correo_cliente: localStorage.getItem("correo_cliente"),
       direccion_entrega: deliveryAddress,
       fecha_entrega: formattedDeliveryDateTime,
       estado_pedido: "Pendiente",
     };
 
-    const endpoint =
-      allProducts.some((product) => product.id_ancheta !== undefined)
-        ? endPoints.buy.postBuy
-        : endPoints.buyPersonalize.postBuy;
+    const endpoint = allProducts.some(
+      (product) => product.id_ancheta !== undefined
+    )
+      ? endPoints.buy.postBuy
+      : endPoints.buyPersonalize.postBuy;
 
     try {
       const response = await axios.post(endpoint, datosCompra);
       if (response.status === 200) {
         setFacturaId(response.data.facturaId);
-        setResponseMessage(
-          "Compra exitosa. ID de factura: " + response.data.facturaId
-        );
-        setShowConfirmation(true);
-        limpiarCarrito();
+        setShowSuccessModal(true);
+        setShowFacturaModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 3000);
       } else {
-        setResponseMessage(
-          "Error al realizar la compra. " + response.data.message
-        );
+        setError("Error al realizar la compra. " + response.data.message);
+        setShowErrorModal(true);
       }
     } catch (error) {
-      console.error(error);
-      setResponseMessage(
-        "Error al realizar la compra. " + error.response.data.message
-      );
+      setError("Error al realizar la compra. " + error.response.data.message);
+      setShowErrorModal(true);
     }
   };
 
-  if (showConfirmation) {
-    return (
-      <FacturaModal
-        facturaId={facturaId}
-        totalPrice={totalPrice}
-        allProducts={allProducts}
-        deliveryDate={deliveryDate}
-        deliveryAddress={deliveryAddress}
-        name={nombre_cliente}  // Pasamos las propiedades aquí
-        email={correo_cliente}
-        phone={telefono_cliente}
-        identification={id_cliente}
-      />
-    );
-  }
 
+  function getCurrentDate(addedMonths = 2) {
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + 1);
+
+    // Calcula la fecha máxima permitida (2 meses adicionales)
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + addedMonths);
+
+    const formattedCurrentDate = currentDate.toISOString().split("T")[0];
+    const formattedMaxDate = maxDate.toISOString().split("T")[0];
+
+    return { currentDate: formattedCurrentDate, maxDate: formattedMaxDate };
+  }
   return (
     <div className="container mt-32 text-center p-4 shadow-md rounded-lg max-w-md mx-auto">
       <h1 className="text-3xl font-semibold mb-4 text-center text-fuchsia-950">
         Finaliza tu compra
       </h1>
-      <p className="text-fuchsia-950">Precio total: ${totalPrice}</p>
+      <p className="text-fuchsia-950 text-xl">
+        Precio total: ${formatPrice(totalPrice)}
+      </p>
+      <br />
       <div className="mb-4">
-        <label htmlFor="deliveryDate">Fecha de Entrega:</label>
+        <label htmlFor="deliveryDate">
+          Fecha de Entrega<span className="text-red-600">*</span>:
+        </label>
         <input
           type="date"
           id="deliveryDate"
           className="w-full p-2 rounded-full focus:ring-pink-600"
-          onChange={(e) => setDeliveryDate(e.target.value)}
+          onChange={handleDateChange}
+          min={currentDate}
+          max={maxDate}  // Establecer la fecha máxima permitida
+          required
         />
+        <h2 className="text-red-600">
+          *Recuerda que no puedes programar entregas superiores a dos meses*
+        </h2>
+        {showErrorModal && (
+          <div className="error-popup">
+            <p>{error}</p>
+            <button onClick={() => setShowErrorModal(false)}>Cerrar</button>
+          </div>
+        )}
       </div>
       <div className="mb-4">
-        <label htmlFor="deliveryTime">Hora de Entrega:</label>
-        <input
-          type="time"
+        <label htmlFor="deliveryTime">
+          Hora de Entrega<span className="text-red-600">*</span>:
+        </label>
+        <select
           id="deliveryTime"
           className="w-full p-2 rounded-full focus:ring-pink-600"
-          onChange={(e) => setDeliveryTime(e.target.value)}
-        />
+          onChange={handleHourChange}
+          required
+        >
+          <option value="">Seleccionar hora</option>
+          {availableHours.map((hour) => (
+            <option key={hour} value={hour}>
+              {hour}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="mb-4">
-        <label htmlFor="deliveryAddress">Dirección de Entrega:</label>
+        <label htmlFor="deliveryAddress">
+          Dirección de Entrega<span className="text-red-600">*</span>:
+        </label>
         <input
           type="text"
           id="deliveryAddress"
           className="w-full p-2 rounded-full focus:ring-pink-600"
           onChange={(e) => setDeliveryAddress(e.target.value)}
+          required
         />
       </div>
       <div className="bg-white p-4 shadow-md rounded-lg max-w-md mx-auto mt-8 text-fuchsia-950 text-center items-center justify-center">
@@ -303,25 +447,29 @@ const [id_cliente, setIdentification] = useState("");
         </div>
 
         <div className="mb-4">
-          <label htmlFor="name">Nombre Completo:</label>
+          <label htmlFor="name">
+            Nombre Completo<span className="text-red-600">*</span>:
+          </label>
           <input
             type="text"
             id="name"
             className="w-full p-2 rounded-full focus:ring-pink-600"
-
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="email">Correo Electrónico:</label>
+          <label htmlFor="email">
+            Correo Electrónico<span className="text-red-600">*</span>:
+          </label>
           <input
             type="email"
             id="email"
             className="w-full p-2 rounded-full focus:ring-pink-600"
-
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="phone">Teléfono:</label>
+          <label htmlFor="phone">
+            Teléfono<span className="text-red-600">*</span>:
+          </label>
           <input
             type="tel"
             id="phone"
@@ -329,17 +477,20 @@ const [id_cliente, setIdentification] = useState("");
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="identification">Número de Identificación:</label>
+          <label htmlFor="identification">
+            Número de Identificación<span className="text-red-600">*</span>:
+          </label>
           <input
             type="text"
             id="identification"
             className="w-full p-2 rounded-full focus:ring-pink-600"
-
           />
         </div>
 
         <div className="mb-4">
-          <label htmlFor="bank">Seleccione el banco:</label>
+          <label htmlFor="bank">
+            Seleccione el banco<span className="text-red-600">*</span>:
+          </label>
           <select
             id="bank"
             className="w-full p-2 rounded-full focus:ring-pink-600"
@@ -368,37 +519,60 @@ const [id_cliente, setIdentification] = useState("");
             <br />
 
             <div className="mb-4">
-              <label htmlFor="accountNumber">Número de cuenta:</label>
+              <label htmlFor="accountNumber">
+                Número de cuenta<span className="text-red-600">*</span>:
+              </label>
               <input
                 type="text"
                 id="accountNumber"
                 className="w-full p-2 rounded-full focus:ring-pink-600"
-                />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="accountHolder">Nombre del titular:</label>
-                  <input
-                    type="text"
-                    id="accountHolder"
-                    className="w-full p-2 rounded-full focus:ring-pink-600"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label htmlFor="password">Clave:</label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="w-full p-2 rounded-full focus:ring-pink-600"
-                  />
-                </div>
-              </div>
-            )}
-    
-            <Button text="Comprar" onClick={handleSubmit} type="submit" />
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="accountHolder">
+                Nombre del titular<span className="text-red-600">*</span>:
+              </label>
+              <input
+                type="text"
+                id="accountHolder"
+                className="w-full p-2 rounded-full focus:ring-pink-600"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="password">
+                Clave<span className="text-red-600">*</span>:
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="w-full p-2 rounded-full focus:ring-pink-600"
+              />
+            </div>
           </div>
-        </div>
-      );
-    }
-    
-    export default Compra;
-    
+        )}
+
+        <Button text="Comprar" onClick={handleSubmit} type="submit" />
+        {showSuccessModal && (
+          <SuccessfulPurchaseModal onClose={handleSuccessModalClose} />
+        )}
+        {showFacturaModal && (
+          <FacturaModal
+            facturaId={facturaId}
+            totalPrice={totalPrice}
+            allProducts={allProducts}
+            deliveryDate={deliveryDate}
+            deliveryAddress={deliveryAddress}
+          />
+        )}
+        {showErrorModal && (
+          <div className="error-popup">
+            <p>{error}</p>
+            <button onClick={() => setShowErrorModal(false)}>Cerrar</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Compra;
