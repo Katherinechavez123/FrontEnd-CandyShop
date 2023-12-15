@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import Button from "../Atoms/Button/Button";
 import endPoints from "../../services/api";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import { useReactToPrint } from "react-to-print";
-import "./compra.css"; // Importa un archivo CSS separado para los estilos
-// ... (importaciones y otros componentes)
+import "./compra.css";
+
 const formatPrice = (price) => {
   if (typeof price === "string") {
     const numericValue = parseFloat(price.replace(/[^\d.-]/g, ""));
@@ -37,15 +37,14 @@ function FacturaModal(props) {
     correo_cliente,
     telefono_cliente,
     id_cliente,
+    showFacturaProp = false,
   } = props;
   const componentRef = useRef();
-
-  const [showFactura, setShowFactura] = useState(false); // Agrega estado para controlar la visibilidad
-  const [showFacturaModal, setShowFacturaModal] = useState(false);
+  const [showFactura, setShowFactura] = useState(showFacturaProp); // Agrega estado para controlar la visibilidad
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
-    onAfterPrint: () => setShowFactura(true), // Configura el estado para mostrar el modal
+    onAfterPrint: () => setShowFactura(true),
   });
 
   const [customerData, setCustomerData] = useState({
@@ -74,16 +73,18 @@ function FacturaModal(props) {
     }
   }, []); // Ensure this effect runs only once on mount
   const navigate = useNavigate();
-
+  const handleCerrarClick = () => {
+    // Navegar a la página de inicio
+    navigate("/");
+  };
   return (
     <Modal
-      isOpen={showFactura} // Utiliza el estado para controlar la visibilidad
-      onRequestClose={() => setShowFactura(false)} // Configura el estado para cerrar el modal
+      isOpen={showFactura} // Añade esta línea
       contentLabel="Factura"
       className="factura-modal"
       overlayClassName="factura-overlay"
     >
-      <div ref={componentRef} className="factura-content mt-28">
+      <div ref={componentRef} className="factura-content">
         <div className="factura-header">
           <div className="div-factura">
             <img
@@ -144,11 +145,11 @@ function FacturaModal(props) {
           <Button
             onClick={handlePrint}
             className="factura-button "
-            text="Descargar Factura en PDF"
+            text="Descargar en PDF"
           />
 
           <Button
-            onClick={() => navigate("/")} // Suponiendo que "/" es la ruta a la página de inicio
+            onClick={handleCerrarClick} // Suponiendo que "/" es la ruta a la página de inicio
             className="factura-button"
             text="Cerrar"
           />
@@ -228,12 +229,6 @@ function Compra({ allProducts, limpiarCarrito }) {
   const [availableHours, setAvailableHours] = useState([]);
   const { currentDate, maxDate } = getCurrentDate();
 
-  const handleSuccessModalClose = () => {
-    setShowSuccessModal(false);
-    setShowFacturaModal(true); // Actualiza el estado para mostrar el modal de factura
-    // No es necesario establecer facturaId aquí, ya que se establece más adelante en setTimeout
-  };
-
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
 
@@ -311,16 +306,31 @@ function Compra({ allProducts, limpiarCarrito }) {
 
     const formattedDateTime = `${deliveryDate} ${deliveryTime}`;
     const formattedDeliveryDateTime = new Date(formattedDateTime).toISOString();
-
     const anchetasFiltradas = allProducts.map((product) => {
-      return {
-        id_ancheta: product.id_ancheta,
-        cantidad: product.cantidad,
-        nombre_ancheta: product.nombre_ancheta,
-        valor_ancheta: product.valor_ancheta,
-      };
+      if (product.id_ancheta !== undefined) {
+        return {
+          id_ancheta: product.id_ancheta,
+          cantidad: product.cantidad,
+          nombre_ancheta: product.nombre_ancheta,
+          valor_ancheta: product.valor_ancheta,
+        };
+      } else {
+        return {
+          id_producto: product.id_producto,
+          cantidad: product.cantidad,
+          nombre_producto: product.nombre_producto,
+          precio: product.precio,
+        };
+      }
     });
 
+    /*const anchetasFiltradas = allProducts.map((product) => ({
+      id_ancheta: product.id_ancheta ?? null,
+      cantidad: product.cantidad,
+      id_producto:product.id_producto,
+      nombre_ancheta: product.nombre_ancheta ?? product.nombre_producto,
+      valor_ancheta: product.valor_ancheta ?? product.precio,
+    }));*/
     const datosCompra = {
       detalleOrden: anchetasFiltradas,
       id_cliente: localStorage.getItem("registrationData")
@@ -335,28 +345,39 @@ function Compra({ allProducts, limpiarCarrito }) {
     const endpoint = allProducts.some(
       (product) => product.id_ancheta !== undefined
     )
-      ? endPoints.buy.postBuy
-      : endPoints.buyPersonalize.postBuy;
-
+      ? endPoints.buy.postBuy // Si hay al menos una ancheta en los productos, usa el endpoint buy-default
+      : endPoints.buyPersonalize.postBuy; // Si no hay anchetas, usa el endpoint buy-personalize
     try {
       const response = await axios.post(endpoint, datosCompra);
-      if (response.status === 200) {
+      console.log(response);
+      if (response.data.code === 200) {
         setFacturaId(response.data.facturaId);
         setShowSuccessModal(true);
-        setShowFacturaModal(true);
         setTimeout(() => {
-          setShowSuccessModal(false);
+          setShowFacturaModal(true);
+          setTimeout(() => {
+            limpiarCarrito();
+          }, 15000);
         }, 3000);
+
+
       } else {
-        setError("Error al realizar la compra. " + response.data.message);
+        setError("Error al realizar la compra. " + response.data.error);
         setShowErrorModal(true);
       }
     } catch (error) {
-      setError("Error al realizar la compra. " + error.response.data.message);
+      setError("Error al realizar la compra. " + error.response.data.error);
       setShowErrorModal(true);
     }
   };
 
+  useEffect(() => {
+    if (showSuccessModal) {
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 3000);
+    }
+  }, [showSuccessModal]);
 
   function getCurrentDate(addedMonths = 2) {
     const currentDate = new Date();
@@ -390,7 +411,7 @@ function Compra({ allProducts, limpiarCarrito }) {
           className="w-full p-2 rounded-full focus:ring-pink-600"
           onChange={handleDateChange}
           min={currentDate}
-          max={maxDate}  // Establecer la fecha máxima permitida
+          max={maxDate} // Establecer la fecha máxima permitida
           required
         />
         <h2 className="text-red-600">
@@ -512,9 +533,9 @@ function Compra({ allProducts, limpiarCarrito }) {
             </h2>
             <h3>
               Por tu seguridad no guardaremos esta información{" "}
-              <a href="" className=" text-sky-600">
-                términos y condiciones
-              </a>
+              <Link to={"/terminos"}>
+                <h3>términos y condiciones</h3>
+                </Link>
             </h3>
             <br />
 
@@ -552,25 +573,25 @@ function Compra({ allProducts, limpiarCarrito }) {
         )}
 
         <Button text="Comprar" onClick={handleSubmit} type="submit" />
-        {showSuccessModal && (
-          <SuccessfulPurchaseModal onClose={handleSuccessModalClose} />
-        )}
-        {showFacturaModal && (
-          <FacturaModal
-            facturaId={facturaId}
-            totalPrice={totalPrice}
-            allProducts={allProducts}
-            deliveryDate={deliveryDate}
-            deliveryAddress={deliveryAddress}
-          />
-        )}
-        {showErrorModal && (
-          <div className="error-popup">
-            <p>{error}</p>
-            <button onClick={() => setShowErrorModal(false)}>Cerrar</button>
-          </div>
-        )}
       </div>
+      {showSuccessModal && <SuccessfulPurchaseModal />}
+      {showFacturaModal && (
+        <FacturaModal
+          facturaId={facturaId}
+          totalPrice={totalPrice}
+          allProducts={allProducts}
+          deliveryDate={deliveryDate}
+          deliveryAddress={deliveryAddress}
+          showFacturaProp={showFacturaModal}
+        />
+      )}
+
+      {showErrorModal && (
+        <div className="error-popup">
+          <p>{error}</p>
+          <button onClick={() => setShowErrorModal(false)}>Cerrar</button>
+        </div>
+      )}
     </div>
   );
 }

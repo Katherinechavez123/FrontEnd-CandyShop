@@ -42,7 +42,7 @@ export const Nav = ({
       0
     );
 
-    if (total < 60000) {
+    if (total < 50000) {
       setError("El monto mínimo de compra no se ha alcanzado.");
       return;
     }

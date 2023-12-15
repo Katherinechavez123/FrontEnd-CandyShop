@@ -231,7 +231,7 @@ const NewProducto = ({ onAddProducto, onCancel }) => {
               src="http://localhost:10101/img/newProductoPersonalizado-1702394377617.png"
               alt="exito"
             />
-            <p>¡Producto Agregado!</p>
+            <p>¡Producto Añadido!</p>
           </div>
         </div>
       )}

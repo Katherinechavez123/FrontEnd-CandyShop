@@ -129,16 +129,7 @@ const Sales = () => {
             <option value="personalizada">Personalizadas</option>
           </select>
         </div>
-        <div className="search rounded-full">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="rounded-full"
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <SearchOutlinedIcon />
-        </div>
+
       </div>
       <div className="export-section">
         <div className="export-button">

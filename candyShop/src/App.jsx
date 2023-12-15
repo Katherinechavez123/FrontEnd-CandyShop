@@ -34,6 +34,8 @@ import NuevoProductoo from "./Admin/pages/NuevoProducto/NuevoProducto";
 import Ventas from "./Admin/pages/VentasAdmin/Ventas";
 import EditarAn from "./Admin/pages/EditarAn/EditarAn";
 import EditarPro from "./Admin/pages/EditarPro/EditarPro";
+import PoliticaPrivacidad from "./components/Politica/Politica";
+import TerminosCondiciones from "./components/TerminosYCondiciones/TerminosyCondiciones";
 //import NavAdmin from "./layouts/NavAdmin/NavAdmin";
 //import Sidebar from "./layouts/SideBar/SideBar";*/
 
@@ -52,8 +54,13 @@ function App() {
   const [carrito, setCarrito] = useState([]);
 
   const limpiarCarrito = () => {
-    setCarrito([]);
+    setAllProducts([]);
+    setCountProducts(0);
+
+    // Limpia el carrito en localStorage
+    localStorage.removeItem("cart");
   };
+  
 
   return (
     <BrowserRouter>
@@ -71,6 +78,40 @@ function App() {
                 setCountProducts={setCountProducts}
               />
               <MisCompras id_cliente={id_cliente} />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/politicas"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <PoliticaPrivacidad />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          path="/terminos"
+          element={
+            <>
+              <Header
+                allProducts={allProducts}
+                setAllProducts={setAllProducts}
+                total={total}
+                setTotal={setTotal}
+                countProducts={countProducts}
+                setCountProducts={setCountProducts}
+              />
+              <TerminosCondiciones/>
               <Footer />
             </>
           }

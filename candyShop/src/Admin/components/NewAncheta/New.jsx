@@ -237,7 +237,7 @@ const New = ({ onAddAncheta, onCancel }) => {
               src="http://localhost:10101/img/newProductoPersonalizado-1702394377617.png"
               alt="exito"
             />
-            <p>¡Ancheta Agregada!</p>
+            <p>¡Ancheta Añadida!</p>
           </div>
         </div>
       )}

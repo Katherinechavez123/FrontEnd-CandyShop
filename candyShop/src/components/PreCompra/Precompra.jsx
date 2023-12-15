@@ -68,7 +68,8 @@ function PreCompra({ allProducts }) {
               className="border-b border-gray-300"
             >
               <td className="py-2">
-                <div className="flex justify-center items-center">
+                <div className="flex pl-72
+                ">
                   <img
                     src={
                       ancheta.url_imagen_ancheta ||

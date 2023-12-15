@@ -103,7 +103,7 @@ const Personalizar = ({
       <h1 className="text-3xl font-bold tracking-tight text-fuchsia-950 mb-6 text-center">
         Crea tu ancheta personalizada con todos los productos que quieras
       </h1>
-      <h2 className="text-center text-red-700">*El monto mínimo de compra son $60.000*</h2>
+      <h2 className="text-center text-red-700">*El monto mínimo de compra son $50.000*</h2>
 
       <div className="flex flex-wrap">
         <div className="w-1/4 pr-4">
